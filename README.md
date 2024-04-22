@@ -9,5 +9,6 @@ Para instalar e executar este projeto localmente, siga estas etapas:
 ```bash
 git clone https://github.com/username/sistema-cadastro-contas.git
 cd sistema-cadastro-contas
-npm install
-npm run start
+yarn install
+yarn start
+```
