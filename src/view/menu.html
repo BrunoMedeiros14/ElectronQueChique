@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Menu</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <style>
+        .menu-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            height: 100%;
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            background: #267fdd;
+            z-index: 10;
+            overflow: hidden;
+            box-shadow: 2px 0 18px rgba(0, 0, 0, 0.26);
+            width: 10em;
+        }
+
+        .menu-bar li a {
+            display: block;
+            height: 4em;
+            line-height: 4em;
+            text-align: left;
+            color: #fff;
+            text-decoration: none;
+            position: relative;
+            font-family: verdana;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            transition: background 0.1s ease-in-out;
+            padding-left: 1em;
+        }
+
+        .menu-bar li a:hover {
+            background: #1a5ca2;
+            color: #fff;
+        }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+
+<body>
+    <ul class="menu-bar">
+        <li><a href="caixa.html"><i class="fas fa-cash-register"></i> Caixa</a></li>
+        <li><a href="estoque.html"><i class="fas fa-box"></i> Estoque</a></li>
+        <li><a href="clientes.html"><i class="fas fa-users"></i> Clientes</a></li>
+        <li><a href="contasPagar.html"><i class="fas fa-wallet"></i> Contas</a></li>
+    </ul>
+</body>
+
+</html>
