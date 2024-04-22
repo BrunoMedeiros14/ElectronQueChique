@@ -1,9 +1,16 @@
 {
-  "name": "my-new-app-vite3",
-  "productName": "my-new-app-vite3",
-  "version": "1.0.0",
+  "name": "que-chique",
+  "productName": "que-chique",
+  "version": "0.0.1",
   "description": "My Electron application description",
   "main": ".vite/build/main.js",
+  "keywords": [],
+  "author": {
+    "name": "Bruno Medeiros",
+    "email": "brunodemedeiros14@gmail.com"
+  },
+  "contributors": [],
+  "license": "ISC",
   "scripts": {
     "start": "electron-forge start",
     "package": "electron-forge package",
@@ -11,13 +18,8 @@
     "publish": "electron-forge publish",
     "lint": "eslint --ext .ts,.tsx ."
   },
-  "keywords": [],
-  "author": {
-    "name": "Bruno Medeiros",
-    "email": "brunodemedeiros14@gmail.com"
-  },
-  "license": "MIT",
   "dependencies": {
+    "@tanstack/react-router": "^1.29.2",
     "electron-squirrel-startup": "^1.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
@@ -32,6 +34,8 @@
     "@electron-forge/plugin-fuses": "^7.4.0",
     "@electron-forge/plugin-vite": "^7.4.0",
     "@electron/fuses": "^1.8.0",
+    "@tanstack/router-devtools": "^1.29.2",
+    "@tanstack/router-vite-plugin": "^1.30.0",
     "@types/react": "^18.2.79",
     "@types/react-dom": "^18.2.25",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
