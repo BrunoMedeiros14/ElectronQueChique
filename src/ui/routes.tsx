@@ -91,7 +91,7 @@ const clientesRoute = createRoute({
                   nome
                 </th>
                 <th scope="col" className="px-6 py-3">
-                  data nascimento
+                  data de nascimento
                 </th>
                 <th scope="col" className="px-6 py-3">
                   endereço

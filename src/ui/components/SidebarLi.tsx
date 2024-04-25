@@ -12,7 +12,7 @@ export const SidebarLi = ({ texto, rota, icone }: SidebarLiProps) => {
     <li>
       <Link
         to={rota}
-        className="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-200 group"
+        className="flex items-center p-2 text-gray-900 rounded-lg group [&.active]:bg-gray-200 [&.active]:bg-opacity-75 hover:bg-gray-200"
       >
         {icone}
         <span className="ms-3">{texto}</span>
