@@ -1,6 +1,12 @@
-import { DataTypes, Model } from 'sequelize';
-import { sequelize } from '../config/BancoDeDados';
-import { BuscarClientePorId, BuscarTodosClientes, CriarCliente, EditarCliente, RemoverCliente } from '../shared/Api';
+import {DataTypes, Model} from 'sequelize';
+import {sequelize} from '../config/BancoDeDados';
+import {
+  BuscarClientePorId,
+  BuscarTodosClientes,
+  CriarCliente,
+  EditarCliente,
+  RemoverCliente
+} from '../shared/Api';
 
 class ClienteModel extends Model {
   public id!: number;
@@ -15,38 +21,38 @@ class ClienteModel extends Model {
 }
 
 ClienteModel.init(
-  {
-    id: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
+    {
+      id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+      },
+      nome: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      dataNascimento: {
+        type: DataTypes.DATE,
+        allowNull: false,
+      },
+      endereco: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      telefone: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
+      },
     },
-    nome: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    dataNascimento: {
-      type: DataTypes.DATE,
-      allowNull: false,
-    },
-    endereco: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    telefone: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    email: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      unique: true,
-    },
-  },
-  {
-    sequelize,
-    modelName: 'Cliente',
-  }
+    {
+      sequelize,
+      modelName: 'Cliente',
+    }
 );
 
 export const criarCliente: CriarCliente = async (cliente) => {
@@ -55,14 +61,14 @@ export const criarCliente: CriarCliente = async (cliente) => {
 
 export const removerCliente: RemoverCliente = async (clienteId) => {
   const deletedRows = await ClienteModel.destroy({
-    where: { id: clienteId },
+    where: {id: clienteId},
   });
   return deletedRows;
 };
 
 export const editarCliente: EditarCliente = async (cliente) => {
   await ClienteModel.update(cliente, {
-    where: { id: cliente.id },
+    where: {id: cliente.id},
   });
   return cliente;
 };
