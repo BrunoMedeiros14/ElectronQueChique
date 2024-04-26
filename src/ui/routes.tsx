@@ -1,36 +1,31 @@
-import {
-  createRootRoute,
-  createRoute,
-  createRouter,
-  Outlet,
-} from "@tanstack/react-router";
-import { Package2, ShoppingBag, Users, Wallet } from "lucide-react";
-import { SidebarLi } from "./components/SidebarLi";
-import { Clientes } from "./pages/Clientes";
-import { Contas } from "./pages/Contas";
+import {createRootRoute, createRoute, createRouter, Outlet,} from "@tanstack/react-router";
+import {Package2, ShoppingBag, Users, Wallet} from "lucide-react";
+import {SidebarLi} from "./components/SidebarLi";
+import {Clientes} from "./pages/Clientes";
+import {Contas} from "./pages/Contas";
 
 const rootRoute = createRootRoute({
   component: () => (
-    <>
-      <aside
-        id="sidebar-multi-level-sidebar"
-        className="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0"
-        aria-label="Sidebar"
-      >
-        <div className="h-full px-3 py-4 overflow-y-auto bg-gray-100">
-          <ul className="space-y-2 font-medium">
-            <SidebarLi icone={<ShoppingBag />} texto="Caixa" rota="/caixa" />
-            <SidebarLi icone={<Package2 />} texto="Estoque" rota="/estoque" />
-            <SidebarLi icone={<Users />} texto="Clientes" rota="/clientes" />
-            <SidebarLi icone={<Wallet />} texto="Contas" rota="/contas" />
-          </ul>
-        </div>
-      </aside>
+      <>
+        <aside
+            id="sidebar-multi-level-sidebar"
+            className="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0"
+            aria-label="Sidebar"
+        >
+          <div className="h-full px-3 py-4 overflow-y-auto bg-gray-100">
+            <ul className="space-y-2 font-medium">
+              <SidebarLi icone={<ShoppingBag/>} texto="Caixa" rota="/caixa"/>
+              <SidebarLi icone={<Package2/>} texto="Estoque" rota="/estoque"/>
+              <SidebarLi icone={<Users/>} texto="Clientes" rota="/clientes"/>
+              <SidebarLi icone={<Wallet/>} texto="Contas" rota="/contas"/>
+            </ul>
+          </div>
+        </aside>
 
-      <div className="p-4 sm:ml-64">
-        <Outlet />
-      </div>
-    </>
+        <div className="p-4 sm:ml-64">
+          <Outlet/>
+        </div>
+      </>
   ),
 });
 
@@ -47,9 +42,9 @@ const caixaRoute = createRoute({
   path: "/caixa",
   component: function About() {
     return (
-      <div className="p-4 border-2 border-gray-200 border-dashed rounded-lg">
-        caixa
-      </div>
+        <div className="p-4 border-2 border-gray-200 border-dashed rounded-lg">
+          caixa
+        </div>
     );
   },
 });
@@ -59,9 +54,9 @@ const estoqueRoute = createRoute({
   path: "/estoque",
   component: function About() {
     return (
-      <div className="p-4 border-2 border-gray-200 border-dashed rounded-lg">
-        estoque
-      </div>
+        <div className="p-4 border-2 border-gray-200 border-dashed rounded-lg">
+          estoque
+        </div>
     );
   },
 });
@@ -69,13 +64,13 @@ const estoqueRoute = createRoute({
 const clientesRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/clientes",
-  component: () => <Clientes />,
+  component: () => <Clientes/>,
 });
 
 const contasRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/contas",
-  component: () => <Contas />,
+  component: () => <Contas/>,
 });
 
 const routeTree = rootRoute.addChildren([
@@ -86,4 +81,4 @@ const routeTree = rootRoute.addChildren([
   contasRoute,
 ]);
 
-export const router = createRouter({ routeTree });
+export const router = createRouter({routeTree});
