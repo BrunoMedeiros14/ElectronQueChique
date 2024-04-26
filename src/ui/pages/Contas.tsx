@@ -1,5 +1,4 @@
-import {UserPlus} from "lucide-react";
-import {FaRegEdit, FaTrashAlt} from "react-icons/fa";
+import { Banknote, Pencil, Trash2 } from "lucide-react";
 
 export function Contas() {
   return (
@@ -9,14 +8,14 @@ export function Contas() {
           <button
               type="button"
               className="text-white bg-gradient-to-r from-blue-400 to-blue-500 hover:bg-gradient-to-br flex gap-2 items-center
-          focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+          focus:ring-4 focus:outline-none focus:ring-blue-300 font-semibold rounded-lg text-sm px-5 py-2.5 text-center"
           >
-            <UserPlus/> Adicionar novo
+            <Banknote /> Adicionar conta
           </button>
         </div>
         <div className="relative overflow-x-auto">
           <table className="w-full text-sm text-left rtl:text-right text-gray-500">
-            <thead className="text-xs text-gray-50 uppercase bg-blue-400">
+            <thead className="text-xs text-gray-50 uppercase bg-gradient-to-r from-blue-400 to-blue-500">
             <tr>
               <th scope="col" className="px-6 py-3 rounded-s-lg">
                 id
@@ -44,7 +43,7 @@ export function Contas() {
                 <tr className="hover:bg-slate-50" key={i}>
                   <th
                       scope="row"
-                      className="rounded-s-lg px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                      className="rounded-s-lg px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
                   >
                     {i + 1}
                   </th>
@@ -58,14 +57,14 @@ export function Contas() {
                         href="#"
                         className="font-medium text-yellow-500 hover:underline me-2 inline-flex items-center"
                     >
-                      <FaRegEdit className="mr-1"/> Editar
+                      <Pencil size={15} strokeWidth={2} className="me-1"/> Editar
                     </a>
 
                     <a
                         href="#"
                         className="font-medium text-red-600 hover:underline inline-flex items-center"
                     >
-                      <FaTrashAlt className="mr-1"/> Apagar
+                      <Trash2 size={15} strokeWidth={2} className="me-1"/> Apagar
                     </a>
                   </td>
                 </tr>
