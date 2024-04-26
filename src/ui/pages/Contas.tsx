@@ -1,6 +1,14 @@
+import { createRoute } from "@tanstack/react-router";
 import { Banknote, Pencil, Trash2 } from "lucide-react";
+import { rootRoute } from "./Root";
 
-export function Contas() {
+export const contasRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/contas",
+  component: Contas,
+});
+
+function Contas() {
   return (
       <>
         <div className="pb-2 flex justify-between items-center">

@@ -1,12 +1,29 @@
-function App() {
-  return (
-      <div
-          className="w-screen h-screen bg-gradient-to-tr from-slate-400 to-slate-500 flex justify-center items-center">
-        <div className="h-48 w-44 bg-slate-100 rounded-lg border border-slate-600 text-center">
-          <h1>Hello World!</h1>
-        </div>
-      </div>
-  );
+
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { RouterProvider, createRouter } from "@tanstack/react-router";
+import { routeTree } from "./routes";
+
+const queryClient = new QueryClient();
+
+const router = createRouter({
+  routeTree,
+  defaultPreload: "intent",
+  defaultPreloadStaleTime: 0,
+  context: {
+    queryClient,
+  },
+});
+
+declare module "@tanstack/react-router" {
+  interface Register {
+    router: typeof router;
+  }
 }
 
-export default App;
+export function App() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+    </QueryClientProvider>
+  );
+}
