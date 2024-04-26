@@ -60,6 +60,7 @@ export function Contas() {
                     >
                       <FaRegEdit className="mr-1"/> Editar
                     </a>
+
                     <a
                         href="#"
                         className="font-medium text-red-600 hover:underline inline-flex items-center"
