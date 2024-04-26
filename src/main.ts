@@ -1,5 +1,7 @@
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, ipcMain } from 'electron';
 import path from 'path';
+import { buscarClientePorId, buscarTodosClientes, criarCliente, editarCliente, removerCliente } from './repository/RepositorioCliente';
+import { BuscarClientePorId, BuscarTodosClientes, CriarCliente, EditarCliente, RemoverCliente } from './shared/Api';
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -10,14 +12,11 @@ const createWindow = () => {
   const mainWindow = new BrowserWindow({
     width: 1280,
     height: 720,
-    // width: 800,
-    // height: 600,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
     },
   });
-  
-  // and load the index.html of the app.
+
   if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
     mainWindow.loadURL(MAIN_WINDOW_VITE_DEV_SERVER_URL);
   } else {
@@ -25,10 +24,25 @@ const createWindow = () => {
   }
 
   // Open the DevTools.
-  // mainWindow.webContents.openDevTools();
+  mainWindow.webContents.openDevTools();
 };
 
-app.on('ready', createWindow);
+app.whenReady().then(() => {
+
+
+  ipcMain.on('ping', () => console.log('pong'))
+
+  ipcMain.handle("criarCliente", (_, ...args: Parameters<CriarCliente>) => criarCliente(...args))
+  ipcMain.handle("removerCliente", (_, ...args: Parameters<RemoverCliente>) => removerCliente(...args))
+  ipcMain.handle("editarCliente", (_, ...args: Parameters<EditarCliente>) => editarCliente(...args))
+  ipcMain.handle("buscarClientePorId", (_, ...args: Parameters<BuscarClientePorId>) => buscarClientePorId(...args))
+  ipcMain.handle("buscarTodosClientes", (_, ...args: Parameters<BuscarTodosClientes>) => buscarTodosClientes(...args))
+  createWindow();
+
+});
+
+// criarCliente({dataNascimento: new Date(), email: "aa", endereco: "a", nome: "a", telefone: "a"})
+// app.on('ready', createWindow);
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
