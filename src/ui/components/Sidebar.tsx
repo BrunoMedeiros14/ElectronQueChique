@@ -5,6 +5,7 @@ import { SidebarLi } from "./SidebarLi";
 
 export const Sidebar = () => {
   const [menuAtivo, setMenuAtivo] = useState(true);
+
   return (
     <>
       <aside
@@ -14,7 +15,14 @@ export const Sidebar = () => {
       >
         <div className="h-full px-3 py-4 overflow-y-auto bg-gray-100">
           <ul className="space-y-2 font-medium">
-            <li className="flex flex-row-reverse">
+            <li className="flex h-12 justify-between items-center">
+              {menuAtivo && (
+                <img
+                  src="/assets/images/Logo.png"
+                  alt="Logomarca que Chique"
+                  className="ps-2 h-full"
+                />
+              )}
               <a
                 onClick={() => setMenuAtivo(!menuAtivo)}
                 className="flex items-center p-2 text-gray-900 rounded-lg group [&.active]:bg-gray-200 [&.active]:bg-opacity-75 hover:bg-gray-200 w-fit right-0"

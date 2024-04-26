@@ -10,6 +10,7 @@ if (require('electron-squirrel-startup')) {
 
 const createWindow = () => {
   const mainWindow = new BrowserWindow({
+    icon: path.join(__dirname, 'assets', 'images', 'icon.ico'),
     width: 1280,
     height: 720,
     autoHideMenuBar: true,
