@@ -12,6 +12,8 @@ const createWindow = () => {
   const mainWindow = new BrowserWindow({
     width: 1280,
     height: 720,
+    autoHideMenuBar: true, // ('default' | 'hidden' | 'hiddenInset' | 'customButtonsOnHover');
+    title: 'Que chique Gerenciador de estoque',
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
     },
