@@ -1,47 +1,42 @@
-import { createRoute } from "@tanstack/react-router";
+import { createRoute, useNavigate } from "@tanstack/react-router";
 import { Pencil, Trash2, UserPlus } from "lucide-react";
-import { useEffect, useState } from "react";
-import { Cliente } from "../../shared/models/Cliente";
-import { rootRoute } from "./Root";
+import { useState } from "react";
+import { clientesRoute } from ".";
+import { Cliente } from "../../../shared/models/Cliente";
+import { escutarCliqueTeclado } from "../../hooks/escutarCliqueTeclado";
 
-export const clientesRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: "/clientes",
-  component: Clientes,
+export const clientesListagemRoute = createRoute({
+  getParentRoute: () => clientesRoute,
+  path: "/",
+  component: ClientesListagem,
 });
 
-export function Clientes() {
+function ClientesListagem() {
   const [clientes, setClientes] = useState<Cliente[]>([]);
+
+  const navigate = useNavigate();
 
   const deletarCliente = (clienteId: number) =>
     window.apiCliente.removerCliente(clienteId);
 
-  const adicionarCliente = () =>
-    window.apiCliente.criarCliente({
-      dataNascimento: new Date(),
-      email: "teste4@temai.com",
-      endereco: "end",
-      nome: "nome",
-      telefone: "8552",
-    });
+  const irParaPaginaCadastro = () =>
+    navigate({ to: "/clientes/$clienteId", params: { clienteId: "new" } }); // router useNavigate()(to, {from: '/clientes/$clienteId',})//{ to: "/clientes/$clienteId", params: { clienteId: "new" } });
 
-  useEffect(() => {
-    window.apiCliente.buscarTodosClientes().then((clientes) => {
-      setClientes(clientes);
-    });
-  }, []);
+  escutarCliqueTeclado(() => {
+    irParaPaginaCadastro();
+  }, ["F1"]);
 
   return (
     <>
       <div className="pb-2 flex justify-between items-center">
         <h1 className="font-bold text-2xl">Clientes</h1>
         <button
-          onClick={() => adicionarCliente()}
+          onClick={irParaPaginaCadastro}
           type="button"
           className="text-white bg-gradient-to-r from-blue-400 to-blue-500 hover:bg-gradient-to-br flex gap-2 items-center
-          focus:ring-4 focus:outline-none focus:ring-blue-300 font-semibold rounded-lg text-sm px-5 py-2.5 text-center"
+              focus:ring-4 focus:outline-none focus:ring-blue-300 font-semibold rounded-lg text-sm px-5 py-2.5 text-center"
         >
-          <UserPlus /> Adicionar novo
+          <UserPlus /> Adicionar novo (F1)
         </button>
       </div>
       <div className="relative overflow-x-auto">

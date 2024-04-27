@@ -1,5 +1,7 @@
 import { caixaRoute } from "./pages/Caixa";
-import { clientesRoute } from "./pages/Clientes";
+import { clientesRoute } from "./pages/clientes";
+import { clientesCadastroRoute } from "./pages/clientes/clientesCadastro";
+import { clientesListagemRoute } from "./pages/clientes/clientesListagem";
 import { contasRoute } from "./pages/Contas";
 import { estoqueRoute } from "./pages/Estoque";
 import { indexRoute } from "./pages/Home";
@@ -9,6 +11,6 @@ export const routeTree = rootRoute.addChildren([
   indexRoute,
   caixaRoute,
   estoqueRoute,
-  clientesRoute,
+  clientesRoute.addChildren([clientesListagemRoute, clientesCadastroRoute]),
   contasRoute,
 ]);
