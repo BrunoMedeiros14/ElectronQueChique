@@ -1,68 +1,22 @@
-import {DataTypes, Model} from 'sequelize';
-import {sequelize} from '../config/BancoDeDados';
+import ContaModel from '../models/Conta';
 import {
   BuscarContaPorId,
   BuscarTodasContas,
   CriarConta,
   EditarConta,
   RemoverConta
-} from "../shared/Api";
-
-class ContaModel extends Model {
-  public id!: number;
-  public nome!: string;
-  public descricao!: string;
-  public dataVencimento!: Date;
-  public dataPagamento!: Date;
-  public pago!: boolean;
-
-  public readonly createdAt!: Date;
-  public readonly updatedAt!: Date;
-}
-
-ContaModel.init(
-    {
-      id: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
-      },
-      nome: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      descricao: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      dataVencimento: {
-        type: DataTypes.DATE,
-        allowNull: false,
-      },
-      dataPagamento: {
-        type: DataTypes.DATE,
-        allowNull: false,
-      },
-      pago: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-      },
-    },
-    {
-      sequelize,
-      modelName: 'Conta',
-    }
-);
+} from '../shared/Api';
 
 export const criarConta: CriarConta = async (conta) => {
-  const {nome, descricao, dataVencimento, dataPagamento, pago} = conta;
-  return await ContaModel.create({nome, descricao, dataVencimento, dataPagamento, pago});
+  // @ts-ignore
+  return (await ContaModel.create(conta)).dataValues;
 };
 
 export const removerConta: RemoverConta = async (contaId) => {
-  return await ContaModel.destroy({
+  const deletedRows = await ContaModel.destroy({
     where: {id: contaId},
   });
+  return deletedRows;
 };
 
 export const editarConta: EditarConta = async (conta) => {
@@ -73,11 +27,10 @@ export const editarConta: EditarConta = async (conta) => {
 };
 
 export const buscarContaPorId: BuscarContaPorId = async (contaId: number) => {
-  return await ContaModel.findByPk(contaId);
+  return (await ContaModel.findByPk(contaId)).dataValues;
 };
 
 export const buscarTodasContas: BuscarTodasContas = async () => {
-  return await ContaModel.findAll();
+  const contas = await ContaModel.findAll();
+  return contas.map(c => c.dataValues);
 };
-
-export default ContaModel;

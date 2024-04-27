@@ -1,79 +1,36 @@
-import {DataTypes, Model} from 'sequelize';
-import {sequelize} from '../config/BancoDeDados';
+import VendaModel from '../models/Venda';
 import {
   BuscarTodasVendas,
   BuscarVendaPorId,
-  CriarCliente,
   CriarVenda,
   EditarVenda,
   RemoverVenda
-} from "../shared/Api";
-
-class VendaModel extends Model {
-  public id!: number;
-  public produto!: string;
-  public quantidade!: number;
-  public preco!: number;
-  public dataVenda!: Date;
-
-  public readonly createdAt!: Date;
-  public readonly updatedAt!: Date;
-}
-
-VendaModel.init(
-    {
-      id: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
-      },
-      produto: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      quantidade: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
-      preco: {
-        type: DataTypes.FLOAT,
-        allowNull: false,
-      },
-      dataVenda: {
-        type: DataTypes.DATE,
-        allowNull: false,
-      },
-    },
-    {
-      sequelize,
-      modelName: 'Venda',
-    }
-);
+} from '../shared/Api';
 
 export const criarVenda: CriarVenda = async (venda) => {
-  return await VendaModel.create(venda);
+  // @ts-ignore
+  return (await VendaModel.create(venda)).dataValues;
 };
 
 export const removerVenda: RemoverVenda = async (vendaId) => {
-  return await VendaModel.destroy({
+  const deletedRows = await VendaModel.destroy({
     where: {id: vendaId},
   });
+  return deletedRows;
 };
 
 export const editarVenda: EditarVenda = async (venda) => {
-  const {id, produto, quantidade, preco, dataVenda} = venda;
-  await VendaModel.update({produto, quantidade, preco, dataVenda}, {
-    where: {id},
+  await VendaModel.update(venda, {
+    where: {id: venda.id},
   });
   return venda;
 };
 
 export const buscarVendaPorId: BuscarVendaPorId = async (vendaId: number) => {
-  return await VendaModel.findByPk(vendaId);
+  return (await VendaModel.findByPk(vendaId)).dataValues;
 };
 
 export const buscarTodasVendas: BuscarTodasVendas = async () => {
-  return await VendaModel.findAll();
+  const vendas = await VendaModel.findAll();
+  return vendas.map(v => v.dataValues);
 };
-
-export default VendaModel;

@@ -23,11 +23,11 @@ ClienteModel.init(
     },
     dataNascimento: {
       type: DataTypes.DATE,
-      allowNull: false,
+      allowNull: true,
     },
     endereco: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     telefone: {
       type: DataTypes.STRING,
@@ -35,8 +35,8 @@ ClienteModel.init(
     },
     email: {
       type: DataTypes.STRING,
-      allowNull: false,
-      unique: true,
+      allowNull: true,
+      unique: false,
     },
   },
   {

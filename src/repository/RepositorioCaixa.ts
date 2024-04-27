@@ -1,38 +1,36 @@
-// import { DataTypes, Model } from 'sequelize';
-// import { connection } from '../config/BancoDeDados';
-// import {
-//   BuscarCaixaPorId,
-//   BuscarTodosCaixas,
-//   CriarCaixa,
-//   EditarCaixa,
-//   RemoverCaixa
-// } from "../shared/Api";
+import CaixaModel from '../models/Caixa';
+import {
+  BuscarCaixaPorId,
+  BuscarTodosCaixas,
+  CriarCaixa,
+  EditarCaixa,
+  RemoverCaixa
+} from '../shared/Api';
 
-// export const criarCaixa: CriarCaixa = async (caixa) => {
-//   const {descricao, saldoInicial, saldoFinal, dataAbertura} = caixa;
-//   return await CaixaModel.create({descricao, saldoInicial, saldoFinal, dataAbertura});
-// };
+export const criarCaixa: CriarCaixa = async (caixa) => {
+  // @ts-ignore
+  return (await CaixaModel.create(caixa)).dataValues;
+};
 
-// export const removerCaixa: RemoverCaixa = async (caixaId) => {
-//   return await CaixaModel.destroy({
-//     where: {id: caixaId},
-//   });
-// };
+export const removerCaixa: RemoverCaixa = async (caixaId) => {
+  const deletedRows = await CaixaModel.destroy({
+    where: {id: caixaId},
+  });
+  return deletedRows;
+};
 
-// export const editarCaixa: EditarCaixa = async (caixa) => {
-//   const {id, descricao, saldoInicial, saldoFinal, dataAbertura} = caixa;
-//   await CaixaModel.update({descricao, saldoInicial, saldoFinal, dataAbertura}, {
-//     where: {id},
-//   });
-//   return caixa;
-// };
+export const editarCaixa: EditarCaixa = async (caixa) => {
+  await CaixaModel.update(caixa, {
+    where: {id: caixa.id},
+  });
+  return caixa;
+};
 
-// export const buscarCaixaPorId: BuscarCaixaPorId = async (caixaId: number) => {
-//   return await CaixaModel.findByPk(caixaId);
-// };
+export const buscarCaixaPorId: BuscarCaixaPorId = async (caixaId: number) => {
+  return (await CaixaModel.findByPk(caixaId)).dataValues;
+};
 
-// export const buscarTodosCaixas: BuscarTodosCaixas = async () => {
-//   return await CaixaModel.findAll();
-// };
-
-// export default CaixaModel;
+export const buscarTodosCaixas: BuscarTodosCaixas = async () => {
+  const caixas = await CaixaModel.findAll();
+  return caixas.map(c => c.dataValues);
+};
