@@ -1,5 +1,6 @@
 import { Link, createRoute } from "@tanstack/react-router";
 import { clientesRoute } from ".";
+import { Cliente } from "../../../shared/models/Cliente";
 
 export const clientesCadastroRoute = createRoute({
   getParentRoute: () => clientesRoute,
@@ -10,6 +11,7 @@ export const clientesCadastroRoute = createRoute({
 function ClientesCadastro() {
   // const { clienteId } = clientesCadastroRoute.useParams()
   // useLinkProps({to})
+  const cliente: Cliente = {dataNascimento: new Date, email: "", endereco: "", nome: "", telefone: ""}
   return (
     <>
       <div className="pb-2 flex justify-between items-center">
@@ -17,6 +19,21 @@ function ClientesCadastro() {
       </div>
 
       <form className="mx-auto w-9/12 grid grid-cols-2 gap-3">
+        <div className="col-span-2">
+          <label
+            htmlFor="nome"
+            className="block mb-2 text-sm font-medium text-gray-900"
+          >
+            Id
+          </label>
+          <input
+            type="text"
+            id="id"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-16 p-2.5"
+            value={cliente.id}
+            disabled
+          />
+        </div>
         <div>
           <label
             htmlFor="nome"

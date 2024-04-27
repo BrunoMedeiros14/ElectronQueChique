@@ -1,18 +1,20 @@
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { createRoute, useNavigate } from "@tanstack/react-router";
 import { Pencil, Trash2, UserPlus } from "lucide-react";
-import { useState } from "react";
 import { clientesRoute } from ".";
-import { Cliente } from "../../../shared/models/Cliente";
 import { escutarCliqueTeclado } from "../../hooks/escutarCliqueTeclado";
+import { buscarClientes } from "./comunicacaoApi";
 
 export const clientesListagemRoute = createRoute({
   getParentRoute: () => clientesRoute,
   path: "/",
+  loader: ({ context: { queryClient } }) =>
+    queryClient.ensureQueryData(buscarClientes),
   component: ClientesListagem,
 });
 
 function ClientesListagem() {
-  const [clientes, setClientes] = useState<Cliente[]>([]);
+  const clientesQuery = useSuspenseQuery(buscarClientes);
 
   const navigate = useNavigate();
 
@@ -65,7 +67,7 @@ function ClientesListagem() {
             </tr>
           </thead>
           <tbody>
-            {clientes.map(
+            {clientesQuery.data.map(
               ({ id, dataNascimento, email, endereco, nome, telefone }, i) => (
                 <tr className="hover:bg-slate-50" key={i}>
                   <th
