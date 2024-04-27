@@ -1,8 +1,17 @@
+import { Button } from "@/ui/components/ui/button";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/ui/components/ui/table";
+import { escutarCliqueTeclado } from "@/ui/hooks/escutarCliqueTeclado";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createRoute, useNavigate } from "@tanstack/react-router";
 import { Pencil, Trash2, UserPlus } from "lucide-react";
 import { clientesRoute } from ".";
-import { escutarCliqueTeclado } from "../../hooks/escutarCliqueTeclado";
 import { buscarClientes } from "./comunicacaoApi";
 
 export const clientesListagemRoute = createRoute({
@@ -29,78 +38,63 @@ function ClientesListagem() {
   }, ["F1"]);
 
   return (
-    <>
-      <div className="pb-2 flex justify-between items-center">
-        <h1 className="font-bold text-2xl">Clientes</h1>
-        <button
-          onClick={irParaPaginaCadastro}
-          type="button"
-          className="text-white bg-gradient-to-r from-blue-400 to-blue-500 hover:bg-gradient-to-br flex gap-2 items-center
-              focus:ring-4 focus:outline-none focus:ring-blue-300 font-semibold rounded-lg text-sm px-5 py-2.5 text-center"
-        >
-          <UserPlus /> Adicionar novo (F1)
-        </button>
+    <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6">
+      <div className="flex items-center">
+        <h1 className="font-semibold text-lg md:text-2xl">Clientes</h1>
+        <Button onClick={irParaPaginaCadastro} className="ml-auto" size="sm">
+          <UserPlus className="mr-2" />
+          Adicionar novo (F1)
+        </Button>
       </div>
-      <div className="relative overflow-x-auto">
-        <table className="w-full text-sm text-left rtl:text-right text-gray-500">
-          <thead className="text-xs text-gray-50 uppercase bg-gradient-to-r from-blue-400 to-blue-500">
-            <tr>
-              <th scope="col" className="px-6 py-3 rounded-s-lg">
-                id
-              </th>
-              <th scope="col" className="px-6 py-3">
-                nome
-              </th>
-              <th scope="col" className="px-6 py-3">
+      <div className="border shadow-sm rounded-lg">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead className="max-w-4">id</TableHead>
+              <TableHead className="">nome</TableHead>
+              <TableHead className="hidden md:table-cell">
                 data de nascimento
-              </th>
-              <th scope="col" className="px-6 py-3">
-                endereço
-              </th>
-              <th scope="col" className="px-6 py-3">
-                telefone
-              </th>
-              <th scope="col" className="px-6 py-3">
-                email
-              </th>
-              <th scope="col" className="px-6 py-3 rounded-e-lg" />
-            </tr>
-          </thead>
-          <tbody>
+              </TableHead>
+              <TableHead className="hidden md:table-cell">endereço</TableHead>
+              <TableHead className="hidden md:table-cell">telefone</TableHead>
+              <TableHead className="hidden md:table-cell">email</TableHead>
+              <TableHead />
+            </TableRow>
+          </TableHeader>
+          <TableBody>
             {clientesQuery.data.map(
               ({ id, dataNascimento, email, endereco, nome, telefone }, i) => (
-                <tr className="hover:bg-slate-50" key={i}>
-                  <th
-                    scope="row"
-                    className="rounded-s-lg px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
-                  >
-                    {id}
-                  </th>
-                  <td className="px-6 py-4">{nome}</td>
-                  <td className="px-6 py-4">{dataNascimento.getFullYear()}</td>
-                  <td className="px-6 py-4">{endereco}</td>
-                  <td className="px-6 py-4">{telefone}</td>
-                  <td className="px-6 py-4">{email}</td>
-                  <td className="rounded-e-lg px-6 py-4">
-                    <button className="font-medium text-yellow-500 hover:underline me-2 inline-flex items-center">
-                      <Pencil size={15} strokeWidth={2} className="me-1" />{" "}
-                      Editar
-                    </button>
-
-                    <button
-                      onClick={() => deletarCliente(id)}
-                      className="font-medium text-red-600 hover:underline inline-flex items-center"
-                    >
-                      <Trash2 size={15} strokeWidth={2} className="me-1" />
-                      Apagar
-                    </button>
-                  </td>
-                </tr>
+                <TableRow key={i}>
+                  <TableCell className="font-medium">{id}</TableCell>
+                  <TableCell className="hidden md:table-cell">{nome}</TableCell>
+                  <TableCell className="hidden md:table-cell">
+                    {dataNascimento.getFullYear()}
+                  </TableCell>
+                  <TableCell className="hidden md:table-cell">
+                    {endereco}
+                  </TableCell>
+                  <TableCell className="hidden md:table-cell">
+                    {telefone}
+                  </TableCell>
+                  <TableCell className="hidden md:table-cell">
+                    {email}
+                  </TableCell>
+                  <TableCell className="flex justify-end">
+                    <Button size="icon" variant="outline">
+                      <Pencil className="h-4 w-4" />
+                      <span className="sr-only">Edit</span>
+                    </Button>
+                    <Button onClick={() => deletarCliente(id)} className="ml-2" size="icon" variant="outline">
+                      <Trash2 className="h-4 w-4" />
+                      <span className="sr-only">Delete</span>
+                    </Button>
+                  </TableCell>
+                </TableRow>
               )
             )}
-          </tbody>
-        </table>
+          </TableBody>
+        </Table>
       </div>
-    </>
+    </main>
   );
 }
