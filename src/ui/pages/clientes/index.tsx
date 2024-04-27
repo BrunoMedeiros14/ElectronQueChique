@@ -1,8 +1,8 @@
 import { Outlet, createRoute } from "@tanstack/react-router";
-import { rootRoute } from "../Root";
+import { painelRoute } from "../../routes";
 
 export const clientesRoute = createRoute({
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => painelRoute,
   path: '/clientes',
   // loader: ({ context: { queryClient } }) =>
   //   queryClient.ensureQueryData(postsQueryOptions),

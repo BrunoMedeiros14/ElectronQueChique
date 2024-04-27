@@ -1,9 +1,10 @@
 import { createRoute } from "@tanstack/react-router";
 import { Banknote, Pencil, Trash2 } from "lucide-react";
-import { rootRoute } from "./Root";
+import { painelRoute } from "../routes";
+
 
 export const contasRoute = createRoute({
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => painelRoute,
   path: "/contas",
   component: Contas,
 });

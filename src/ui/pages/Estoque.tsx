@@ -1,9 +1,9 @@
 
 import { createRoute } from "@tanstack/react-router";
-import { rootRoute } from "./Root";
+import { painelRoute } from "../routes";
 
 export const estoqueRoute = createRoute({
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => painelRoute,
   path: "/estoque",
   component: Estoque,
 });

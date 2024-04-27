@@ -1,6 +1,6 @@
 import { Link, createRoute } from "@tanstack/react-router";
+import { IMaskInput } from 'react-imask';
 import { clientesRoute } from ".";
-import { Cliente } from "../../../shared/models/Cliente";
 
 export const clientesCadastroRoute = createRoute({
   getParentRoute: () => clientesRoute,
@@ -8,10 +8,20 @@ export const clientesCadastroRoute = createRoute({
   component: ClientesCadastro,
 });
 
+// const gerarClienteEmBranco = (): Cliente => ({
+//   dataNascimento: new Date(),
+//   email: "",
+//   endereco: "",
+//   nome: "",
+//   telefone: "",
+// });
+
 function ClientesCadastro() {
-  // const { clienteId } = clientesCadastroRoute.useParams()
-  // useLinkProps({to})
-  const cliente: Cliente = {dataNascimento: new Date, email: "", endereco: "", nome: "", telefone: ""}
+  const clienteId =
+    clientesCadastroRoute.useParams().clienteId === "new"
+      ? null
+      : clientesCadastroRoute.useParams().clienteId;
+
   return (
     <>
       <div className="pb-2 flex justify-between items-center">
@@ -19,21 +29,23 @@ function ClientesCadastro() {
       </div>
 
       <form className="mx-auto w-9/12 grid grid-cols-2 gap-3">
-        <div className="col-span-2">
-          <label
-            htmlFor="nome"
-            className="block mb-2 text-sm font-medium text-gray-900"
-          >
-            Id
-          </label>
-          <input
-            type="text"
-            id="id"
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-16 p-2.5"
-            value={cliente.id}
-            disabled
-          />
-        </div>
+        {clienteId && (
+          <div className="col-span-2">
+            <label
+              htmlFor="nome"
+              className="block mb-2 text-sm font-medium text-gray-900"
+            >
+              Id
+            </label>
+            <input
+              type="text"
+              id="id"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-16 p-2.5"
+              value={clienteId}
+              disabled
+            />
+          </div>
+        )}
         <div>
           <label
             htmlFor="nome"
@@ -49,6 +61,49 @@ function ClientesCadastro() {
             required
           />
         </div>
+        <div>
+
+        
+        <label
+          htmlFor="tel"
+          className="block mb-2 text-sm font-medium text-gray-900"
+        >
+          Telephone mask
+        </label>
+        <IMaskInput
+          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+          mask={"(00) 00000-0000"}
+          
+          radix="."
+          value=""
+          unmask={true} // true|false|'typed'
+          // ref={ref}
+          // inputRef={inputRef}  // access to nested input
+          // DO NOT USE onChange TO HANDLE CHANGES!
+          // USE onAccept INSTEAD
+          onAccept={
+            // depending on prop above first argument is
+            // `value` if `unmask=false`,
+            // `unmaskedValue` if `unmask=true`,
+            // `typedValue` if `unmask='typed'`
+            (value, mask) => console.log(value, mask)
+          }
+          // ...and more mask props in a guide
+
+          // input props also available
+          // placeholder='Enter number here'
+        />
+        </div>
+        {/* <input
+          type="text"
+          name="input-mask"
+          className="form-control"
+          data-mask="(00) 0000-0000"
+          data-mask-visible="true"
+          placeholder="(00) 0000-0000"
+          autocomplete="off"
+        /> */}
+
         <div>
           <label
             htmlFor="telefone"

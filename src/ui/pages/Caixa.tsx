@@ -1,8 +1,8 @@
 import { createRoute } from "@tanstack/react-router";
-import { rootRoute } from "./Root";
+import { painelRoute } from "../routes";
 
 export const caixaRoute = createRoute({
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => painelRoute,
   path: "/caixa",
   component: Caixa,
 });
