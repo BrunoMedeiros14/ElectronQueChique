@@ -10,7 +10,7 @@ export const Sidebar = () => {
     <>
       <aside
         id="sidebar-multi-level-sidebar"
-        className={`fixed top-0 left-0 z-40 ${menuAtivo ? "w-64" : "w-16"} h-screen transition-transform -translate-x-full sm:translate-x-0`}
+        className={`fixed top-0 left-0 z-40 ${menuAtivo ? "w-64" : "w-16"} h-screen`}
         aria-label="Sidebar"
       >
         <div className="h-full px-3 py-4 overflow-y-auto bg-gray-100">
