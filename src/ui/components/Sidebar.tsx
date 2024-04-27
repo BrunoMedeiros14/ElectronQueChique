@@ -1,7 +1,7 @@
+import { SidebarLi } from "@/components/SidebarLi";
 import { Outlet } from "@tanstack/react-router";
 import { Menu, Package2, ShoppingBag, Users, Wallet } from "lucide-react";
 import { useState } from "react";
-import { SidebarLi } from "./SidebarLi";
 
 export const Sidebar = () => {
   const [menuAtivo, setMenuAtivo] = useState(true);

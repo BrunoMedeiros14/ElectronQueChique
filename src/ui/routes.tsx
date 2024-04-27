@@ -1,6 +1,11 @@
 import { QueryClient } from "@tanstack/react-query";
-import { Outlet, createRootRouteWithContext, createRoute } from "@tanstack/react-router";
-import { Sidebar } from "./components/Sidebar";
+import {
+  Outlet,
+  createRootRouteWithContext,
+  createRoute,
+} from "@tanstack/react-router";
+
+import { Sidebar } from "@/components/Sidebar";
 import { caixaRoute } from "./pages/Caixa";
 import { contasRoute } from "./pages/Contas";
 import { estoqueRoute } from "./pages/Estoque";
