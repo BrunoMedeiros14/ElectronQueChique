@@ -53,7 +53,8 @@ const formSchema = z.object({
 const gerarDatePorString = (dataString: string) => {
   if (dataString) {
     const [dia, mes, ano] = dataString.split("/");
-    return new Date(+mes, +dia - 1, +ano);
+    console.log(dia, mes, ano)
+    return new Date(+ano, +mes - 1, +dia);
   }
   return null;
 };
