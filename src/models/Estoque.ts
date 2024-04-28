@@ -3,7 +3,7 @@ import {connection} from "../config/BancoDeDados";
 import {Cor} from "../shared/models/enums/Cor";
 import {Tecido} from "../shared/models/enums/Tecido";
 
-class ProdutoModel extends Model {
+class EstoqueModel extends Model {
   public id: number;
   public nome: string;
   public descricao: string;
@@ -17,7 +17,7 @@ class ProdutoModel extends Model {
   public valorVenda: number;
 }
 
-ProdutoModel.init(
+EstoqueModel.init(
     {
       id: {
         type: DataTypes.INTEGER,
@@ -74,8 +74,8 @@ ProdutoModel.init(
     },
     {
       sequelize: connection,
-      modelName: 'Produto',
+      modelName: 'Estoque',
     }
 )
 
-export default ProdutoModel;
+export default EstoqueModel;

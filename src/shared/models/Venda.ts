@@ -1,12 +1,12 @@
 import {Cliente} from './Cliente';
-import {Produto} from './Produto';
+import {Estoque} from './Estoque';
 import {FormaPagamento} from "./enums/FormaPagamento";
 
 export class Venda {
   id?: number;
   dataVenda: Date;
   valorTotal: number;
-  produtos: Produto[];
+  estoque: Estoque[];
   cliente: Cliente;
   formaPagamento: FormaPagamento;
   valorPago: number;

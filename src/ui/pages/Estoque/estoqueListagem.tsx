@@ -1,28 +1,29 @@
 import {useSuspenseQuery} from "@tanstack/react-query";
 import {createRoute, useNavigate} from "@tanstack/react-router";
 import {Pencil, Trash2, UserPlus} from "lucide-react";
-import {caixasRoute} from ".";
 import {escutarCliqueTeclado} from "../../hooks/escutarCliqueTeclado";
-import {buscarCaixas} from "./comunicacaoApiCaixa";
+import {buscarEstoque} from "./comunicacaoApiEstoque";
+import {estoqueRoute} from "../../../ui/pages/Estoque/index";
 
-export const clientesListagemRoute = createRoute({
-  getParentRoute: () => caixasRoute,
-  path: "/caixa",
-  loader: ({context: {queryCaixa}}) =>
-      queryCaixa.ensureQueryData(buscarCaixas),
-  component: CaixasListagem,
+export const estoqueListagemRoute = createRoute({
+  getParentRoute: () => estoqueRoute,
+  path: "/",
+  // @ts-ignore
+  loader: ({context: {queryClient}}) =>
+      queryClient.ensureQueryData(buscarEstoque),
+  component: EstoqueListagem,
 });
 
-function CaixasListagem() {
-  const caixasQuery = useSuspenseQuery(buscarCaixas);
+function EstoqueListagem() {
+  const caixasQuery = useSuspenseQuery(buscarEstoque);
 
   const navigate = useNavigate();
 
-  const deletarCaixa = (caixaId: number) =>
-      window.apiCaixa.removerCaixa(caixaId);
+  const deletarEstoque = (estoqueId: number) =>
+      window.apiEstoque.removerEstoque(estoqueId);
 
   const irParaPaginaCadastro = () =>
-      navigate({to: "/caixa/$caixaId", params: {caixaId: "new"}});
+      navigate({to: "/estoque/estoqueId", params: {estoqueId: "new"}});
 
   escutarCliqueTeclado(() => {
     irParaPaginaCadastro();
@@ -38,7 +39,7 @@ function CaixasListagem() {
               className="text-white bg-gradient-to-r from-blue-400 to-blue-500 hover:bg-gradient-to-br flex gap-2 items-center
               focus:ring-4 focus:outline-none focus:ring-blue-300 font-semibold rounded-lg text-sm px-5 py-2.5 text-center"
           >
-            <UserPlus/> Abrir Caixa (F1)
+            <UserPlus/> Novo Item (F1)
           </button>
         </div>
         <div className="relative overflow-x-auto">
@@ -47,22 +48,37 @@ function CaixasListagem() {
                 className="text-xs text-gray-50 uppercase bg-gradient-to-r from-blue-400 to-blue-500">
             <tr>
               <th scope="col" className="px-6 py-3 rounded-s-lg">
-                id
+                Id
               </th>
               <th scope="col" className="px-6 py-3">
-                nome
+                Nome
               </th>
               <th scope="col" className="px-6 py-3">
-                data de nascimento
+                Descrição
               </th>
               <th scope="col" className="px-6 py-3">
-                endereço
+                Cor
               </th>
               <th scope="col" className="px-6 py-3">
-                telefone
+                Tamanho
               </th>
               <th scope="col" className="px-6 py-3">
-                email
+                Vendido
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Tecido
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Fornecedor
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Quantidade
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Valor de Compra
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Valor de Venda
               </th>
               <th scope="col" className="px-6 py-3 rounded-e-lg"/>
             </tr>
@@ -90,7 +106,7 @@ function CaixasListagem() {
                         </button>
 
                         <button
-                            onClick={() => deletarCaixa(id)}
+                            onClick={() => deletarEstoque(id)}
                             className="font-medium text-red-600 hover:underline inline-flex items-center"
                         >
                           <Trash2 size={15} strokeWidth={2} className="me-1"/>

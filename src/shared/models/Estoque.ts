@@ -1,7 +1,7 @@
 import {Cor} from './enums/Cor';
 import {Tecido} from './enums/Tecido';
 
-export class Produto {
+export class Estoque {
   id?: number;
   nome: string;
   descricao: string;

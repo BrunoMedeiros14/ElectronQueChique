@@ -41,7 +41,7 @@ ClienteModel.init(
     },
     {
       sequelize: connection,
-      modelName: 'Cliente',
+      modelName: 'Clientes',
     }
 )
 

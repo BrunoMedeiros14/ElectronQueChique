@@ -3,27 +3,27 @@ import {
   BuscarCaixaPorId,
   BuscarClientePorId,
   BuscarContaPorId,
-  BuscarProdutoPorId,
+  BuscarEstoquePorId,
   BuscarTodasContas,
   BuscarTodasVendas,
   BuscarTodosCaixas,
   BuscarTodosClientes,
-  BuscarTodosProdutos,
+  BuscarTodosEstoques,
   BuscarVendaPorId,
   CriarCaixa,
   CriarCliente,
   CriarConta,
-  CriarProduto,
+  CriarEstoque,
   CriarVenda,
   EditarCaixa,
   EditarCliente,
   EditarConta,
-  EditarProduto,
+  EditarEstoque,
   EditarVenda,
   RemoverCaixa,
   RemoverCliente,
   RemoverConta,
-  RemoverProduto,
+  RemoverEstoque,
   RemoverVenda
 } from './shared/Api';
 
@@ -52,15 +52,15 @@ export const apiConta = {
   removerConta: (...args: Parameters<RemoverConta>): ReturnType<RemoverConta> => ipcRenderer.invoke('removerConta', ...args),
   editarConta: (...args: Parameters<EditarConta>): ReturnType<EditarConta> => ipcRenderer.invoke('editarConta', ...args),
   buscarContaPorId: (...args: Parameters<BuscarContaPorId>): ReturnType<BuscarContaPorId> => ipcRenderer.invoke('buscarContaPorId', ...args),
-  buscarTodasContas: (...args: Parameters<BuscarTodasContas>): ReturnType<BuscarTodasContas> => ipcRenderer.invoke('buscarTodosContas', ...args)
+  buscarTodasContas: (...args: Parameters<BuscarTodasContas>): ReturnType<BuscarTodasContas> => ipcRenderer.invoke('buscarTodasContas', ...args)
 }
 
-export const apiProduto = {
-  criarProduto: (...args: Parameters<CriarProduto>): ReturnType<CriarProduto> => ipcRenderer.invoke('criarProduto', ...args),
-  removerProduto: (...args: Parameters<RemoverProduto>): ReturnType<RemoverProduto> => ipcRenderer.invoke('removerProduto', ...args),
-  editarProduto: (...args: Parameters<EditarProduto>): ReturnType<EditarProduto> => ipcRenderer.invoke('editarProduto', ...args),
-  buscarProdutoPorId: (...args: Parameters<BuscarProdutoPorId>): ReturnType<BuscarProdutoPorId> => ipcRenderer.invoke('buscarProdutoPorId', ...args),
-  buscarTodosProdutos: (...args: Parameters<BuscarTodosProdutos>): ReturnType<BuscarTodosProdutos> => ipcRenderer.invoke('buscarTodosProdutos', ...args)
+export const apiEstoque = {
+  criarEstoque: (...args: Parameters<CriarEstoque>): ReturnType<CriarEstoque> => ipcRenderer.invoke('criarEstoque', ...args),
+  removerEstoque: (...args: Parameters<RemoverEstoque>): ReturnType<RemoverEstoque> => ipcRenderer.invoke('removerEstoque', ...args),
+  editarEstoque: (...args: Parameters<EditarEstoque>): ReturnType<EditarEstoque> => ipcRenderer.invoke('editarEstoque', ...args),
+  buscarEstoquePorId: (...args: Parameters<BuscarEstoquePorId>): ReturnType<BuscarEstoquePorId> => ipcRenderer.invoke('buscarEstoquePorId', ...args),
+  buscarTodosEstoques: (...args: Parameters<BuscarTodosEstoques>): ReturnType<BuscarTodosEstoques> => ipcRenderer.invoke('buscarTodosEstoques', ...args)
 }
 
 export const apiVenda = {
@@ -76,7 +76,7 @@ try {
   contextBridge.exposeInMainWorld('apiCaixa', apiCaixa)
   contextBridge.exposeInMainWorld('apiCliente', apiCliente)
   contextBridge.exposeInMainWorld('apiConta', apiConta)
-  contextBridge.exposeInMainWorld('apiProduto', apiProduto)
+  contextBridge.exposeInMainWorld('apiEstoque', apiEstoque)
   contextBridge.exposeInMainWorld('apiVenda', apiVenda)
   contextBridge.exposeInMainWorld('context', {
     locale: navigator.language,

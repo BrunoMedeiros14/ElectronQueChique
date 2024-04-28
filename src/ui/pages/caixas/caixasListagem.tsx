@@ -1,91 +1,120 @@
-import {useSuspenseQuery} from "@tanstack/react-query";
-import {createRoute} from "@tanstack/react-router";
+import {Button} from "../../../ui/components/ui/button";
+import {Table, TableBody, TableCell, TableRow,} from "../../../ui/components/ui/table";
+import {escutarCliqueTeclado} from "../../../ui/hooks/escutarCliqueTeclado";
+import {useMutation, useQueryClient, useSuspenseQuery,} from "@tanstack/react-query";
+import {createRoute, useNavigate} from "@tanstack/react-router";
+import {Trash2, UserPlus} from "lucide-react";
 import {caixasRoute} from ".";
-import {buscarCaixas, buscarVendas} from "./comunicacaoApiCaixa";
-import {useState} from 'react';
-import {UserPlus} from "lucide-react";
-import {Button} from "../../components/ui/button";
+import {buscarVendas, removerVendaApi} from "./comunicacaoApiCaixa";
 
-export const caixasListagemRoute = createRoute({
+export const vendasListagemRoute = createRoute({
   getParentRoute: () => caixasRoute,
-  path: "/caixa",
-// @ts-ignore
+  path: "/",
+  // @ts-ignore
   loader: ({context: {queryClient}}) =>
-      queryClient.ensureQueryData(buscarCaixas),
-  component: CaixasListagem,
+      queryClient.ensureQueryData(buscarVendas),
+  component: VendasListagem,
 });
 
-function CaixasListagem() {
-  const [caixaAberta, setCaixaAberta] = useState(false);
-  const vendasQuery = useSuspenseQuery(buscarVendas);
-  console.log("Caixa: " + caixaAberta);
+function VendasListagem() {
+  const {data: vendas, isFetched} = useSuspenseQuery(buscarVendas);
+  const queryClient = useQueryClient();
 
-  const abrirCaixa = () => {
-    // Implemente a lógica para abrir a caixa aqui
-    setCaixaAberta(true);
+  const removerVendaMutation = useMutation({
+    mutationFn: removerVendaApi,
+    onSuccess: () => {
+      queryClient.invalidateQueries({queryKey: ["vendas"]});
+    },
+  });
+
+  const navigate = useNavigate();
+
+  const abrirCaixaCadastro = () => {
+    window.open('/caminho/para/caixasCadastro', '_blank'); // substitua pelo caminho correto para a página de cadastro de caixa
   };
 
-  const fecharCaixa = () => {
-    setCaixaAberta(false);
-  };
-
-  const realizarVenda = () => {
-  };
-
-  const realizarSaida = () => {
-  };
+  escutarCliqueTeclado(abrirCaixaCadastro, ["F1"]);
 
   return (
-      <>
-        <div className="pb-2 flex justify-between items-center">
-          <h1 className="font-bold text-2xl">Caixas</h1>
-          {caixaAberta ? (
-              <>
-                <button onClick={realizarVenda} type="button">Venda (F1)</button>
-                <button onClick={realizarSaida} type="button">Saída (F2)</button>
-                <button onClick={fecharCaixa} type="button">Fechar Caixa (F3)</button>
-              </>
-          ) : (
-              <Button onClick={abrirCaixa} className="ml-auto" size="sm">
-                <UserPlus className="mr-2"/>
-                Abrir Caixa (F1)
-              </Button>
-          )}
+      <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6">
+        <div className="flex items-center">
+          <h1 className="font-semibold text-lg md:text-2xl">Vendas</h1>
+          <Button onClick={abrirCaixaCadastro} className="ml-auto">
+            <UserPlus className="mr-2"/>
+            Abrir Caixa (F1)
+          </Button>
         </div>
-        {caixaAberta && (
-            <div className="relative overflow-x-auto">
-              <table className="w-full text-sm text-left rtl:text-right text-gray-500">
-                <thead>
-                <tr>
-                  <th>Id</th>
-                  <th>Data da Venda</th>
-                  <th>Valor Total</th>
-                  <th>Produtos</th>
-                  <th>Cliente</th>
-                  <th>Forma de Pagamento</th>
-                  <th>Valor Pago</th>
-                  <th>Troco</th>
-                  <th>Desconto</th>
-                </tr>
-                </thead>
-                <tbody>
-                {vendasQuery.data.map((venda) => (
-                    <tr key={venda.id}>
-                      <td>{venda.id}</td>
-                      <td>{venda.dataVenda.toLocaleDateString()}</td>
-                      <td>{venda.valorTotal}</td>
-                      <td>{venda.produtos.map(produto => produto.nome).join(', ')}</td>
-                      <td>{venda.cliente.nome}</td>
-                      <td>{venda.formaPagamento}</td>
-                      <td>{venda.valorPago}</td>
-                      <td>{venda.troco}</td>
-                      <td>{venda.desconto}</td>
-                    </tr>
-                ))}
-                </tbody>
-              </table>
-            </div>
-        )}
-      </>
+        <div className="border shadow-sm rounded-lg">
+          <Table>
+            <thead
+                className="text-xs text-gray-50 uppercase bg-gradient-to-r from-blue-400 to-blue-500">
+            <tr>
+              <th scope="col" className="px-6 py-3 rounded-s-lg">
+                id
+              </th>
+              <th scope="col" className="px-6 py-3">
+                nome
+              </th>
+              <th scope="col" className="px-6 py-3">
+                data de nascimento
+              </th>
+              <th scope="col" className="px-6 py-3">
+                endereço
+              </th>
+              <th scope="col" className="px-6 py-3">
+                telefone
+              </th>
+              <th scope="col" className="px-6 py-3">
+                email
+              </th>
+              <th scope="col" className="px-6 py-3 rounded-e-lg"/>
+            </tr>
+            </thead>
+            <TableBody>
+              {vendas.map(
+                  ({id, dataVenda, email, endereco, nome, telefone}, i) => (
+                      <TableRow key={i}>
+                        <TableCell className="font-medium">{id}</TableCell>
+                        <TableCell className="hidden md:table-cell">{nome}</TableCell>
+                        <TableCell className="hidden md:table-cell">
+                          {gerarStringPorData(dataVenda) ?? "Não cadastrado."}
+                        </TableCell>
+                        <TableCell className="hidden md:table-cell">
+                          {endereco}
+                        </TableCell>
+                        <TableCell className="hidden md:table-cell">
+                          {telefone}
+                        </TableCell>
+                        <TableCell className="hidden md:table-cell">
+                          {email}
+                        </TableCell>
+                        <TableCell className="flex justify-end">
+                          <Button
+                              size="icon"
+                              variant="outline"
+                              onClick={() => removerVendaMutation.mutate(id)}
+                              className="hover:text-red-500 hover:bg-background"
+                          >
+                            <Trash2 className="h-4 w-4"/>
+                            <span className="sr-only">Delete</span>
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                  )
+              )}
+              {isFetched && vendas.length === 0 && (
+                  <TableRow>
+                    <TableCell
+                        colSpan={7}
+                        className="text-center uppercase text-slate-600 font-bold"
+                    >
+                      Nenhuma venda cadastrada
+                    </TableCell>
+                  </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </div>
+      </main>
   );
 }

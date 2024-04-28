@@ -1,7 +1,7 @@
 import {Cliente} from "./models/Cliente";
 import {Conta} from "./models/Conta";
 import {Venda} from "./models/Venda";
-import {Produto} from "./models/Produto";
+import {Estoque} from "./models/Estoque";
 import {Caixa} from "./models/Caixa";
 
 export type CriarCliente = (cliente: Cliente) => Promise<Cliente>
@@ -22,11 +22,11 @@ export type EditarVenda = (venda: Venda) => Promise<Venda>
 export type BuscarVendaPorId = (vendaId: number) => Promise<Venda>
 export type BuscarTodasVendas = () => Promise<Venda[]>
 
-export type CriarProduto = (produto: Produto) => Promise<Produto>
-export type RemoverProduto = (produtoId: number) => Promise<number>
-export type EditarProduto = (produto: Produto) => Promise<Produto>
-export type BuscarProdutoPorId = (produtoId: number) => Promise<Produto>
-export type BuscarTodosProdutos = () => Promise<Produto[]>
+export type CriarEstoque = (estoque: Estoque) => Promise<Estoque>
+export type RemoverEstoque = (estoqueId: number) => Promise<number>
+export type EditarEstoque = (estoque: Estoque) => Promise<Estoque>
+export type BuscarEstoquePorId = (estoqueId: number) => Promise<Estoque>
+export type BuscarTodosEstoques = () => Promise<Estoque[]>
 
 export type CriarCaixa = (caixa: Caixa) => Promise<Caixa>
 export type RemoverCaixa = (caixaId: number) => Promise<number>

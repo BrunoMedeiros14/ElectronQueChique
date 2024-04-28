@@ -2,13 +2,15 @@ import {QueryClient} from "@tanstack/react-query";
 import {createRootRouteWithContext, createRoute, Outlet,} from "@tanstack/react-router";
 import {Sidebar} from "./components/Sidebar";
 import {caixasRoute} from "./pages/caixas";
-import {contasRoute} from "./pages/contas/Contas";
-import {estoqueRoute} from "./pages/Produtos/Estoque";
+import {estoqueRoute} from "./pages/Estoque";
 import {clientesRoute} from "./pages/clientes";
 import {clientesCadastroRoute} from "./pages/clientes/clientesCadastro";
 import {clientesListagemRoute} from "./pages/clientes/clientesListagem";
-import {caixasListagemRoute} from "../ui/pages/caixas/caixasListagem";
-import {caixasCadastroRoute} from "../ui/pages/caixas/caixasCadastro";
+import {estoqueListagemRoute} from "../ui/pages/Estoque/estoqueListagem";
+import {estoquesCadastroRoute} from "../ui/pages/Estoque/estoqueCadastro";
+import {contasRoute} from "../ui/pages/contas";
+import {contasListagemRoute} from "../ui/pages/contas/contasListagem";
+import {contasCadastroRoute} from "../ui/pages/contas/contasCadastro";
 
 export const rootRoute = createRootRouteWithContext<{
   queryClient: QueryClient;
@@ -24,9 +26,9 @@ export const painelRoute = createRoute({
 
 export const routeTree = rootRoute.addChildren([
   painelRoute.addChildren([
-    caixasRoute.addChildren([caixasListagemRoute, caixasCadastroRoute]),
-    estoqueRoute,
+    caixasRoute,
+    estoqueRoute.addChildren([estoqueListagemRoute, estoquesCadastroRoute]),
     clientesRoute.addChildren([clientesListagemRoute, clientesCadastroRoute]),
-    contasRoute,
+    contasRoute.addChildren([contasListagemRoute, contasCadastroRoute]),
   ]),
 ]);

@@ -1,5 +1,5 @@
-import { Outlet, createRoute } from "@tanstack/react-router";
-import { painelRoute } from "../../routes";
+import {createRoute, Outlet} from "@tanstack/react-router";
+import {painelRoute} from "../../routes";
 
 export const clientesRoute = createRoute({
   getParentRoute: () => painelRoute,

@@ -4,6 +4,7 @@ import {connection} from "../config/BancoDeDados";
 class ContaModel extends Model {
   public id: number;
   public nome: string;
+  public valor: number;
   public descricao: string;
   public dataVencimento: Date;
   public dataPagamento: Date;
@@ -20,6 +21,11 @@ ContaModel.init(
       nome: {
         type: DataTypes.STRING,
         allowNull: false,
+      },
+      valor: {
+        type: DataTypes.NUMBER,
+        allowNull: false,
+        defaultValue: 0.00,
       },
       descricao: {
         type: DataTypes.STRING,

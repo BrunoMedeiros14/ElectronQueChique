@@ -1,11 +1,11 @@
-import {apiCaixa, apiCliente, apiConta, apiProduto, apiVenda} from "./preload";
+import {apiCaixa, apiCliente, apiConta, apiEstoque, apiVenda} from "./preload";
 
 declare global {
   interface Window {
     apiCaixa: typeof apiCaixa
     apiCliente: typeof apiCliente
     apiConta: typeof apiConta
-    apiProduto: typeof apiProduto
+    apiEstoque: typeof apiEstoque
     apiVenda: typeof apiVenda
   }
 

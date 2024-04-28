@@ -1,17 +1,17 @@
 import {createRoute, Link} from "@tanstack/react-router";
-import {caixasRoute} from ".";
+import {caixasRoute} from "../../../ui/pages/caixas/index";
 
-export const caixasCadastroRoute = createRoute({
+export const vendasCadastroRoute = createRoute({
   getParentRoute: () => caixasRoute,
-  path: "$caixaId",
+  path: "$vendaId",
   component: CaixasCadastro,
 });
 
 function CaixasCadastro() {
-  const caixaId =
-      caixasCadastroRoute.useParams().caixaId === "new"
+  const vendaId =
+      vendasCadastroRoute.useParams().vendaId === "new"
           ? null
-          : caixasCadastroRoute.useParams().caixaId;
+          : vendasCadastroRoute.useParams().vendaId;
 
   return (
       <>
@@ -20,7 +20,7 @@ function CaixasCadastro() {
         </div>
 
         <form className="mx-auto w-9/12 grid grid-cols-2 gap-3">
-          {caixaId && (
+          {vendaId && (
               <div className="col-span-2">
                 <label
                     htmlFor="id"
@@ -32,7 +32,7 @@ function CaixasCadastro() {
                     type="text"
                     id="id"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-16 p-2.5"
-                    value={caixaId}
+                    value={vendaId}
                     disabled
                 />
               </div>

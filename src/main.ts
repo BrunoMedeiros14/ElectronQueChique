@@ -1,8 +1,11 @@
-import { app, BrowserWindow } from 'electron';
+import {app, BrowserWindow} from 'electron';
 import path from 'path';
-import { connection } from './config/BancoDeDados';
-import { serviceCaixa } from "./service/ServiceCaixa";
-import { serviceCliente } from './service/ServiceCliente';
+import {connection} from './config/BancoDeDados';
+import {serviceCaixa} from "./service/ServiceCaixa";
+import {serviceCliente} from './service/ServiceCliente';
+import {serviceConta} from './service/ServiceConta';
+import {serviceEstoque} from './service/serviceEstoque';
+import {serviceVenda} from './service/serviceVenda';
 
 if (require('electron-squirrel-startup')) {
   app.quit();
@@ -36,8 +39,11 @@ app.whenReady().then(() => {
   createWindow();
 });
 
-app.on('ready', serviceCliente);
 app.on('ready', serviceCaixa);
+app.on('ready', serviceCliente);
+app.on('ready', serviceConta);
+app.on('ready', serviceEstoque);
+app.on('ready', serviceVenda);
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {

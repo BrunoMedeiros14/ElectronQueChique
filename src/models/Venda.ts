@@ -1,14 +1,14 @@
 import {DataTypes, Model} from "sequelize";
 import {connection} from "../config/BancoDeDados";
 import {FormaPagamento} from "../shared/models/enums/FormaPagamento";
-import Produto from "./Produto";
+import Estoque from "./Estoque";
 import Cliente from "./Cliente";
 
 class VendaModel extends Model {
   public id: number;
   public dataVenda: Date;
   public valorTotal: number;
-  public produtos: Produto[];
+  public estoque: Estoque[];
   public cliente: Cliente;
   public formaPagamento: FormaPagamento;
   public valorPago: number;

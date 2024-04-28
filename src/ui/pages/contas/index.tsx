@@ -1,13 +1,13 @@
 import {createRoute, Outlet} from "@tanstack/react-router";
 import {painelRoute} from "../../routes";
 
-export const caixasRoute = createRoute({
+export const contasRoute = createRoute({
   getParentRoute: () => painelRoute,
-  path: '/caixas',
-  component: CaixasRouteComponent,
+  path: '/contas',
+  component: ContasRouteComponent,
 })
 
-function CaixasRouteComponent() {
+function ContasRouteComponent() {
   return <>
     <Outlet/>
   </>
