@@ -34,16 +34,16 @@ export const clientesCadastroRoute = createRoute({
 });
 
 const formSchema = z.object({
-  nome: z.string().min(1, {
+  nome: z.string({ message: "Campo obrigatório." }).min(1, {
     message: "O nome do cliente não pode ser nulo.",
   }),
   celular: z
-    .string()
+    .string({ message: "Campo obrigatório." })
     .regex(/^[(]?[0-9]{2}[)][-\s]?[9][-\s][0-9]{4}[-\s][0-9]{4}$/, {
       message: "Insira um número de celular válido.",
     }),
   email: z
-    .string()
+    .string({ message: "Campo obrigatório." })
     .min(1, { message: "Esse campo não pode ser nulo." })
     .email("Esse email não é válido."),
   dataNascimento: z.string().nullable(),
@@ -53,7 +53,7 @@ const formSchema = z.object({
 const gerarDatePorString = (dataString: string) => {
   if (dataString) {
     const [dia, mes, ano] = dataString.split("/");
-    console.log(dia, mes, ano)
+    console.log(dia, mes, ano);
     return new Date(+ano, +mes - 1, +dia);
   }
   return null;
@@ -104,9 +104,9 @@ function ClientesCadastro() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      dataNascimento: gerarStringPorData(dataNascimento) ?? '',
+      dataNascimento: gerarStringPorData(dataNascimento) ?? "",
       email,
-      endereco: endereco ?? '',
+      endereco: endereco ?? "",
       nome,
       celular: telefone,
     },
@@ -143,7 +143,9 @@ function ClientesCadastro() {
   return (
     <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6">
       <div className="flex items-center">
-        <h1 className="font-semibold text-lg md:text-2xl">{clienteId ? `Editar cliente ${nome}` : "Cadastrar Cliente"}</h1>
+        <h1 className="font-semibold text-lg md:text-2xl">
+          {clienteId ? `Editar cliente ${nome}` : "Cadastrar Cliente"}
+        </h1>
       </div>
       <div className="mx-auto w-9/12 max-w-[96rem] border p-4 rounded-lg">
         <Form {...form}>
@@ -156,7 +158,7 @@ function ClientesCadastro() {
               name="nome"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Nome</FormLabel>
+                  <FormLabel>Nome*</FormLabel>
                   <FormControl>
                     <Input placeholder="Nome Sobrenome" {...field} />
                   </FormControl>
@@ -170,7 +172,7 @@ function ClientesCadastro() {
               name="celular"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Celular</FormLabel>
+                  <FormLabel>Celular*</FormLabel>
                   <FormControl>
                     <InputComMascara
                       radix="."
@@ -189,7 +191,7 @@ function ClientesCadastro() {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>E-mail</FormLabel>
+                  <FormLabel>E-mail*</FormLabel>
                   <FormControl>
                     <Input placeholder="email@gmai.com" {...field} />
                   </FormControl>
