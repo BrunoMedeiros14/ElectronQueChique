@@ -8,11 +8,15 @@ import {
   TableRow,
 } from "@/ui/components/ui/table";
 import { escutarCliqueTeclado } from "@/ui/hooks/escutarCliqueTeclado";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import {
+  useMutation,
+  useQueryClient,
+  useSuspenseQuery,
+} from "@tanstack/react-query";
 import { createRoute, useNavigate } from "@tanstack/react-router";
 import { Pencil, Trash2, UserPlus } from "lucide-react";
 import { clientesRoute } from ".";
-import { buscarClientes } from "./comunicacaoApi";
+import { buscarClientes, removerClienteApi } from "./comunicacaoApi";
 
 export const clientesListagemRoute = createRoute({
   getParentRoute: () => clientesRoute,
@@ -23,12 +27,17 @@ export const clientesListagemRoute = createRoute({
 });
 
 function ClientesListagem() {
-  const clientesQuery = useSuspenseQuery(buscarClientes);
+  const { data: clientes, isFetched } = useSuspenseQuery(buscarClientes);
+  const queryClient = useQueryClient();
+
+  const removerClienteMutation = useMutation({
+    mutationFn: removerClienteApi,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["clientes"] });
+    },
+  });
 
   const navigate = useNavigate();
-
-  const deletarCliente = (clienteId: number) =>
-    window.apiCliente.removerCliente(clienteId);
 
   const irParaPaginaCadastro = () =>
     navigate({ to: "/clientes/$clienteId", params: { clienteId: "new" } }); // router useNavigate()(to, {from: '/clientes/$clienteId',})//{ to: "/clientes/$clienteId", params: { clienteId: "new" } });
@@ -41,7 +50,7 @@ function ClientesListagem() {
     <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6">
       <div className="flex items-center">
         <h1 className="font-semibold text-lg md:text-2xl">Clientes</h1>
-        <Button onClick={irParaPaginaCadastro} className="ml-auto" size="sm">
+        <Button onClick={irParaPaginaCadastro} className="ml-auto">
           <UserPlus className="mr-2" />
           Adicionar novo (F1)
         </Button>
@@ -62,13 +71,13 @@ function ClientesListagem() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {clientesQuery.data.map(
+            {clientes.map(
               ({ id, dataNascimento, email, endereco, nome, telefone }, i) => (
                 <TableRow key={i}>
                   <TableCell className="font-medium">{id}</TableCell>
                   <TableCell className="hidden md:table-cell">{nome}</TableCell>
                   <TableCell className="hidden md:table-cell">
-                    {dataNascimento.getFullYear()}
+                    {dataNascimento?.getFullYear() ?? "Não cadastrado."}
                   </TableCell>
                   <TableCell className="hidden md:table-cell">
                     {endereco}
@@ -80,17 +89,36 @@ function ClientesListagem() {
                     {email}
                   </TableCell>
                   <TableCell className="flex justify-end">
-                    <Button size="icon" variant="outline">
+                    <Button
+                      size="icon"
+                      variant="outline"
+                      className="hover:text-yellow-500 hover:bg-background"
+                    >
                       <Pencil className="h-4 w-4" />
                       <span className="sr-only">Edit</span>
                     </Button>
-                    <Button onClick={() => deletarCliente(id)} className="ml-2" size="icon" variant="outline">
+                    <Button
+                      onClick={() => removerClienteMutation.mutate(id)}
+                      className="ml-2 hover:text-red-500 hover:bg-background"
+                      size="icon"
+                      variant="outline"
+                    >
                       <Trash2 className="h-4 w-4" />
                       <span className="sr-only">Delete</span>
                     </Button>
                   </TableCell>
                 </TableRow>
               )
+            )}
+            {isFetched && clientes.length === 0 && (
+              <TableRow>
+                <TableCell
+                  colSpan={7}
+                  className="text-center uppercase text-slate-600 font-bold"
+                >
+                  Nenhum cliente cadastrado
+                </TableCell>
+              </TableRow>
             )}
           </TableBody>
         </Table>
