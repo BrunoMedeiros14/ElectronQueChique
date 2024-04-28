@@ -1,4 +1,3 @@
-import { TanStackRouterVite } from '@tanstack/router-vite-plugin';
 import path from 'path';
 import type { ConfigEnv, UserConfig } from 'vite';
 import { defineConfig } from 'vite';
@@ -17,7 +16,7 @@ export default defineConfig((env) => {
     build: {
       outDir: `.vite/renderer/${name}`,
     },
-    plugins: [pluginExposeRenderer(name), TanStackRouterVite()],
+    plugins: [pluginExposeRenderer(name)],//, TanStackRouterVite()],
     resolve: {
       alias: {
         "@/ui": path.resolve(__dirname, "/src/ui"),

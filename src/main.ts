@@ -1,8 +1,8 @@
-import {app, BrowserWindow} from 'electron';
+import { app, BrowserWindow } from 'electron';
 import path from 'path';
-import {connection} from './config/BancoDeDados';
-import {serviceCliente} from './service/ServiceCliente';
-import {serviceCaixa} from "./service/ServiceCaixa";
+import { connection } from './config/BancoDeDados';
+import { serviceCaixa } from "./service/ServiceCaixa";
+import { serviceCliente } from './service/ServiceCliente';
 
 if (require('electron-squirrel-startup')) {
   app.quit();
@@ -36,11 +36,8 @@ app.whenReady().then(() => {
   createWindow();
 });
 
-app.whenReady().then(() => {
-  return Promise.all([serviceCaixa(), serviceCliente()]);
-}).then(() => {
-  createWindow();
-});
+app.on('ready', serviceCliente);
+app.on('ready', serviceCaixa);
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {

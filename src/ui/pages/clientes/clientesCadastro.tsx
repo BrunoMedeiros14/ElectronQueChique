@@ -8,6 +8,14 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/ui/components/ui/button";
+import {
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/ui/components/ui/dialog";
 import { escutarCliqueTeclado } from "@/ui/hooks/escutarCliqueTeclado";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -16,6 +24,7 @@ import {
   useSuspenseQuery,
 } from "@tanstack/react-query";
 import { createRoute, useNavigate } from "@tanstack/react-router";
+import { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { Cliente } from "src/shared/models/Cliente";
 import { z } from "zod";
@@ -80,7 +89,7 @@ function ClientesCadastro() {
 
   const { dataNascimento, email, endereco, nome, telefone }: Cliente = clienteId
     ? buscarcliente(clienteId)
-    : { email: undefined, nome: undefined, telefone: undefined };
+    : { email: "", nome: "", telefone: "" };
 
   const navigate = useNavigate();
   const retornarParaTabela = () => navigate({ to: "/clientes/" });
@@ -247,5 +256,161 @@ function ClientesCadastro() {
         </Form>
       </div>
     </main>
+  );
+}
+
+export function DialogCadastrarCliente2() {
+  const queryClient = useQueryClient();
+
+  const refBtnClose = useRef<HTMLButtonElement>();
+
+  const cadastrarClienteMutation = useMutation({
+    mutationFn: cadastrarClienteApi,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["clientes"] });
+      refBtnClose.current.click();
+    },
+  });
+  
+  useEffect(() => {
+    console.log("passei a")
+  }, [])
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      dataNascimento: "",
+      email: "",
+      endereco: "",
+      nome: "",
+      celular: "",
+    },
+  });
+
+  function onSubmit({
+    nome,
+    dataNascimento: dataString,
+    email,
+    celular,
+    endereco,
+  }: z.infer<typeof formSchema>) {
+    const dataNascimento = gerarDatePorString(dataString);
+
+    const cliente: Cliente = {
+      nome,
+      dataNascimento,
+      email,
+      telefone: celular,
+      endereco,
+    };
+
+    cadastrarClienteMutation.mutate(cliente);
+  }
+
+  return (
+    <DialogContent className="sm:max-w-[425px]">
+      <DialogHeader>
+        <DialogTitle>Cadastrar cliente</DialogTitle>
+        <DialogDescription>
+          Insira abaixo os dados do cliente.
+        </DialogDescription>
+      </DialogHeader>
+      <div className="grid gap-4 py-4">
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="grid grid-cols-2 gap-3"
+          >
+            <FormField
+              control={form.control}
+              name="nome"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Nome*</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Nome Sobrenome" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="celular"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Celular*</FormLabel>
+                  <FormControl>
+                    <InputComMascara
+                      radix="."
+                      mask={"(00) 0 0000-0000"}
+                      placeholder="(00) 0 0000-0000"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>E-mail*</FormLabel>
+                  <FormControl>
+                    <Input placeholder="email@gmai.com" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="dataNascimento"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Data de Nascimento</FormLabel>
+                  <FormControl>
+                    <InputComMascara
+                      radix="."
+                      mask={"00/00/0000"}
+                      unmask={true}
+                      placeholder="dd/mm/yyyy"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="endereco"
+              render={({ field }) => (
+                <FormItem className="col-span-2">
+                  <FormLabel>Endereço</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Rua, número, bairro" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button className="hidden" type="submit"></Button>
+          </form>
+        </Form>
+      </div>
+      <DialogFooter>
+        <Button onClick={form.handleSubmit(onSubmit)} type="submit">Cadastrar Cliente</Button>
+        <DialogClose asChild>
+          <Button ref={refBtnClose} type="button" variant="destructive">
+            Cancelar
+          </Button>
+        </DialogClose>
+      </DialogFooter>
+    </DialogContent>
   );
 }

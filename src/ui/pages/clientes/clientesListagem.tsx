@@ -1,4 +1,5 @@
 import { Button } from "@/ui/components/ui/button";
+import { Dialog, DialogTrigger } from "@/ui/components/ui/dialog";
 import {
   Table,
   TableBody,
@@ -15,27 +16,31 @@ import {
 } from "@tanstack/react-query";
 import { createRoute, useNavigate } from "@tanstack/react-router";
 import { Pencil, Trash2, UserPlus } from "lucide-react";
+import { useRef } from "react";
 import { clientesRoute } from ".";
-import { gerarStringPorData } from "./clientesCadastro";
+import {
+  DialogCadastrarCliente2,
+  gerarStringPorData,
+} from "./clientesCadastro";
 import { buscarClientes, removerClienteApi } from "./comunicacaoApi";
 
 export const clientesListagemRoute = createRoute({
   getParentRoute: () => clientesRoute,
   path: "/",
-  // @ts-ignore
-  loader: ({context: {queryClient}}) =>
-      queryClient.ensureQueryData(buscarClientes),
+  loader: ({ context: { queryClient } }) =>
+    queryClient.ensureQueryData(buscarClientes),
   component: ClientesListagem,
 });
 
 function ClientesListagem() {
-  const {data: clientes, isFetched} = useSuspenseQuery(buscarClientes);
+  const { data: clientes, isFetched } = useSuspenseQuery(buscarClientes);
   const queryClient = useQueryClient();
+  const refBotaoCadastro = useRef<HTMLButtonElement>();
 
   const removerClienteMutation = useMutation({
     mutationFn: removerClienteApi,
     onSuccess: () => {
-      queryClient.invalidateQueries({queryKey: ["clientes"]});
+      queryClient.invalidateQueries({ queryKey: ["clientes"] });
     },
   });
 
@@ -45,18 +50,28 @@ function ClientesListagem() {
     navigate({ to: "/clientes/$clienteId", params: { clienteId: idCliente } });
 
   escutarCliqueTeclado(() => {
-    irParaPaginaCadastro("new");
+    refBotaoCadastro.current.click()
   }, ["F1"]);
 
   return (
     <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6">
       <div className="flex items-center">
         <h1 className="font-semibold text-lg md:text-2xl">Clientes</h1>
-        <Button onClick={() => irParaPaginaCadastro("new")} className="ml-auto">
+        {/* <Button onClick={() => irParaPaginaCadastro("new")} className="ml-auto">
           <UserPlus className="mr-2" />
           Adicionar novo (F1)
-        </Button>
+        </Button> */}
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button ref={refBotaoCadastro} className="ml-auto">
+              <UserPlus className="mr-2" />
+              Adicionar novo (F1)
+            </Button>
+          </DialogTrigger>
+          <DialogCadastrarCliente2 />
+        </Dialog>
       </div>
+
       <div className="border shadow-sm rounded-lg">
         <Table>
           <TableHeader>
@@ -82,7 +97,7 @@ function ClientesListagem() {
                     {gerarStringPorData(dataNascimento) ?? "Não cadastrado."}
                   </TableCell>
                   <TableCell className="hidden md:table-cell">
-                    {endereco}
+                    {endereco === "" ? "Não cadastrado." : endereco}
                   </TableCell>
                   <TableCell className="hidden md:table-cell">
                     {telefone}
