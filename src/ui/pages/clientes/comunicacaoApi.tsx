@@ -15,5 +15,8 @@ export const buscarClientePorId = (clienteId: number) =>
 export const cadastrarClienteApi = async (cliente: Cliente) => 
   await window.apiCliente.criarCliente(cliente);
 
+export const atualizarClienteApi = async (cliente: Cliente) => 
+  await window.apiCliente.editarCliente(cliente);
+
 export const removerClienteApi = async (clienteId: number) => 
   await window.apiCliente.removerCliente(clienteId);

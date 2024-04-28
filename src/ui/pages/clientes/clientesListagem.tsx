@@ -16,6 +16,7 @@ import {
 import { createRoute, useNavigate } from "@tanstack/react-router";
 import { Pencil, Trash2, UserPlus } from "lucide-react";
 import { clientesRoute } from ".";
+import { gerarStringPorData } from "./clientesCadastro";
 import { buscarClientes, removerClienteApi } from "./comunicacaoApi";
 
 export const clientesListagemRoute = createRoute({
@@ -39,18 +40,18 @@ function ClientesListagem() {
 
   const navigate = useNavigate();
 
-  const irParaPaginaCadastro = () =>
-    navigate({ to: "/clientes/$clienteId", params: { clienteId: "new" } }); // router useNavigate()(to, {from: '/clientes/$clienteId',})//{ to: "/clientes/$clienteId", params: { clienteId: "new" } });
+  const irParaPaginaCadastro = (idCliente: string) =>
+    navigate({ to: "/clientes/$clienteId", params: { clienteId: idCliente } });
 
   escutarCliqueTeclado(() => {
-    irParaPaginaCadastro();
+    irParaPaginaCadastro("new");
   }, ["F1"]);
 
   return (
     <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6">
       <div className="flex items-center">
         <h1 className="font-semibold text-lg md:text-2xl">Clientes</h1>
-        <Button onClick={irParaPaginaCadastro} className="ml-auto">
+        <Button onClick={() => irParaPaginaCadastro("new")} className="ml-auto">
           <UserPlus className="mr-2" />
           Adicionar novo (F1)
         </Button>
@@ -77,7 +78,7 @@ function ClientesListagem() {
                   <TableCell className="font-medium">{id}</TableCell>
                   <TableCell className="hidden md:table-cell">{nome}</TableCell>
                   <TableCell className="hidden md:table-cell">
-                    {dataNascimento?.getFullYear() ?? "Não cadastrado."}
+                    {gerarStringPorData(dataNascimento) ?? "Não cadastrado."}
                   </TableCell>
                   <TableCell className="hidden md:table-cell">
                     {endereco}
@@ -92,6 +93,7 @@ function ClientesListagem() {
                     <Button
                       size="icon"
                       variant="outline"
+                      onClick={() => irParaPaginaCadastro(id.toString())}
                       className="hover:text-yellow-500 hover:bg-background"
                     >
                       <Pencil className="h-4 w-4" />

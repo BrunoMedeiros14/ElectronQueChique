@@ -10,14 +10,22 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/ui/components/ui/button";
 import { escutarCliqueTeclado } from "@/ui/hooks/escutarCliqueTeclado";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import {
+  useMutation,
+  useQueryClient,
+  useSuspenseQuery,
+} from "@tanstack/react-query";
 import { createRoute, useNavigate } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
 import { Cliente } from "src/shared/models/Cliente";
 import { z } from "zod";
 import { clientesRoute } from ".";
 import { InputComMascara } from "../../components/InputComMascara";
-import { cadastrarClienteApi } from "./comunicacaoApi";
+import {
+  atualizarClienteApi,
+  buscarClientePorId,
+  cadastrarClienteApi,
+} from "./comunicacaoApi";
 
 export const clientesCadastroRoute = createRoute({
   getParentRoute: () => clientesRoute,
@@ -42,16 +50,39 @@ const formSchema = z.object({
   endereco: z.string().nullable(),
 });
 
+const gerarDatePorString = (dataString: string) => {
+  if (dataString) {
+    const [dia, mes, ano] = dataString.split("/");
+    return new Date(+mes, +dia - 1, +ano);
+  }
+  return null;
+};
+
+export const gerarStringPorData = (dataNascimento: Date) => {
+  if (!dataNascimento) return null;
+  const dia = String(dataNascimento.getDate()).padStart(2, "0");
+  const mes = String(dataNascimento.getMonth() + 1).padStart(2, "0");
+  const ano = dataNascimento.getFullYear();
+
+  return `${dia}/${mes}/${ano}`;
+};
+
 function ClientesCadastro() {
+  const clienteId: number =
+    clientesCadastroRoute.useParams().clienteId === "new"
+      ? null
+      : Number(clientesCadastroRoute.useParams().clienteId);
+
   const queryClient = useQueryClient();
+  const buscarcliente = (clienteId: number) =>
+    useSuspenseQuery(buscarClientePorId(clienteId)).data;
+
+  const { dataNascimento, email, endereco, nome, telefone }: Cliente = clienteId
+    ? buscarcliente(clienteId)
+    : { email: undefined, nome: undefined, telefone: undefined };
 
   const navigate = useNavigate();
   const retornarParaTabela = () => navigate({ to: "/clientes/" });
-
-  const clienteId =
-    clientesCadastroRoute.useParams().clienteId === "new"
-      ? null
-      : clientesCadastroRoute.useParams().clienteId;
 
   const cadastrarClienteMutation = useMutation({
     mutationFn: cadastrarClienteApi,
@@ -61,14 +92,22 @@ function ClientesCadastro() {
     },
   });
 
+  const atualizarClienteMutation = useMutation({
+    mutationFn: atualizarClienteApi,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["clientes"] });
+      retornarParaTabela();
+    },
+  });
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      dataNascimento: null,
-      email: null,
-      endereco: null,
-      nome: null,
-      celular: null,
+      dataNascimento: gerarStringPorData(dataNascimento) ?? '',
+      email,
+      endereco: endereco ?? '',
+      nome,
+      celular: telefone,
     },
   });
 
@@ -79,19 +118,20 @@ function ClientesCadastro() {
     celular,
     endereco,
   }: z.infer<typeof formSchema>) {
-    let dataNascimento = null;
-    if (dataString) {
-      const [dia, mes, ano] = dataString.split("/");
-      dataNascimento = new Date(+mes, +dia - 1, +ano);
-    }
+    const dataNascimento = gerarDatePorString(dataString);
 
     const cliente: Cliente = {
+      id: clienteId,
       nome,
       dataNascimento,
       email,
       telefone: celular,
       endereco,
     };
+    if (clienteId) {
+      atualizarClienteMutation.mutate(cliente);
+      return;
+    }
     cadastrarClienteMutation.mutate(cliente);
   }
 
@@ -102,9 +142,8 @@ function ClientesCadastro() {
   return (
     <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6">
       <div className="flex items-center">
-        <h1 className="font-semibold text-lg md:text-2xl">Cadastrar Cliente</h1>
+        <h1 className="font-semibold text-lg md:text-2xl">{clienteId ? `Editar cliente ${nome}` : "Cadastrar Cliente"}</h1>
       </div>
-      {/* grid grid-cols-2 gap-3 */}
       <div className="mx-auto w-9/12 max-w-[96rem] border p-4 rounded-lg">
         <Form {...form}>
           <form
@@ -190,52 +229,20 @@ function ClientesCadastro() {
               )}
             />
             <div className="mt-2 flex gap-2 col-span-2 justify-end">
-              <Button type="submit">Cadastrar</Button>
+              {clienteId ? (
+                <Button type="submit" className="bg-amber-500">
+                  Editar
+                </Button>
+              ) : (
+                <Button type="submit">Cadastrar</Button>
+              )}
               <Button onClick={retornarParaTabela} variant="destructive">
                 Cancelar
               </Button>
             </div>
           </form>
         </Form>
-        {/* <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="w-2/3 space-y-6"
-          >
-            <FormField
-              control={form.control}
-              name="username"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Nome</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Nome Sobrenome" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <Button type="submit">Submit</Button>
-          </form>
-        </Form> */}
       </div>
-      {clienteId && (
-        <div className="col-span-2">
-          <label
-            htmlFor="nome"
-            className="block mb-2 text-sm font-medium text-gray-900"
-          >
-            Id
-          </label>
-          <input
-            type="text"
-            id="id"
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-16 p-2.5"
-            value={clienteId}
-            disabled
-          />
-        </div>
-      )}
     </main>
   );
 }
