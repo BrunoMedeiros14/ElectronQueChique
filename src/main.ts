@@ -1,7 +1,8 @@
-import { app, BrowserWindow } from 'electron';
+import {app, BrowserWindow} from 'electron';
 import path from 'path';
-import { connection } from './config/BancoDeDados';
-import { serviceCliente } from './service/ServiceCliente';
+import {connection} from './config/BancoDeDados';
+import {serviceCliente} from './service/ServiceCliente';
+import {serviceCaixa} from "./service/ServiceCaixa";
 
 if (require('electron-squirrel-startup')) {
   app.quit();
@@ -31,11 +32,15 @@ const createWindow = () => {
 };
 
 app.whenReady().then(() => {
-  connection.sync()
+  connection.sync().then(r => console.log('Banco de dados sincronizado'));
   createWindow();
 });
 
-app.on('ready', serviceCliente);
+app.whenReady().then(() => {
+  return Promise.all([serviceCaixa(), serviceCliente()]);
+}).then(() => {
+  createWindow();
+});
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {

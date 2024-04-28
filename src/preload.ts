@@ -52,7 +52,7 @@ export const apiConta = {
   removerConta: (...args: Parameters<RemoverConta>): ReturnType<RemoverConta> => ipcRenderer.invoke('removerConta', ...args),
   editarConta: (...args: Parameters<EditarConta>): ReturnType<EditarConta> => ipcRenderer.invoke('editarConta', ...args),
   buscarContaPorId: (...args: Parameters<BuscarContaPorId>): ReturnType<BuscarContaPorId> => ipcRenderer.invoke('buscarContaPorId', ...args),
-  buscarTodosContas: (...args: Parameters<BuscarTodasContas>): ReturnType<BuscarTodasContas> => ipcRenderer.invoke('buscarTodosContas', ...args)
+  buscarTodasContas: (...args: Parameters<BuscarTodasContas>): ReturnType<BuscarTodasContas> => ipcRenderer.invoke('buscarTodosContas', ...args)
 }
 
 export const apiProduto = {
@@ -68,7 +68,7 @@ export const apiVenda = {
   removerVenda: (...args: Parameters<RemoverVenda>): ReturnType<RemoverVenda> => ipcRenderer.invoke('removerVenda', ...args),
   editarVenda: (...args: Parameters<EditarVenda>): ReturnType<EditarVenda> => ipcRenderer.invoke('editarVenda', ...args),
   buscarVendaPorId: (...args: Parameters<BuscarVendaPorId>): ReturnType<BuscarVendaPorId> => ipcRenderer.invoke('buscarVendaPorId', ...args),
-  buscarTodosVendas: (...args: Parameters<BuscarTodasVendas>): ReturnType<BuscarTodasVendas> => ipcRenderer.invoke('buscarTodosVendas', ...args)
+  buscarTodasVendas: (...args: Parameters<BuscarTodasVendas>): ReturnType<BuscarTodasVendas> => ipcRenderer.invoke('buscarTodosVendas', ...args)
 }
 
 

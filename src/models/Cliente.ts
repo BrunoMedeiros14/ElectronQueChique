@@ -1,5 +1,5 @@
-import { DataTypes, Model } from "sequelize";
-import { connection } from "../config/BancoDeDados";
+import {DataTypes, Model} from "sequelize";
+import {connection} from "../config/BancoDeDados";
 
 class ClienteModel extends Model {
   public id: number;
@@ -11,38 +11,38 @@ class ClienteModel extends Model {
 }
 
 ClienteModel.init(
-  {
-    id: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
+    {
+      id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+      },
+      nome: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      dataNascimento: {
+        type: DataTypes.DATE,
+        allowNull: true,
+      },
+      endereco: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      telefone: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      email: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        unique: false,
+      },
     },
-    nome: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    dataNascimento: {
-      type: DataTypes.DATE,
-      allowNull: true,
-    },
-    endereco: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    telefone: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    email: {
-      type: DataTypes.STRING,
-      allowNull: true,
-      unique: false,
-    },
-  },
-  {
-    sequelize: connection,
-    modelName: 'Cliente',
-  }
+    {
+      sequelize: connection,
+      modelName: 'Cliente',
+    }
 )
 
 export default ClienteModel

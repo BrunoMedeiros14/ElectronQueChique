@@ -1,4 +1,4 @@
-import { Options, Sequelize } from 'sequelize';
+import {Options, Sequelize} from 'sequelize';
 
 const dbConfig: Options = {
   dialect: 'sqlite',

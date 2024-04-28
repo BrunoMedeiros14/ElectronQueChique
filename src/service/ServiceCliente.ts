@@ -1,6 +1,18 @@
-import { ipcMain } from 'electron';
-import { buscarClientePorId, buscarTodosClientes, criarCliente, editarCliente, removerCliente } from '../repository/RepositorioCliente';
-import { BuscarClientePorId, BuscarTodosClientes, CriarCliente, EditarCliente, RemoverCliente } from '../shared/Api';
+import {ipcMain} from 'electron';
+import {
+  buscarClientePorId,
+  buscarTodosClientes,
+  criarCliente,
+  editarCliente,
+  removerCliente
+} from '../repository/RepositorioCliente';
+import {
+  BuscarClientePorId,
+  BuscarTodosClientes,
+  CriarCliente,
+  EditarCliente,
+  RemoverCliente
+} from '../shared/Api';
 
 export function serviceCliente() {
   ipcMain.handle("criarCliente", (_, ...args: Parameters<CriarCliente>) => criarCliente(...args))

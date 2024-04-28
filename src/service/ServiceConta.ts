@@ -1,6 +1,18 @@
-import { ipcMain } from 'electron';
-import { buscarContaPorId, buscarTodasContas, criarConta, editarConta, removerConta } from '../repository/RepositorioConta';
-import { BuscarContaPorId, BuscarTodasContas, CriarConta, EditarConta, RemoverConta } from '../shared/Api';
+import {ipcMain} from 'electron';
+import {
+  buscarContaPorId,
+  buscarTodasContas,
+  criarConta,
+  editarConta,
+  removerConta
+} from '../repository/RepositorioConta';
+import {
+  BuscarContaPorId,
+  BuscarTodasContas,
+  CriarConta,
+  EditarConta,
+  RemoverConta
+} from '../shared/Api';
 
 export function serviceConta() {
   ipcMain.handle("criarConta", (_, ...args: Parameters<CriarConta>) => criarConta(...args))

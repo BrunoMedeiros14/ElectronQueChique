@@ -1,6 +1,6 @@
 import { createRoute } from "@tanstack/react-router";
 import { Banknote, Pencil, Trash2 } from "lucide-react";
-import { painelRoute } from "../routes";
+import { painelRoute } from "../../routes";
 
 
 export const contasRoute = createRoute({

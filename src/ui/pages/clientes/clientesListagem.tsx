@@ -22,19 +22,20 @@ import { buscarClientes, removerClienteApi } from "./comunicacaoApi";
 export const clientesListagemRoute = createRoute({
   getParentRoute: () => clientesRoute,
   path: "/",
-  loader: ({ context: { queryClient } }) =>
-    queryClient.ensureQueryData(buscarClientes),
+  // @ts-ignore
+  loader: ({context: {queryClient}}) =>
+      queryClient.ensureQueryData(buscarClientes),
   component: ClientesListagem,
 });
 
 function ClientesListagem() {
-  const { data: clientes, isFetched } = useSuspenseQuery(buscarClientes);
+  const {data: clientes, isFetched} = useSuspenseQuery(buscarClientes);
   const queryClient = useQueryClient();
 
   const removerClienteMutation = useMutation({
     mutationFn: removerClienteApi,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["clientes"] });
+      queryClient.invalidateQueries({queryKey: ["clientes"]});
     },
   });
 

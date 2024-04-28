@@ -1,16 +1,17 @@
-import { createRoute } from "@tanstack/react-router";
-import { painelRoute } from "../routes";
 
-export const caixaRoute = createRoute({
+import { createRoute } from "@tanstack/react-router";
+import { painelRoute } from "../../routes";
+
+export const estoqueRoute = createRoute({
   getParentRoute: () => painelRoute,
-  path: "/caixa",
-  component: Caixa,
+  path: "/estoque",
+  component: Estoque,
 });
 
-function Caixa() {
+function Estoque() {
   return (
     <div className="p-4 border-2 border-gray-200 border-dashed rounded-lg">
-      caixa
+      estoque
     </div>
   );
 }
