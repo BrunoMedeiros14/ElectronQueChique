@@ -1,10 +1,10 @@
-import {useMutation, useQueryClient, useSuspenseQuery,} from "@tanstack/react-query";
-import {createRoute, useNavigate} from "@tanstack/react-router";
-import {Pencil, Search, Trash2, UserPlus} from "lucide-react";
-import {useRef, useState} from "react";
-import {clientesRoute} from ".";
-import {Button} from "../../../ui/components/ui/button";
-import {Dialog, DialogTrigger} from "../../../ui/components/ui/dialog";
+import { useMutation, useQueryClient, useSuspenseQuery, } from "@tanstack/react-query";
+import { createRoute, useNavigate } from "@tanstack/react-router";
+import { Pencil, Search, Trash2, UserPlus } from "lucide-react";
+import { useRef, useState } from "react";
+import { clientesRoute } from ".";
+import { Button } from "../../../ui/components/ui/button";
+import { Dialog, DialogTrigger } from "../../../ui/components/ui/dialog";
 import {
   Table,
   TableBody,
@@ -13,9 +13,9 @@ import {
   TableHeader,
   TableRow,
 } from "../../../ui/components/ui/table";
-import {escutarCliqueTeclado} from "../../../ui/hooks/escutarCliqueTeclado";
-import {DialogCadastrarCliente, gerarStringPorData} from "./clientesCadastro";
-import {buscarClientes, removerClienteApi} from "./comunicacaoApi";
+import { escutarCliqueTeclado } from "../../../ui/hooks/escutarCliqueTeclado";
+import { DialogCadastrarCliente, gerarStringPorData } from "./clientesCadastro";
+import { buscarClientes, removerClienteApi } from "./comunicacaoApi";
 
 export const clientesListagemRoute = createRoute({
   getParentRoute: () => clientesRoute,
@@ -121,31 +121,31 @@ function ClientesListagem() {
                       {email}
                     </TableCell>
                     <TableCell className="flex justify-end">
-                      <Button
-                          size="icon"
-                          variant="outline"
-                          onClick={() => irParaPaginaCadastro(id.toString())}
-                          className="hover:text-yellow-500 hover:bg-background"
-                      >
-                        <Pencil className="h-4 w-4"/>
-                        <span className="sr-only">Edit</span>
-                      </Button>
-                      <Button
-                          onClick={() => {
-                            const confirmDelete = window.confirm("Você deseja realmente excluir este cliente?");
-                            if (confirmDelete) {
-                              removerClienteMutation.mutate(id);
-                            }
-                          }}
-                          className="ml-2 hover:text-red-500 hover:bg-background"
-                          size="icon"
-                          variant="outline"
-                      >
-                        <Trash2
-                            className="h-4 w-4 hover:text-red-500"
-                            color="red"/>
-                        <span className="sr-only">Delete</span>
-                      </Button>
+                    <Button
+                      size="icon"
+                      variant="ghost"
+                      onClick={() => irParaPaginaCadastro(id.toString())}
+                      className="text-orange-400 hover:text-white hover:bg-orange-400"
+                    >
+                      <Pencil className="h-4 w-4" />
+                      <span className="sr-only">Edit</span>
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        const confirmDelete = window.confirm(
+                          "Você deseja realmente excluir este cliente?"
+                        );
+                        if (confirmDelete) {
+                          removerClienteMutation.mutate(id);
+                        }
+                      }}
+                      className="ml-2 text-red-500 hover:text-white hover:bg-red-500"
+                      size="icon"
+                      variant="ghost"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                      <span className="sr-only">Delete</span>
+                    </Button>
                     </TableCell>
                   </TableRow>
               ))}
