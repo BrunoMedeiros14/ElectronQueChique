@@ -1,8 +1,4 @@
-import {
-  useMutation,
-  useQueryClient,
-  useSuspenseQuery,
-} from "@tanstack/react-query";
+import {useMutation, useQueryClient, useSuspenseQuery,} from "@tanstack/react-query";
 import {createRoute, useNavigate} from "@tanstack/react-router";
 import {Pencil, Search, Trash2, UserPlus} from "lucide-react";
 import {useRef, useState} from "react";
@@ -65,7 +61,7 @@ function ClientesListagem() {
   return (
       <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6">
         <div className="flex items-center">
-          <h1 className="font-semibold text-lg md:text-2xl">Clientes</h1>
+          <h1 className="font-semibold text-lg md:text-2xl h-10">Clientes</h1>
 
           <div className="flex-grow mx-4">
             <div className="flex items-center border rounded-md">
@@ -82,7 +78,7 @@ function ClientesListagem() {
 
           <Dialog onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
-              <Button ref={refBotaoCadastro} className="ml-auto">
+              <Button ref={refBotaoCadastro} className="ml-auto h-10">
                 <UserPlus className="mr-2"/>
                 Adicionar novo (F1)
               </Button>

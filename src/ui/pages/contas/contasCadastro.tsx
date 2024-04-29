@@ -47,6 +47,24 @@ const formSchema = z.object({
   pago: z.boolean().optional(),
 });
 
+const gerarDatePorString = (dataString: string) => {
+  if (dataString) {
+    const [dia, mes, ano] = dataString.split("/");
+    console.log(dia, mes, ano);
+    return new Date(+ano, +mes - 1, +dia);
+  }
+  return null;
+};
+
+export const gerarStringPorData = (dataNascimento: Date) => {
+  if (!dataNascimento) return null;
+  const dia = String(dataNascimento.getDate()).padStart(2, "0");
+  const mes = String(dataNascimento.getMonth() + 1).padStart(2, "0");
+  const ano = dataNascimento.getFullYear();
+
+  return `${dia}/${mes}/${ano}`;
+};
+
 function ContasCadastro() {
   const contaId: number =
       contasCadastroRoute.useParams().contaId === "new"
@@ -93,6 +111,7 @@ function ContasCadastro() {
       pago: pago ?? false,
     },
   });
+
 
   function onSubmit({
                       nome,
@@ -247,7 +266,7 @@ function ContasCadastro() {
   );
 }
 
-export function DialogCadastrarConta2() {
+export function DialogCadastrarConta() {
   const queryClient = useQueryClient();
 
   const refBtnClose = useRef<HTMLButtonElement>();
