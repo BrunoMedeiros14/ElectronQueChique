@@ -19,15 +19,13 @@ import {
   useSuspenseQuery,
 } from "@tanstack/react-query";
 import { createRoute } from "@tanstack/react-router";
-import { UserPlus } from "lucide-react";
+import { Shirt } from "lucide-react";
 import { useRef, useState } from "react";
 import { DataTable } from "../../components/ui/data-table";
 import { escutarCliqueTeclado } from "../../hooks/escutarCliqueTeclado";
 import { painelRoute } from "../../routes";
 import { pegarColunasEstoque } from "./estoqueColunas";
-import {
-  DialogCadastrarCliente,
-} from "./estoqueDialog";
+import { DialogCadastrarCliente } from "./estoqueDialog";
 
 export const estoqueRoute = createRoute({
   getParentRoute: () => painelRoute,
@@ -73,7 +71,7 @@ function EstoquesComponent() {
   return (
     <main className="flex flex-1 flex-col p-4 md:p-6 max-w-[96rem] mx-auto">
       <div className="flex items-center">
-        <h1 className="font-semibold text-lg md:text-2xl h-10">Clientes</h1>
+        <h1 className="font-semibold text-lg md:text-2xl h-10">Estoque</h1>
       </div>
       <div className="flex items-center justify-between py-3 gap-2">
         <Input
@@ -85,7 +83,7 @@ function EstoquesComponent() {
         <Dialog onOpenChange={setDialogAberto}>
           <DialogTrigger asChild>
             <Button ref={refBotaoCadastro} className="ml-auto h-10">
-              <UserPlus className="mr-2" />
+              <Shirt className="mr-2" />
               Adicionar novo (F1)
             </Button>
           </DialogTrigger>

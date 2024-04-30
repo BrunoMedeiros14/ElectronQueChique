@@ -25,56 +25,45 @@ export const pegarColunasEstoque = ({
     accessorKey: "descricao",
     header: "Descrição",
   },
-  // {
-  //   accessorKey: "cor",
-  //   header: "Descrição",
-  // },
-  // {
-  //   accessorKey: "tamanho",
-  //   header: "Descrição",
-  // },
-  // {
-  //   accessorKey: "vendido",
-  //   header: "Descrição",
-  // },
-  // {
-  //   accessorKey: "tecido",
-  //   header: "Descrição",
-  // },
-  // {
-  //   accessorKey: "fornecedor",
-  //   header: "Descrição",
-  // },
-  // {
-  //   accessorKey: "quantidade",
-  //   header: "Descrição",
-  // },
-  // {
-  //   accessorKey: "valorCompra",
-  //   header: "Descrição",
-  // },
-  // {
-  //   accessorKey: "valorVenda",
-  //   header: "Descrição",
-  // },
-  // {
-  //   accessorKey: "dataNascimento",
-  //   header: "Data de Nascimento",
-  //   cell: ({ row }) => {
-  //     return row.getValue("dataNascimento") === null
-  //       ? "Não cadastrado"
-  //       : gerarStringPorDate(row.getValue("dataNascimento"));
-  //   },
-  // },
-  // {
-  //   accessorKey: "endereco",
-  //   header: "Endereço",
-  //   cell: ({ row }) => {
-  //     return row?.getValue("endereco") === ""
-  //       ? "Não cadastrado"
-  //       : row?.getValue("endereco");
-  //   },
-  // },
+  {
+    accessorKey: "cor",
+    header: "Cor",
+  },
+  {
+    accessorKey: "tamanho",
+    header: "Tamanho",
+  },
+  {
+    accessorKey: "vendido",
+    header: "Vendido",
+    cell: ({ row }) => {
+      const pago: boolean = row.getValue("vendido");
+      const texto = pago ? "Sim" : "Não";
+      return (
+        <span className={`${pago ? "text-green-600" : "text-red-600"}`}>{texto}</span>
+      );
+    },
+  },
+  {
+    accessorKey: "tecido",
+    header: "Tecido",
+  },
+  {
+    accessorKey: "fornecedor",
+    header: "fornecedor",
+  },
+  {
+    accessorKey: "quantidade",
+    header: "Quantidade",
+  },
+  {
+    accessorKey: "valorCompra",
+    header: "Valor da compra",
+  },
+  {
+    accessorKey: "valorVenda",
+    header: "Valor da Venda",
+  },
   {
     id: "actions",
     cell: ({ row }) => {
@@ -83,6 +72,7 @@ export const pegarColunasEstoque = ({
       return (
         <div className="flex justify-center w-full gap-1">
           <Button
+            disabled
             size="icon"
             variant="ghost"
             onClick={() => abrirEdicaoEstoque(estoqueId)}

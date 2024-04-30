@@ -3,7 +3,7 @@ import { Cliente } from "src/shared/models/Cliente";
 import { Estoque } from "src/shared/models/Estoque";
 
 export const buscarEstoques = queryOptions({
-  queryKey: ["estoque"],
+  queryKey: ["estoques"],
   queryFn: () => window.apiEstoque.buscarTodosEstoques(),
 });
 

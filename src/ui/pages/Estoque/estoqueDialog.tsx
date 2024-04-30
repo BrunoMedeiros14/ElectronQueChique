@@ -47,7 +47,7 @@ const formSchema = z.object({
     .string({ message: "Campo obrigatório." })
     .min(3, { message: "O nome do cliente não pode ser nulo." }),
   fornecedor: z.string().nullable(),
-  quantidade: z.number().min(1, { message: "Insira uma quantidade válida." }),
+  quantidade: z.string().min(1, { message: "Insira uma quantidade válida." }),
   valorCompra: z.string({ message: "Campo obrigatório." }),
   valorVenda: z.string({ message: "Campo obrigatório." }),
 });
@@ -63,7 +63,7 @@ const gerarFormVazio = () =>
       vendido: false,
       tecido: "",
       fornecedor: "",
-      quantidade: 0,
+      quantidade: "",
       valorCompra: "",
       valorVenda: "",
     },
@@ -87,7 +87,7 @@ export function DialogCadastrarCliente({ isOpen }: { isOpen: boolean }) {
   const cadastrarEstoqueMutation = useMutation({
     mutationFn: cadastrarEstoqueApi,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["clientes"] });
+      queryClient.invalidateQueries({ queryKey: ["estoques"] });
       refBtnClose.current.click();
     },
   });
@@ -103,7 +103,7 @@ export function DialogCadastrarCliente({ isOpen }: { isOpen: boolean }) {
       form.setValue("vendido", false);
       form.setValue("tecido", "");
       form.setValue("fornecedor", "");
-      form.setValue("quantidade", 0);
+      form.setValue("quantidade", "");
       form.setValue("valorCompra", "");
       form.setValue("valorVenda", "");
     }
@@ -129,7 +129,7 @@ export function DialogCadastrarCliente({ isOpen }: { isOpen: boolean }) {
       vendido,
       tecido: Tecido.Algodao,
       fornecedor,
-      quantidade,
+      quantidade: Number(quantidade),
       valorCompra: gerarDoublePorValorMonetario(valorCompra) || 0,
       valorVenda: gerarDoublePorValorMonetario(valorVenda) || 0,
     };

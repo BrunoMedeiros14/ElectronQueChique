@@ -41,7 +41,6 @@
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.51.3",
     "react-imask": "^7.6.0",
-    "react-switch": "^7.0.0",
     "sequelize": "^6.37.3",
     "sqlite3": "^5.1.7",
     "tailwind-merge": "^2.3.0",
