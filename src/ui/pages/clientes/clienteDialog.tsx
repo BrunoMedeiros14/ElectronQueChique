@@ -1,16 +1,11 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  useMutation,
-  useQueryClient,
-  useSuspenseQuery,
-} from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { Cliente } from "src/shared/models/Cliente";
 import { z } from "zod";
 import {
   atualizarClienteApi,
-  buscarClientePorId,
   cadastrarClienteApi,
 } from "../../api/clientesApi";
 import { InputComMascara } from "../../components/InputComMascara";
@@ -240,11 +235,6 @@ export function DialogAtualizarCliente({ clienteId }: { clienteId?: number }) {
 
   const refBtnClose = useRef<HTMLButtonElement>();
 
-  let clienteAtual: Cliente;
-
-  const c =
-    clienteId ? useSuspenseQuery(buscarClientePorId(clienteId)) : null;
-
   const atualizarClienteMutation = useMutation({
     mutationFn: atualizarClienteApi,
     onSuccess: () => {
@@ -265,7 +255,7 @@ export function DialogAtualizarCliente({ clienteId }: { clienteId?: number }) {
     const dataNascimento = gerarDatePorString(dataString);
 
     const cliente: Cliente = {
-      id: clienteAtual.id,
+      id: clienteId,
       nome,
       dataNascimento,
       email,
@@ -275,18 +265,19 @@ export function DialogAtualizarCliente({ clienteId }: { clienteId?: number }) {
     atualizarClienteMutation.mutate(cliente);
   }
 
-  // useEffect(() => {
-  //   if (clienteId) {
-  //     // console.log(c);
-  //     // const { dataNascimento, email, endereco, nome, telefone } =
-  //     //   clienteParaAtualizar;
-  //     // form.setValue("dataNascimento", gerarStringPorData(dataNascimento));
-  //     // form.setValue("email", email);
-  //     // form.setValue("endereco", endereco);
-  //     // form.setValue("nome", nome);
-  //     // form.setValue("celular", telefone);
-  //   }
-  // }, [clienteId]);
+  useEffect(() => {
+    if (clienteId) {
+      window.apiCliente
+        .buscarClientePorId(clienteId)
+        .then(({ dataNascimento, email, endereco, nome, telefone }) => {
+          form.setValue("dataNascimento", gerarStringPorData(dataNascimento));
+          form.setValue("email", email);
+          form.setValue("endereco", endereco);
+          form.setValue("nome", nome);
+          form.setValue("celular", telefone);
+        });
+    }
+  }, [clienteId]);
 
   return (
     <DialogContent className="sm:max-w-[32rem]">
