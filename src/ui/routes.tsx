@@ -1,13 +1,10 @@
 import { QueryClient } from "@tanstack/react-query";
 import { createRootRouteWithContext, createRoute, Outlet, } from "@tanstack/react-router";
-import { contasRoute } from "../ui/pages/contas";
-import { contasCadastroRoute } from "../ui/pages/contas/contasCadastro";
-import { contasListagemRoute } from "../ui/pages/contas/contasListagem";
-import { estoquesCadastroRoute } from "../ui/pages/Estoque/estoqueCadastro";
 import { estoqueListagemRoute } from "../ui/pages/Estoque/estoqueListagem";
 import { Sidebar } from "./components/Sidebar";
 import { caixasRoute } from "./pages/caixas";
 import { clientesRoute } from "./pages/clientes/clientesPainel";
+import { contasRoute } from "./pages/contas/contasPainel";
 import { estoqueRoute } from "./pages/Estoque";
 
 export const rootRoute = createRootRouteWithContext<{
@@ -25,8 +22,8 @@ export const painelRoute = createRoute({
 export const routeTree = rootRoute.addChildren([
   painelRoute.addChildren([
     caixasRoute,
-    estoqueRoute.addChildren([estoqueListagemRoute, estoquesCadastroRoute]),
+    estoqueRoute.addChildren([estoqueListagemRoute]),
     clientesRoute,
-    contasRoute.addChildren([contasListagemRoute, contasCadastroRoute]),
+    contasRoute
   ]),
 ]);

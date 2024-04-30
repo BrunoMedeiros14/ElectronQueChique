@@ -1215,6 +1215,20 @@
     "@babel/runtime" "^7.13.10"
     "@radix-ui/react-compose-refs" "1.0.1"
 
+"@radix-ui/react-switch@^1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@radix-ui/react-switch/-/react-switch-1.0.3.tgz#6119f16656a9eafb4424c600fdb36efa5ec5837e"
+  integrity sha512-mxm87F88HyHztsI7N+ZUmEoARGkC22YVW5CaC+Byc+HRpuvCrOBPTAnXgf+tZ/7i0Sg/eOePGdMhUKhPaQEqow==
+  dependencies:
+    "@babel/runtime" "^7.13.10"
+    "@radix-ui/primitive" "1.0.1"
+    "@radix-ui/react-compose-refs" "1.0.1"
+    "@radix-ui/react-context" "1.0.1"
+    "@radix-ui/react-primitive" "1.0.3"
+    "@radix-ui/react-use-controllable-state" "1.0.1"
+    "@radix-ui/react-use-previous" "1.0.1"
+    "@radix-ui/react-use-size" "1.0.1"
+
 "@radix-ui/react-use-callback-ref@1.0.1":
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@radix-ui/react-use-callback-ref/-/react-use-callback-ref-1.0.1.tgz#f4bb1f27f2023c984e6534317ebc411fc181107a"
@@ -1245,6 +1259,13 @@
   dependencies:
     "@babel/runtime" "^7.13.10"
 
+"@radix-ui/react-use-previous@1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@radix-ui/react-use-previous/-/react-use-previous-1.0.1.tgz#b595c087b07317a4f143696c6a01de43b0d0ec66"
+  integrity sha512-cV5La9DPwiQ7S0gf/0qiD6YgNqM5Fk97Kdrlc5yBcrF3jyEZQwm7vYFqMo4IfeHgJXsRaMvLABFtd0OVEmZhDw==
+  dependencies:
+    "@babel/runtime" "^7.13.10"
+
 "@radix-ui/react-use-rect@1.0.1":
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@radix-ui/react-use-rect/-/react-use-rect-1.0.1.tgz#fde50b3bb9fd08f4a1cd204572e5943c244fcec2"
@@ -1267,6 +1288,18 @@
   integrity sha512-fyrgCaedtvMg9NK3en0pnOYJdtfwxUcNolezkNPUsoX57X8oQk+NkqcvzHXD2uKNij6GXmWU9NDru2IWjrO4BQ==
   dependencies:
     "@babel/runtime" "^7.13.10"
+
+"@react-input/core@^1.0.11":
+  version "1.0.11"
+  resolved "https://registry.yarnpkg.com/@react-input/core/-/core-1.0.11.tgz#3de476c11d27ee72443084a5628522c1ca564637"
+  integrity sha512-fk2hJxmKZc1LJ5GbNIT2E7faMWifipIiYFLMpVXL3c9izke9+oTjYkseUI9TDVbJA2ptMi5Iwy/VEDNPotwWLA==
+
+"@react-input/number-format@^1.0.25":
+  version "1.0.25"
+  resolved "https://registry.yarnpkg.com/@react-input/number-format/-/number-format-1.0.25.tgz#144a10f3a04dfff16223e2679dafa2af88ab81da"
+  integrity sha512-jrDmlj28omBk7EKIjzU7Le0XqKhNDwcFTHlHdS4ZS1O0/NZhzFNz+o+TQTdHTF0mqfTRdqPu78hcVXW6hm/Bxw==
+  dependencies:
+    "@react-input/core" "^1.0.11"
 
 "@rollup/rollup-android-arm-eabi@4.16.2":
   version "4.16.2"

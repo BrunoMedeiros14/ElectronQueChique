@@ -1,4 +1,4 @@
-import {contextBridge, ipcRenderer} from 'electron';
+import { contextBridge, ipcRenderer } from 'electron';
 import {
   BuscarCaixaPorId,
   BuscarClientePorId,
@@ -71,11 +71,11 @@ export const apiVenda = {
   buscarTodasVendas: (...args: Parameters<BuscarTodasVendas>): ReturnType<BuscarTodasVendas> => ipcRenderer.invoke('buscarTodosVendas', ...args)
 }
 
-
 try {
-  contextBridge.exposeInMainWorld('apiCaixa', apiCaixa)
   contextBridge.exposeInMainWorld('apiCliente', apiCliente)
   contextBridge.exposeInMainWorld('apiConta', apiConta)
+  
+  contextBridge.exposeInMainWorld('apiCaixa', apiCaixa)
   contextBridge.exposeInMainWorld('apiEstoque', apiEstoque)
   contextBridge.exposeInMainWorld('apiVenda', apiVenda)
   contextBridge.exposeInMainWorld('context', {

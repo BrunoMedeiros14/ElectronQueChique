@@ -1,4 +1,4 @@
-import {apiCaixa, apiCliente, apiConta, apiEstoque, apiVenda} from "./preload";
+import { apiCaixa, apiCliente, apiConta, apiEstoque, apiVenda } from "./preload";
 
 declare global {
   interface Window {
@@ -8,5 +8,4 @@ declare global {
     apiEstoque: typeof apiEstoque
     apiVenda: typeof apiVenda
   }
-
 }

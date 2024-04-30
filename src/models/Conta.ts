@@ -1,5 +1,5 @@
-import {DataTypes, Model} from "sequelize";
-import {connection} from "../config/BancoDeDados";
+import { DataTypes, Model } from "sequelize";
+import { connection } from "../config/BancoDeDados";
 
 class ContaModel extends Model {
   public id: number;
@@ -47,7 +47,7 @@ ContaModel.init(
     },
     {
       sequelize: connection,
-      modelName: 'Conta',
+      modelName: 'contas',
     }
 )
 

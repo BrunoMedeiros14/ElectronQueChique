@@ -8,20 +8,19 @@ import {
 } from '../shared/Api';
 
 export const criarConta: CriarConta = async (conta) => {
-  // @ts-ignore
   return (await ContaModel.create(conta)).dataValues;
 };
 
 export const removerConta: RemoverConta = async (contaId) => {
   const deletedRows = await ContaModel.destroy({
-    where: {id: contaId},
+    where: { id: contaId },
   });
   return deletedRows;
 };
 
 export const editarConta: EditarConta = async (conta) => {
   await ContaModel.update(conta, {
-    where: {id: conta.id},
+    where: { id: conta.id },
   });
   return conta;
 };

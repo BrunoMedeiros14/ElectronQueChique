@@ -25,6 +25,7 @@ interface DataTableProps<TData, TValue> {
   dados: TData[];
   colunaParaFiltrar: string;
   filtro: string;
+  textoParaVazio?: string;
 }
 
 export function DataTable<TData, TValue>({
@@ -32,6 +33,7 @@ export function DataTable<TData, TValue>({
   dados,
   colunaParaFiltrar,
   filtro,
+  textoParaVazio = "Sem valor registrado"
 }: DataTableProps<TData, TValue>) {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
@@ -105,9 +107,9 @@ export function DataTable<TData, TValue>({
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
-                  className="h-24 text-center"
+                  className="h-12 text-center"
                 >
-                  No results.
+                  {textoParaVazio}
                 </TableCell>
               </TableRow>
             )}

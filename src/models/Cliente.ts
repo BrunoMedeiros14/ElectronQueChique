@@ -1,5 +1,5 @@
-import {DataTypes, Model} from "sequelize";
-import {connection} from "../config/BancoDeDados";
+import { DataTypes, Model } from "sequelize";
+import { connection } from "../config/BancoDeDados";
 
 class ClienteModel extends Model {
   public id: number;
@@ -41,7 +41,7 @@ ClienteModel.init(
     },
     {
       sequelize: connection,
-      modelName: 'Clientes',
+      modelName: 'clientes',
     }
 )
 
