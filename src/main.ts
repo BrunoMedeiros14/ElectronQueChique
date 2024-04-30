@@ -3,6 +3,7 @@ import path from 'path';
 import { connection } from './config/BancoDeDados';
 import { serviceCliente } from './service/ServiceCliente';
 import { serviceConta } from './service/ServiceConta';
+import { serviceEstoque } from './service/ServiceEstoque';
 
 if (require('electron-squirrel-startup')) {
   app.quit();
@@ -39,7 +40,7 @@ app.whenReady().then(() => {
 // app.on('ready', serviceCaixa);
 app.on('ready', serviceCliente);
 app.on('ready', serviceConta);
-// app.on('ready', serviceEstoque);
+app.on('ready', serviceEstoque);
 // app.on('ready', serviceVenda);
 
 app.on('window-all-closed', () => {

@@ -74,7 +74,7 @@ export const apiVenda = {
 try {
   contextBridge.exposeInMainWorld('apiCliente', apiCliente)
   contextBridge.exposeInMainWorld('apiConta', apiConta)
-  
+
   contextBridge.exposeInMainWorld('apiCaixa', apiCaixa)
   contextBridge.exposeInMainWorld('apiEstoque', apiEstoque)
   contextBridge.exposeInMainWorld('apiVenda', apiVenda)

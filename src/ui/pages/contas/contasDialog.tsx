@@ -38,8 +38,7 @@ const formSchema = z.object({
   descricao: z
     .string({ message: "Campo obrigatório." })
     .min(3, { message: "A descrição da conta não pode ser nula." }),
-  valor: z
-    .string({ message: "Campo obrigatório." }),
+  valor: z.string({ message: "Campo obrigatório." }),
   dataVencimento: z.string().nullable(),
   dataPagamento: z.string().nullable(),
   pago: z.boolean().nullable(),

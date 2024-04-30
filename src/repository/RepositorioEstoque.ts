@@ -1,20 +1,20 @@
+import { BuscarEstoquePorId, BuscarTodosEstoques, CriarEstoque, EditarEstoque, RemoverEstoque } from 'src/shared/Api';
 import EstoqueModel from '../models/Estoque';
 
 export const criarEstoque: CriarEstoque = async (estoque) => {
-  // @ts-ignore
   return (await EstoqueModel.create(estoque)).dataValues;
 };
 
 export const removerEstoque: RemoverEstoque = async (estoqueId) => {
   const deletedRows = await EstoqueModel.destroy({
-    where: {id: estoqueId},
+    where: { id: estoqueId },
   });
   return deletedRows;
 };
 
 export const editarEstoque: EditarEstoque = async (estoque) => {
   await EstoqueModel.update(estoque, {
-    where: {id: estoque.id},
+    where: { id: estoque.id },
   });
   return estoque;
 };
