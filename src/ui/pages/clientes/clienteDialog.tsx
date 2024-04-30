@@ -1,3 +1,4 @@
+import { gerarDatePorString, gerarStringPorDate } from "@/ui/utils/conversores";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useRef } from "react";
@@ -6,6 +7,7 @@ import { Cliente } from "src/shared/models/Cliente";
 import { z } from "zod";
 import {
   atualizarClienteApi,
+  buscarClientePorId,
   cadastrarClienteApi,
 } from "../../api/clientesApi";
 import { InputComMascara } from "../../components/InputComMascara";
@@ -44,24 +46,6 @@ const formSchema = z.object({
   dataNascimento: z.string().nullable().optional(),
   endereco: z.string().nullable().optional(),
 });
-
-const gerarDatePorString = (dataString: string) => {
-  if (dataString) {
-    const [dia, mes, ano] = dataString.split("/");
-    console.log(dia, mes, ano);
-    return new Date(+ano, +mes - 1, +dia);
-  }
-  return null;
-};
-
-export const gerarStringPorData = (dataNascimento: Date) => {
-  if (!dataNascimento) return null;
-  const dia = String(dataNascimento.getDate()).padStart(2, "0");
-  const mes = String(dataNascimento.getMonth() + 1).padStart(2, "0");
-  const ano = dataNascimento.getFullYear();
-
-  return `${dia}/${mes}/${ano}`;
-};
 
 const gerarFormVazio = () =>
   useForm<z.infer<typeof formSchema>>({
@@ -267,15 +251,15 @@ export function DialogAtualizarCliente({ clienteId }: { clienteId?: number }) {
 
   useEffect(() => {
     if (clienteId) {
-      window.apiCliente
-        .buscarClientePorId(clienteId)
-        .then(({ dataNascimento, email, endereco, nome, telefone }) => {
-          form.setValue("dataNascimento", gerarStringPorData(dataNascimento));
+      buscarClientePorId(clienteId).then(
+        ({ dataNascimento, email, endereco, nome, telefone }) => {
+          form.setValue("dataNascimento", gerarStringPorDate(dataNascimento));
           form.setValue("email", email);
           form.setValue("endereco", endereco);
           form.setValue("nome", nome);
           form.setValue("celular", telefone);
-        });
+        }
+      );
     }
   }, [clienteId]);
 

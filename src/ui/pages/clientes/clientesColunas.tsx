@@ -1,9 +1,8 @@
 import { Button } from "@/ui/components/ui/button";
+import { gerarStringPorDate } from "@/ui/utils/conversores";
 import { ColumnDef } from "@tanstack/react-table";
 import { Pencil, Trash2 } from "lucide-react";
 import { Cliente } from "src/shared/models/Cliente";
-
-const formatoData = new Intl.DateTimeFormat("pt-Br", { dateStyle: "short" });
 
 type ColunasClienteProps = {
   setIdParaExcluir: React.Dispatch<React.SetStateAction<number>>;
@@ -29,7 +28,7 @@ export const pegarColunasCliente = ({
     cell: ({ row }) => {
       return row.getValue("dataNascimento") === null
         ? "Não cadastrado"
-        : formatoData.format(row.getValue("dataNascimento"));
+        : gerarStringPorDate(row.getValue("dataNascimento"));
     },
   },
   {

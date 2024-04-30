@@ -6,11 +6,8 @@ export const buscarClientes = queryOptions({
   queryFn: () => window.apiCliente.buscarTodosClientes(),
 });
 
-export const buscarClientePorId = (clienteId: number) =>
-  queryOptions({
-    queryKey: ["clientes", { clienteId }],
-    queryFn: () => window.apiCliente.buscarClientePorId(clienteId),
-  });
+export const buscarClientePorId = async (clienteId: number) =>
+  await window.apiCliente.buscarClientePorId(clienteId)
 
 export const cadastrarClienteApi = async (cliente: Cliente) =>
   await window.apiCliente.criarCliente(cliente);
