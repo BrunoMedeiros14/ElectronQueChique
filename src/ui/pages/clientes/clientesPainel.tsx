@@ -62,8 +62,6 @@ function ClientesComponent() {
     refBotaoAtuailacao.current.click();
   };
 
-  useSuspenseQuery(buscarClientes)
-
   const colunasCliente = pegarColunasCliente({
     setIdParaExcluir,
     abrirEdicaoCliente,

@@ -1,17 +1,5 @@
-import { gerarDatePorString, gerarStringPorDate } from "@/ui/utils/conversores";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useEffect, useRef } from "react";
-import { useForm } from "react-hook-form";
-import { Cliente } from "src/shared/models/Cliente";
-import { z } from "zod";
-import {
-  atualizarClienteApi,
-  buscarClientePorId,
-  cadastrarClienteApi,
-} from "../../api/clientesApi";
-import { InputComMascara } from "../../components/InputComMascara";
-import { Button } from "../../components/ui/button";
+import { InputComMascara } from "@/components/InputComMascara";
+import { Button } from "@/components/ui/button";
 import {
   DialogClose,
   DialogContent,
@@ -19,7 +7,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "../../components/ui/dialog";
+} from "@/components/ui/dialog";
 import {
   Form,
   FormControl,
@@ -27,8 +15,20 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "../../components/ui/form";
-import { Input } from "../../components/ui/input";
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import {
+  atualizarClienteApi,
+  buscarClientePorId,
+  cadastrarClienteApi,
+} from "@/ui/api/clientesApi";
+import { gerarDatePorString, gerarStringPorDate } from "@/ui/utils/conversores";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useEffect, useRef } from "react";
+import { useForm } from "react-hook-form";
+import { Cliente } from "src/shared/models/Cliente";
+import { z } from "zod";
 
 const formSchema = z.object({
   nome: z.string({ message: "Campo obrigatório." }).min(3, {
