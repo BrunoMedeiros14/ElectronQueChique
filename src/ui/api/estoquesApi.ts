@@ -1,5 +1,4 @@
 import { queryOptions } from "@tanstack/react-query";
-import { Cliente } from "src/shared/models/Cliente";
 import { Estoque } from "src/shared/models/Estoque";
 
 export const buscarEstoques = queryOptions({
@@ -8,11 +7,11 @@ export const buscarEstoques = queryOptions({
 });
 
 
-export const buscarClientePorId = async (clienteId: number) =>
-  await window.apiCliente.buscarClientePorId(clienteId)
+export const buscarEstoquePorId = async (estoqueId: number) =>
+  await window.apiEstoque.buscarEstoquePorId(estoqueId)
 
-export const atualizarClienteApi = async (cliente: Cliente) =>
-  await window.apiCliente.editarCliente(cliente);
+export const atualizarEstoqueApi = async (estoque: Estoque) =>
+  await window.apiEstoque.editarEstoque(estoque);
 
 export const cadastrarEstoqueApi = async (estoque: Estoque) =>
   await window.apiEstoque.criarEstoque(estoque);
