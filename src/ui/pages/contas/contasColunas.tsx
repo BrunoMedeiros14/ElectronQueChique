@@ -1,8 +1,11 @@
-import {gerarStringPorDate, gerarStringReal} from "../../../ui/utils/conversores";
-import {ColumnDef} from "@tanstack/react-table";
-import {Conta} from "src/shared/models/Conta";
-import {Button} from "../../../ui/components/ui/button";
-import {Pencil, Trash2} from "lucide-react";
+import { ColumnDef } from "@tanstack/react-table";
+import { Pencil, Trash2 } from "lucide-react";
+import { Conta } from "src/shared/models/Conta";
+import { Button } from "../../../ui/components/ui/button";
+import {
+  gerarStringPorDate,
+  gerarStringReal,
+} from "../../../ui/utils/conversores";
 
 type ColunasContaProps = {
   setIdParaExcluir: React.Dispatch<React.SetStateAction<number>>;
@@ -10,9 +13,9 @@ type ColunasContaProps = {
 };
 
 export const pegarColunasConta = ({
-                                    setIdParaExcluir,
-                                    abrirEdicaoConta,
-                                  }: ColunasContaProps): ColumnDef<Conta>[] => [
+  setIdParaExcluir,
+  abrirEdicaoConta,
+}: ColunasContaProps): ColumnDef<Conta>[] => [
   {
     accessorKey: "id",
     header: "Id",
@@ -29,16 +32,16 @@ export const pegarColunasConta = ({
   {
     accessorKey: "dataVencimento",
     header: "Data de Vencimento",
-    cell: ({row}) => {
+    cell: ({ row }) => {
       return row.getValue("dataVencimento")
-          ? gerarStringPorDate(row.getValue("dataVencimento"))
-          : "Não inserido";
+        ? gerarStringPorDate(row.getValue("dataVencimento"))
+        : "Não inserido";
     },
   },
   {
     accessorKey: "valor",
     header: "Valor",
-    cell: ({row}) => {
+    cell: ({ row }) => {
       const valor = parseFloat(row.getValue("valor"));
       const formatted = gerarStringReal(valor);
       return <div className="font-medium">{formatted}</div>;
@@ -47,59 +50,58 @@ export const pegarColunasConta = ({
   {
     accessorKey: "dataPagamento",
     header: "Data de Pagamento",
-    cell: ({row}) => {
+    cell: ({ row }) => {
       return row.getValue("dataPagamento")
-          ? gerarStringPorDate(row.getValue("dataPagamento"))
-          : "Não inserido";
+        ? gerarStringPorDate(row.getValue("dataPagamento"))
+        : "Não inserido";
     },
   },
   {
     accessorKey: "pago",
     header: "Pago",
-    cell: ({row}) => {
+    cell: ({ row }) => {
       const pago: boolean = row.getValue("pago");
       const texto = pago ? "Sim" : "Não";
       return (
-          <div style={{
-            backgroundColor: pago ? 'green' : 'red',
-            color: 'white',
-            padding: '10px',
-            fontWeight: 'bold',
-            borderRadius: '15px',
-            width: 48,
-          }}>
-            {texto}
-          </div>
+        <div
+          className={`badge ${
+            pago
+              ? "bg-green-600 text-white hover:bg-green-600/80"
+              : "bg-destructive text-destructive-foreground hover:bg-destructive/80"
+          }`}
+        >
+          {texto}
+        </div>
       );
     },
   },
   {
     id: "actions",
-    cell: ({row}) => {
+    cell: ({ row }) => {
       const contaId = row.original.id;
 
       return (
-          <div className="flex justify-center w-full gap-1">
-            <Button
-                size="icon"
-                variant="ghost"
-                onClick={() => abrirEdicaoConta(contaId)}
-                className="text-orange-400 hover:text-white hover:bg-orange-400"
-            >
-              <Pencil className="h-4 w-4"/>
-              <span className="sr-only">Edit</span>
-            </Button>
+        <div className="flex justify-center w-full gap-1">
+          <Button
+            size="icon"
+            variant="ghost"
+            onClick={() => abrirEdicaoConta(contaId)}
+            className="text-orange-400 hover:text-white hover:bg-orange-400"
+          >
+            <Pencil className="h-4 w-4" />
+            <span className="sr-only">Edit</span>
+          </Button>
 
-            <Button
-                size="icon"
-                variant="ghost"
-                onClick={() => setIdParaExcluir(contaId)}
-                className="text-red-500 hover:text-white hover:bg-red-500"
-            >
-              <Trash2 className="h-4 w-4"/>
-              <span className="sr-only">Delete</span>
-            </Button>
-          </div>
+          <Button
+            size="icon"
+            variant="ghost"
+            onClick={() => setIdParaExcluir(contaId)}
+            className="text-red-500 hover:text-white hover:bg-red-500"
+          >
+            <Trash2 className="h-4 w-4" />
+            <span className="sr-only">Delete</span>
+          </Button>
+        </div>
       );
     },
   },
