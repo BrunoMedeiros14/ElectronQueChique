@@ -3,6 +3,7 @@ import {Conta} from './Conta';
 
 export class Caixa {
   id?: number;
+  ativo: boolean;
   dataHoraAbertura: Date;
   dataHoraFechamento: Date;
   vendas: Venda[];

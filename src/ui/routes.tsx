@@ -1,10 +1,10 @@
-import { QueryClient } from "@tanstack/react-query";
-import { createRootRouteWithContext, createRoute, Outlet, } from "@tanstack/react-router";
-import { Sidebar } from "./components/Sidebar";
-import { caixasRoute } from "./pages/caixas";
-import { clientesRoute } from "./pages/clientes/clientesPainel";
-import { contasRoute } from "./pages/contas/contasPainel";
-import { estoqueRoute } from "./pages/Estoque/estoquePainel";
+import {QueryClient} from "@tanstack/react-query";
+import {createRootRouteWithContext, createRoute, Outlet,} from "@tanstack/react-router";
+import {Sidebar} from "./components/Sidebar";
+import {clientesRoute} from "./pages/clientes/clientesPainel";
+import {contasRoute} from "./pages/contas/contasPainel";
+import {estoqueRoute} from "./pages/Estoque/estoquePainel";
+import {caixasRoute} from "../ui/pages/caixas/caixasPainel";
 
 export const rootRoute = createRootRouteWithContext<{
   queryClient: QueryClient;

@@ -4,7 +4,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/ui/components/ui/select";
+} from "../../../ui/components/ui/select";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNumberFormat } from "@react-input/number-format";
 import { useMutation, useQueryClient } from "@tanstack/react-query";

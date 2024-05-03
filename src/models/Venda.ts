@@ -15,7 +15,6 @@ class VendaModel extends Model {
   public troco: number;
   public desconto: number;
 }
-
 VendaModel.init(
     {
       id: {
@@ -47,6 +46,14 @@ VendaModel.init(
       },
       desconto: {
         type: DataTypes.FLOAT,
+        allowNull: true,
+      },
+      estoque: {
+        type: DataTypes.ARRAY(DataTypes.INTEGER),
+        allowNull: true,
+      },
+      cliente: {
+        type: DataTypes.INTEGER,
         allowNull: true,
       },
     },

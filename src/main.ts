@@ -1,9 +1,9 @@
-import { app, BrowserWindow } from 'electron';
+import {app, BrowserWindow} from 'electron';
 import path from 'path';
-import { connection } from './config/BancoDeDados';
-import { serviceCliente } from './service/ServiceCliente';
-import { serviceConta } from './service/ServiceConta';
-import { serviceEstoque } from './service/ServiceEstoque';
+import {connection} from './config/BancoDeDados';
+import {serviceCliente} from './service/ServiceCliente';
+import {serviceConta} from './service/ServiceConta';
+import {serviceEstoque} from './service/ServiceEstoque';
 
 if (require('electron-squirrel-startup')) {
   app.quit();
@@ -29,7 +29,7 @@ const createWindow = () => {
   }
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools();
+  //mainWindow.webContents.openDevTools();
 };
 
 app.whenReady().then(() => {
