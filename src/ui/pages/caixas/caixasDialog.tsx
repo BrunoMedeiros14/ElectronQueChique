@@ -360,6 +360,34 @@ export function DialogCadastrarVenda({isOpen}: { isOpen: boolean }) {
 
                 <FormField
                     control={form.control}
+                    name="desconto"
+                    rules={{max: {value: 10, message: "O desconto não pode ser maior que 10%"}}}
+                    render={({field, fieldState: {error}}) => (
+                        <FormItem>
+                          <FormLabel>Desconto*</FormLabel>
+                          <FormControl>
+                            <InputComMascara
+                                placeholder="Desconto"
+                                value={gerarStringPorcentagemPorNumeroInteiro(field.value)}
+                                onChange={(e: {
+                                  target: { value: string; };
+                                }) => {
+                                  const valor = gerarDoublePorValorPorcentagem(e.target.value);
+                                  if (valor > 10) {
+                                    console.error("O desconto não pode ser maior que 10%");
+                                  } else {
+                                    field.onChange(valor);
+                                  }
+                                }}
+                            />
+                          </FormControl>
+                          <FormMessage>{error?.message}</FormMessage>
+                        </FormItem>
+                    )}
+                />
+
+                <FormField
+                    control={form.control}
                     name="valorPago"
                     render={({field}) => (
                         <FormItem>
@@ -387,34 +415,6 @@ export function DialogCadastrarVenda({isOpen}: { isOpen: boolean }) {
                             <Input type="number" placeholder="Troco" {...field} disabled/>
                           </FormControl>
                           <FormMessage/>
-                        </FormItem>
-                    )}
-                />
-
-                <FormField
-                    control={form.control}
-                    name="desconto"
-                    rules={{max: {value: 10, message: "O desconto não pode ser maior que 10%"}}}
-                    render={({field, fieldState: {error}}) => (
-                        <FormItem>
-                          <FormLabel>Desconto*</FormLabel>
-                          <FormControl>
-                            <InputComMascara
-                                placeholder="Desconto"
-                                value={gerarStringPorcentagemPorNumeroInteiro(field.value)}
-                                onChange={(e: {
-                                  target: { value: string; };
-                                }) => {
-                                  const valor = gerarDoublePorValorPorcentagem(e.target.value);
-                                  if (valor > 10) {
-                                    console.error("O desconto não pode ser maior que 10%");
-                                  } else {
-                                    field.onChange(valor);
-                                  }
-                                }}
-                            />
-                          </FormControl>
-                          <FormMessage>{error?.message}</FormMessage>
                         </FormItem>
                     )}
                 />
