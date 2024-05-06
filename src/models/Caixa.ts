@@ -7,12 +7,9 @@ class CaixaModel extends Model {
   public id: number;
   public dataHoraAbertura: Date;
   public dataHoraFechamento: Date;
+  public valorInicial: number;
   public vendas: Venda[];
-  public valorTotalVendas: number;
   public contas: Conta[];
-  public valoresSaidos: number;
-  public valorTotalCartao: number;
-  public valorTotalDinheiro: number;
 }
 
 CaixaModel.init(
@@ -31,25 +28,9 @@ CaixaModel.init(
         type: DataTypes.DATE,
         allowNull: true,
       },
-      valorTotalVendas: {
-        type: DataTypes.FLOAT,
+      valorInicial: {
+        type: DataTypes.DECIMAL(10, 2),
         allowNull: false,
-        defaultValue: 0,
-      },
-      valoresSaidos: {
-        type: DataTypes.FLOAT,
-        allowNull: false,
-        defaultValue: 0,
-      },
-      valorTotalCartao: {
-        type: DataTypes.FLOAT,
-        allowNull: false,
-        defaultValue: 0,
-      },
-      valorTotalDinheiro: {
-        type: DataTypes.FLOAT,
-        allowNull: false,
-        defaultValue: 0,
       },
     },
     {

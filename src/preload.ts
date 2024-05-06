@@ -1,4 +1,4 @@
-import { contextBridge, ipcRenderer } from 'electron';
+import {contextBridge, ipcRenderer} from 'electron';
 import {
   BuscarCaixaPorId,
   BuscarClientePorId,
@@ -68,7 +68,7 @@ export const apiVenda = {
   removerVenda: (...args: Parameters<RemoverVenda>): ReturnType<RemoverVenda> => ipcRenderer.invoke('removerVenda', ...args),
   editarVenda: (...args: Parameters<EditarVenda>): ReturnType<EditarVenda> => ipcRenderer.invoke('editarVenda', ...args),
   buscarVendaPorId: (...args: Parameters<BuscarVendaPorId>): ReturnType<BuscarVendaPorId> => ipcRenderer.invoke('buscarVendaPorId', ...args),
-  buscarTodasVendas: (...args: Parameters<BuscarTodasVendas>): ReturnType<BuscarTodasVendas> => ipcRenderer.invoke('buscarTodosVendas', ...args)
+  buscarTodasVendas: (...args: Parameters<BuscarTodasVendas>): ReturnType<BuscarTodasVendas> => ipcRenderer.invoke('buscarTodasVendas', ...args)
 }
 
 try {

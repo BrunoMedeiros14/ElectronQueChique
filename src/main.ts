@@ -4,6 +4,8 @@ import {connection} from './config/BancoDeDados';
 import {serviceCliente} from './service/ServiceCliente';
 import {serviceConta} from './service/ServiceConta';
 import {serviceEstoque} from './service/ServiceEstoque';
+import {serviceCaixa} from "./service/ServiceCaixa";
+import {serviceVenda} from "./service/ServiceVenda";
 
 if (require('electron-squirrel-startup')) {
   app.quit();
@@ -29,7 +31,7 @@ const createWindow = () => {
   }
 
   // Open the DevTools.
-  //mainWindow.webContents.openDevTools();
+  mainWindow.webContents.openDevTools();
 };
 
 app.whenReady().then(() => {
@@ -37,11 +39,11 @@ app.whenReady().then(() => {
   createWindow();
 });
 
-// app.on('ready', serviceCaixa);
-app.on('ready', serviceCliente);
+app.on('ready', serviceCaixa);
+app.on('ready', serviceVenda);
 app.on('ready', serviceConta);
+app.on('ready', serviceCliente);
 app.on('ready', serviceEstoque);
-// app.on('ready', serviceVenda);
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {

@@ -106,6 +106,7 @@ export function DialogCadastrarConta({isOpen}: { isOpen: boolean }) {
       dataPagamento: gerarDatePorString(dataPagamento),
       pago,
     };
+
     cadastrarContaMutation.mutate(conta);
   }
 
@@ -167,6 +168,7 @@ export function DialogCadastrarConta({isOpen}: { isOpen: boolean }) {
                       </FormItem>
                   )}
               />
+
               <FormField
                   control={form.control}
                   name="dataVencimento"
@@ -186,6 +188,7 @@ export function DialogCadastrarConta({isOpen}: { isOpen: boolean }) {
                       </FormItem>
                   )}
               />
+
               <FormField
                   control={form.control}
                   name="dataPagamento"
@@ -205,6 +208,7 @@ export function DialogCadastrarConta({isOpen}: { isOpen: boolean }) {
                       </FormItem>
                   )}
               />
+
               <FormField
                   control={form.control}
                   name="pago"
@@ -221,6 +225,7 @@ export function DialogCadastrarConta({isOpen}: { isOpen: boolean }) {
                       </FormItem>
                   )}
               />
+
               <Button className="hidden" type="submit"></Button>
             </form>
           </Form>

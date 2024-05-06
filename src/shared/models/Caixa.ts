@@ -6,10 +6,7 @@ export class Caixa {
   ativo: boolean;
   dataHoraAbertura: Date;
   dataHoraFechamento: Date;
+  valorInicial: number;
   vendas: Venda[];
-  valorTotalVendas: number;
   contas: Conta[];
-  valoresSaidos: number;
-  valorTotalCartao: number;
-  valorTotalDinheiro: number;
 }
