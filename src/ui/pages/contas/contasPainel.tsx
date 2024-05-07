@@ -1,16 +1,13 @@
-import {buscarContas, removerContaApi} from "../../../ui/api/contasApi";
-import {Button, buttonVariants} from "../../../ui/components/ui/button";
-import {DataTable} from "../../../ui/components/ui/data-table";
-import {Dialog, DialogTrigger} from "../../../ui/components/ui/dialog";
-import {Input} from "../../../ui/components/ui/input";
-import {escutarCliqueTeclado} from "../../../ui/hooks/escutarCliqueTeclado";
-import {useMutation, useQueryClient, useSuspenseQuery} from "@tanstack/react-query";
-import {createRoute} from "@tanstack/react-router";
-import {Receipt} from "lucide-react";
-import {useRef, useState} from "react";
-import {painelRoute} from "../../routes";
-import {pegarColunasConta} from "./contasColunas";
-import {DialogAtualizarConta, DialogCadastrarConta} from "./contasDialog";
+import { useMutation, useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
+import { Receipt } from "lucide-react";
+import { useRef, useState } from "react";
+import { buscarContas, removerContaApi } from "../../../ui/api/contasApi";
+import { Button, buttonVariants } from "../../../ui/components/ui/button";
+import { DataTable } from "../../../ui/components/ui/data-table";
+import { Dialog, DialogTrigger } from "../../../ui/components/ui/dialog";
+import { Input } from "../../../ui/components/ui/input";
+import { escutarCliqueTeclado } from "../../../ui/hooks/escutarCliqueTeclado";
+import { cn } from "../../components/lib/utils";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -21,18 +18,10 @@ import {
   AlertDialogHeader,
   AlertDialogTitle
 } from "../../components/ui/alert-dialog";
-import {cn} from "../../components/lib/utils";
+import { pegarColunasConta } from "./contasColunas";
+import { DialogAtualizarConta, DialogCadastrarConta } from "./contasDialog";
 
-export const contasRoute = createRoute({
-  getParentRoute: () => painelRoute,
-  path: "/contas",
-  //@ts-ignore
-  loader: ({context: {queryClient}}) =>
-      queryClient.ensureQueryData(buscarContas),
-  component: ContasComponent,
-});
-
-function ContasComponent() {
+export function Component() {
   const refBotaoCadastro = useRef<HTMLButtonElement>();
   const refBotaoAtualizacao = useRef<HTMLButtonElement>();
 

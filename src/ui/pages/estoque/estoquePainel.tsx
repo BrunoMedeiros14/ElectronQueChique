@@ -3,8 +3,9 @@ import {
   useQueryClient,
   useSuspenseQuery,
 } from "@tanstack/react-query";
-import { UserPlus } from "lucide-react";
+import { Shirt } from "lucide-react";
 import { useRef, useState } from "react";
+import { buscarEstoques, removerEstoqueApi } from "../../../ui/api/estoquesApi";
 import { cn } from "../../../ui/components/lib/utils";
 import {
   AlertDialog,
@@ -19,42 +20,41 @@ import {
 import { Button, buttonVariants } from "../../../ui/components/ui/button";
 import { Dialog, DialogTrigger } from "../../../ui/components/ui/dialog";
 import { Input } from "../../../ui/components/ui/input";
-import { buscarClientes, removerClienteApi } from "../../api/clientesApi";
 import { DataTable } from "../../components/ui/data-table";
 import { escutarCliqueTeclado } from "../../hooks/escutarCliqueTeclado";
+import { pegarColunasEstoque } from "./estoqueColunas";
 import {
-  DialogAtualizarCliente,
-  DialogCadastrarCliente,
-} from "./clienteDialog";
-import { pegarColunasCliente } from "./clientesColunas";
+  DialogAtualizarEstoque,
+  DialogCadastrarEstoque,
+} from "./estoqueDialog";
 
 export function Component() {
   const refBotaoCadastro = useRef<HTMLButtonElement>();
-  const refBotaoAtualizacao = useRef<HTMLButtonElement>();
+  const refBotaoAtuailacao = useRef<HTMLButtonElement>();
 
   const [searchValue, setSearchValue] = useState("");
   const [idParaExcluir, setIdParaExcluir] = useState<number>(null);
   const [idParaEditar, setIdParaEditar] = useState<number>(null);
   const [dialogAberto, setDialogAberto] = useState(false);
 
-  const { data: clientes } = useSuspenseQuery(buscarClientes);
-  const queryClient = useQueryClient();
-  const removerClienteMutation = useMutation({
-    mutationFn: removerClienteApi,
+  const { data: estoques } = useSuspenseQuery(buscarEstoques);
+  const queryEstoque = useQueryClient();
+  const removerEstoqueMutation = useMutation({
+    mutationFn: removerEstoqueApi,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["clientes"] });
+      queryEstoque.invalidateQueries({ queryKey: ["estoques"] });
       setIdParaExcluir(null);
     },
   });
 
-  const abrirEdicaoCliente = (clienteId: number) => {
-    setIdParaEditar(clienteId);
-    refBotaoAtualizacao.current.click();
+  const abrirEdicaoEstoque = (estoqueId: number) => {
+    setIdParaEditar(estoqueId);
+    refBotaoAtuailacao.current.click();
   };
 
-  const colunasCliente = pegarColunasCliente({
+  const colunasEstoque = pegarColunasEstoque({
     setIdParaExcluir,
-    abrirEdicaoCliente,
+    abrirEdicaoEstoque,
   });
 
   escutarCliqueTeclado(() => {
@@ -64,11 +64,11 @@ export function Component() {
   return (
     <main className="flex flex-1 flex-col p-4 md:p-6 max-w-[96rem] mx-auto">
       <div className="flex items-center">
-        <h1 className="font-semibold text-lg md:text-2xl h-10">Clientes</h1>
+        <h1 className="font-semibold text-lg md:text-2xl h-10">Estoque</h1>
       </div>
       <div className="flex items-center justify-between py-3 gap-2">
         <Input
-          placeholder="Pesquisar clientes..."
+          placeholder="Pesquisar itens..."
           value={searchValue}
           onChange={(e) => setSearchValue(e.target.value)}
           className="max-w-lg"
@@ -76,16 +76,16 @@ export function Component() {
         <Dialog onOpenChange={setDialogAberto}>
           <DialogTrigger asChild>
             <Button ref={refBotaoCadastro} className="ml-auto h-10">
-              <UserPlus className="mr-2" />
+              <Shirt className="mr-2" />
               Adicionar novo (F1)
             </Button>
           </DialogTrigger>
-          <DialogCadastrarCliente isOpen={dialogAberto} />
+          <DialogCadastrarEstoque isOpen={dialogAberto} />
         </Dialog>
       </div>
       <DataTable
-        columns={colunasCliente}
-        dados={clientes}
+        columns={colunasEstoque}
+        dados={estoques}
         colunaParaFiltrar="nome"
         filtro={searchValue}
       />
@@ -93,10 +93,10 @@ export function Component() {
       <AlertDialog open={idParaExcluir !== null}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>O Cliente Será Apagado</AlertDialogTitle>
+            <AlertDialogTitle>O Produto Será Apagado</AlertDialogTitle>
             <AlertDialogDescription>
               Se essa ação for realizada, não será possível recuperar os dados
-              do cliente, deseja continuar?
+              do produto, deseja continuar?
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
@@ -108,7 +108,7 @@ export function Component() {
             </AlertDialogCancel>
             <AlertDialogAction
               className={cn(buttonVariants({ variant: "destructive" }))}
-              onClick={() => removerClienteMutation.mutate(idParaExcluir)}
+              onClick={() => removerEstoqueMutation.mutate(idParaExcluir)}
             >
               Apagar
             </AlertDialogAction>
@@ -116,8 +116,8 @@ export function Component() {
         </AlertDialogContent>
       </AlertDialog>
       <Dialog>
-        <DialogTrigger ref={refBotaoAtualizacao} />
-        <DialogAtualizarCliente clienteId={idParaEditar} />
+        <DialogTrigger ref={refBotaoAtuailacao} />
+        <DialogAtualizarEstoque estoqueId={idParaEditar} />
       </Dialog>
     </main>
   );
