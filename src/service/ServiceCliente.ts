@@ -1,10 +1,10 @@
-import {ipcMain} from 'electron';
+import { ipcMain } from 'electron';
 import {
   buscarClientePorId,
   buscarTodosClientes,
-  criarCliente,
   editarCliente,
-  removerCliente
+  removerCliente,
+  salvarCliente
 } from '../repository/RepositorioCliente';
 import {
   BuscarClientePorId,
@@ -15,10 +15,9 @@ import {
 } from '../shared/Api';
 
 export function serviceCliente() {
-  ipcMain.handle("criarCliente", (_, ...args: Parameters<CriarCliente>) => criarCliente(...args))
+  ipcMain.handle("criarCliente", (_, ...args: Parameters<CriarCliente>) => salvarCliente(...args))
   ipcMain.handle("removerCliente", (_, ...args: Parameters<RemoverCliente>) => removerCliente(...args))
   ipcMain.handle("editarCliente", (_, ...args: Parameters<EditarCliente>) => editarCliente(...args))
   ipcMain.handle("buscarClientePorId", (_, ...args: Parameters<BuscarClientePorId>) => buscarClientePorId(...args))
   ipcMain.handle("buscarTodosClientes", (_, ...args: Parameters<BuscarTodosClientes>) => buscarTodosClientes(...args))
 }
-

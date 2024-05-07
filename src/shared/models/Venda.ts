@@ -1,13 +1,13 @@
-import {Cliente} from './Cliente';
-import {Estoque} from './Estoque';
-import {FormaPagamento} from "./enums/FormaPagamento";
+import { Cliente } from './Cliente';
+import { Estoque } from './Estoque';
+import { FormaPagamento } from "./enums/FormaPagamento";
 
-export class Venda {
+export type Venda = {
   id?: number;
   dataVenda: Date;
   valorTotal: number;
   estoque: Estoque[];
-  cliente: Cliente;
+  cliente?: Cliente;
   formaPagamento: FormaPagamento;
   valorPago: number;
   troco: number;
