@@ -1,4 +1,4 @@
-import { Navigate, Route, createBrowserRouter, createRoutesFromElements } from 'react-router-dom'
+import { Navigate, Route, createHashRouter, createRoutesFromElements } from 'react-router-dom'
 import { appLoader } from './layouts/app-loader'
 
 const AppLayout = () => import('./layouts/app-layout')
@@ -8,7 +8,7 @@ const ClientesComponent = () => import('./pages/clientes/clientesPainel')
 const ContasComponent = () => import('./pages/contas/contasPainel')
 const LoginPage = () => import('./pages/login')
 
-export const router = createBrowserRouter(
+export const router = createHashRouter(
   createRoutesFromElements(
     <Route path="/">
       <Route index element={<Navigate to="app" replace />} />

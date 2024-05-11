@@ -20,7 +20,7 @@ const Component = () => {
             <li className="flex h-12 justify-between items-center">
               {menuAtivo && (
                 <img
-                  src="/assets/images/Logo.png"
+                  src='images/Logo.png'
                   alt="Logomarca que Chique"
                   className="ps-2 h-full"
                 />
@@ -70,3 +70,4 @@ const Component = () => {
 Component.displayName = "AppLayout";
 
 export { Component };
+
