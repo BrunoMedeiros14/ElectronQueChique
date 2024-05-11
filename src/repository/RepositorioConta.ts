@@ -16,8 +16,8 @@ const contaParaModelDb = (conta: Conta): ContaDb => ({
   nome: conta.nome,
   valor: conta.valor,
   descricao: conta.descricao,
-  data_vencimento: conta.dataPagamento ? conta.dataPagamento.toISOString().split('T')[0] : null,
-  data_pagamento: conta.dataVencimento ? conta.dataVencimento.toISOString().split('T')[0] : null,
+  data_pagamento: conta.dataPagamento ? conta.dataPagamento.toISOString().split('T')[0] : null,
+  data_vencimento: conta.dataVencimento ? conta.dataVencimento.toISOString().split('T')[0] : null,
   pago: conta.pago ? 1 : 0
 })
 
