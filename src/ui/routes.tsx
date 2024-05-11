@@ -1,12 +1,17 @@
-import { Navigate, Route, createBrowserRouter, createRoutesFromElements } from 'react-router-dom'
-import { appLoader } from './layouts/app-loader'
+import {
+  Navigate,
+  Route,
+  createBrowserRouter,
+  createRoutesFromElements,
+} from "react-router-dom";
+import { appLoader } from "./layouts/app-loader";
 
-const AppLayout = () => import('./layouts/app-layout')
-const CaixaComponent = () => import('./pages/caixas/caixasPainel')
-const EstoqueComponent = () => import('./pages/estoque/estoquePainel')
-const ClientesComponent = () => import('./pages/clientes/clientesPainel')
-const ContasComponent = () => import('./pages/contas/contasPainel')
-const LoginPage = () => import('./pages/login')
+const AppLayout = () => import("./layouts/app-layout");
+const CaixaComponent = () => import("./pages/caixas/caixasPainel");
+const EstoqueComponent = () => import("./pages/estoque/estoquePainel");
+const ClientesComponent = () => import("./pages/clientes/clientesPainel");
+const ContasComponent = () => import("./pages/contas/contasPainel");
+const LoginPage = () => import("./pages/login");
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -22,4 +27,4 @@ export const router = createBrowserRouter(
       <Route path="login" lazy={LoginPage} />
     </Route>
   )
-)
+);
