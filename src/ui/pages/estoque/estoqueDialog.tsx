@@ -1,10 +1,3 @@
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../../../ui/components/ui/select";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNumberFormat } from "@react-input/number-format";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -17,7 +10,13 @@ import {
   buscarEstoquePorId,
   cadastrarEstoqueApi,
 } from "../../../ui/api/estoquesApi";
-import { Switch } from "../../../ui/components/ui/switch";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../../../ui/components/ui/select";
 import { Cor } from "../../../ui/enums/Cor";
 import { Tecido } from "../../../ui/enums/Tecido";
 import { gerarDoublePorValorMonetario } from "../../../ui/utils/conversores";
@@ -372,7 +371,9 @@ export function DialogCadastrarEstoque({ isOpen }: { isOpen: boolean }) {
                 <strong>Lucro Estimado</strong>
               </label>
               <div
-                className={`${lucro >= 0 ? "text-green-500" : "text-red-500"} font-bold mt-4`}
+                className={`${
+                  lucro >= 0 ? "text-green-500" : "text-red-500"
+                } font-bold mt-4`}
               >
                 {isNaN(lucro)
                   ? "R$ 0,00"
@@ -382,23 +383,6 @@ export function DialogCadastrarEstoque({ isOpen }: { isOpen: boolean }) {
                     })}
               </div>
             </div>
-
-            <FormField
-              control={form.control}
-              name="vendido"
-              render={({ field }) => (
-                <FormItem className="flex flex-col gap-2 items-start justify-start">
-                  <FormLabel className="mt-2">Vendido</FormLabel>
-                  <FormControl>
-                    <Switch
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
 
             <Button className="hidden" type="submit"></Button>
           </form>
@@ -737,7 +721,9 @@ export function DialogAtualizarEstoque({ estoqueId }: { estoqueId?: number }) {
                 <strong>Lucro Estimado</strong>
               </label>
               <div
-                className={`${lucro >= 0 ? "text-green-500" : "text-red-500"} font-bold mt-4`}
+                className={`${
+                  lucro >= 0 ? "text-green-500" : "text-red-500"
+                } font-bold mt-4`}
               >
                 {isNaN(lucro)
                   ? "R$ 0,00"
@@ -747,23 +733,6 @@ export function DialogAtualizarEstoque({ estoqueId }: { estoqueId?: number }) {
                     })}
               </div>
             </div>
-
-            <FormField
-              control={form.control}
-              name="vendido"
-              render={({ field }) => (
-                <FormItem className="flex flex-col gap-2 items-start justify-start">
-                  <FormLabel className="mt-2">Vendido</FormLabel>
-                  <FormControl>
-                    <Switch
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
 
             <Button className="hidden" type="submit"></Button>
           </form>

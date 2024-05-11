@@ -1,7 +1,7 @@
 import {
   useMutation,
   useQueryClient,
-  useSuspenseQuery,
+  useSuspenseQuery
 } from "@tanstack/react-query";
 import { UserPlus } from "lucide-react";
 import { useRef, useState } from "react";
@@ -89,7 +89,6 @@ export function Component() {
         colunaParaFiltrar="nome"
         filtro={searchValue}
       />
-
       <AlertDialog open={idParaExcluir !== null}>
         <AlertDialogContent>
           <AlertDialogHeader>
