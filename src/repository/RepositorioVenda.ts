@@ -1,6 +1,7 @@
 import { Venda } from "src/shared/models/Venda";
 import { FormaPagamento } from "src/shared/models/enums/FormaPagamento";
 import db from "../config/bancoDeDados";
+import { inserirIdVenda } from "./RepositorioEstoque";
 
 type VendaDb = {
   id: number,
@@ -43,9 +44,13 @@ export const criarVenda = (venda: Venda) => {
     VALUES (@data_venda, @valor_total, @forma_pagamento, @valor_pago, @troco, @desconto, @cliente_id)
   `;
 
-  return db
+  const vendaId = db
     .prepare(insertQuery)
-    .run(vendaDb);
+    .run(vendaDb).lastInsertRowid;
+
+  venda.estoque.forEach(estoque => {
+    inserirIdVenda(estoque.id, Number(vendaId));
+  })
 };
 
 export const buscarVendaPorId = (vendaId: number): Venda => {

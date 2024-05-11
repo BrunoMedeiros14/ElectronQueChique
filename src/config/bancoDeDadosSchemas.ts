@@ -42,7 +42,7 @@ const criarTabelaVenda = `
     forma_pagamento TEXT NOT NULL,
     valor_pago REAL NOT NULL,
     troco REAL NOT NULL,
-    desconto REAL NOT NULL,
+    desconto REAL NULL,
     cliente_id INTEGER NULL,
     caixa_id INTEGER,
     FOREIGN KEY (cliente_id) REFERENCES clientes(id),

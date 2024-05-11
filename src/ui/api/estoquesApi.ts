@@ -6,6 +6,10 @@ export const buscarEstoques = queryOptions({
   queryFn: () => window.apiEstoque.buscarTodosEstoques(),
 });
 
+export const buscarEstoquesNaoVendidos = async () =>
+  await window.apiEstoque.buscarTodosEstoques()
+    .then(e => e.filter(e => !e.vendido))
+
 export const buscarEstoquePorId = async (estoqueId: number) =>
   await window.apiEstoque.buscarEstoquePorId(estoqueId)
 
