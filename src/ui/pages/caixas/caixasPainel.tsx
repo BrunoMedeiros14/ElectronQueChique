@@ -9,13 +9,13 @@ import { FaCashRegister } from "react-icons/fa";
 import { buscarCaixas, removerCaixaApi } from "../../../ui/api/CaixasApi";
 import { buscarVendas, removerVendaApi } from "../../../ui/api/VendasApi";
 import {
-  DialogCadastrarCaixa,
-  DialogCadastrarVenda,
+  DialogCadastrarCaixa
 } from "../../../ui/pages/caixas/caixasDialog";
 import { Button } from "../../components/ui/button";
 import { DataTable } from "../../components/ui/data-table";
 import { Dialog, DialogTrigger } from "../../components/ui/dialog";
 import { escutarCliqueTeclado } from "../../hooks/escutarCliqueTeclado";
+import { DialogCadastrarVendaBeta } from "./cadastrarVendaDialog";
 import { pegarColunasCaixa, pegarColunasVenda } from "./caixasColunas";
 
 export function Component() {
@@ -129,7 +129,7 @@ export function Component() {
                     Nova Venda (F1)
                   </Button>
                 </DialogTrigger>
-                <DialogCadastrarVenda isOpen={dialogAberto} />
+                <DialogCadastrarVendaBeta isOpen={dialogAberto} />
               </Dialog>
             </div>
 

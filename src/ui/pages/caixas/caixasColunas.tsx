@@ -1,14 +1,14 @@
+import { ColumnDef } from "@tanstack/react-table";
+import { Pencil, Trash2 } from "lucide-react";
+import React from "react";
+import { Caixa } from "src/shared/models/Caixa";
+import { Venda } from "src/shared/models/Venda";
+import { Button } from "../../../ui/components/ui/button";
 import {
   gerarStringPorcentagemPorNumeroInteiro,
   gerarStringPorDate,
-  gerarStringReal
+  gerarStringReal,
 } from "../../../ui/utils/conversores";
-import {ColumnDef} from "@tanstack/react-table";
-import {Caixa} from "src/shared/models/Caixa";
-import {Button} from "../../../ui/components/ui/button";
-import {Pencil, Trash2} from "lucide-react";
-import {Venda} from "src/shared/models/Venda";
-import React from "react";
 
 type ColunasCaixaProps = {
   setIdParaExcluir: React.Dispatch<React.SetStateAction<number>>;
@@ -21,9 +21,9 @@ type ColunasVendaProps = {
 };
 
 export const pegarColunasCaixa = ({
-                                    setIdParaExcluir,
-                                    abrirEdicaoCaixa,
-                                  }: ColunasCaixaProps): ColumnDef<Caixa>[] => [
+  setIdParaExcluir,
+  abrirEdicaoCaixa,
+}: ColunasCaixaProps): ColumnDef<Caixa>[] => [
   {
     accessorKey: "id",
     header: "Id",
@@ -31,32 +31,32 @@ export const pegarColunasCaixa = ({
   {
     accessorKey: "ativo",
     header: "Ativo",
-    cell: ({row}) => {
+    cell: ({ row }) => {
       return row.getValue("ativo") ? "Sim" : "Não";
     },
   },
   {
     accessorKey: "dataHoraAbertura",
     header: "Data Abertura",
-    cell: ({row}) => {
+    cell: ({ row }) => {
       return row.getValue("dataPagamento")
-          ? gerarStringPorDate(row.getValue("dataPagamento"))
-          : "Não inserido";
+        ? gerarStringPorDate(row.getValue("dataPagamento"))
+        : "Não inserido";
     },
   },
   {
     accessorKey: "dataHoraFechamento",
     header: "Data Fechamento",
-    cell: ({row}) => {
+    cell: ({ row }) => {
       return row.getValue("dataPagamento")
-          ? gerarStringPorDate(row.getValue("dataPagamento"))
-          : "Não inserido";
+        ? gerarStringPorDate(row.getValue("dataPagamento"))
+        : "Não inserido";
     },
   },
   {
     accessorKey: "valorInicial",
     header: "Valor Inicial",
-    cell: ({row}) => {
+    cell: ({ row }) => {
       return gerarStringReal(row.getValue("valorInicial"));
     },
   },
@@ -70,40 +70,40 @@ export const pegarColunasCaixa = ({
   },
   {
     id: "actions",
-    cell: ({row}) => {
+    cell: ({ row }) => {
       const caixaId = row.original.id;
 
       return (
-          <div className="flex justify-center w-full gap-1">
-            <Button
-                size="icon"
-                variant="ghost"
-                onClick={() => abrirEdicaoCaixa(caixaId)}
-                className="text-orange-400 hover:text-white hover:bg-orange-400"
-            >
-              <Pencil className="h-4 w-4"/>
-              <span className="sr-only">Edit</span>
-            </Button>
+        <div className="flex justify-center w-full gap-1">
+          <Button
+            size="icon"
+            variant="ghost"
+            onClick={() => abrirEdicaoCaixa(caixaId)}
+            className="text-orange-400 hover:text-white hover:bg-orange-400"
+          >
+            <Pencil className="h-4 w-4" />
+            <span className="sr-only">Edit</span>
+          </Button>
 
-            <Button
-                size="icon"
-                variant="ghost"
-                onClick={() => setIdParaExcluir(caixaId)}
-                className="text-red-500 hover:text-white hover:bg-red-500"
-            >
-              <Trash2 className="h-4 w-4"/>
-              <span className="sr-only">Delete</span>
-            </Button>
-          </div>
+          <Button
+            size="icon"
+            variant="ghost"
+            onClick={() => setIdParaExcluir(caixaId)}
+            className="text-red-500 hover:text-white hover:bg-red-500"
+          >
+            <Trash2 className="h-4 w-4" />
+            <span className="sr-only">Delete</span>
+          </Button>
+        </div>
       );
     },
   },
 ];
 
 export const pegarColunasVenda = ({
-                                    setIdParaExcluir,
-                                    abrirEdicaoVenda,
-                                  }: ColunasVendaProps): ColumnDef<Venda>[] => [
+  setIdParaExcluir,
+  abrirEdicaoVenda,
+}: ColunasVendaProps): ColumnDef<Venda>[] => [
   {
     accessorKey: "id",
     header: "Id",
@@ -123,44 +123,44 @@ export const pegarColunasVenda = ({
   {
     accessorKey: "desconto",
     header: "Desconto",
-    cell: ({row}) => {
+    cell: ({ row }) => {
       return gerarStringPorcentagemPorNumeroInteiro(row.getValue("desconto"));
     },
   },
   {
     accessorKey: "valorTotal",
     header: "Valor Total",
-    cell: ({row}) => {
+    cell: ({ row }) => {
       return gerarStringReal(row.getValue("valorTotal"));
     },
   },
   {
     id: "actions",
-    cell: ({row}) => {
+    cell: ({ row }) => {
       const vendaId = row.original.id;
 
       return (
-          <div className="flex justify-center w-full gap-1">
-            <Button
-                size="icon"
-                variant="ghost"
-                onClick={() => abrirEdicaoVenda(vendaId)}
-                className="text-orange-400 hover:text-white hover:bg-orange-400"
-            >
-              <Pencil className="h-4 w-4"/>
-              <span className="sr-only">Edit</span>
-            </Button>
+        <div className="flex justify-center w-full gap-1">
+          <Button
+            size="icon"
+            variant="ghost"
+            onClick={() => abrirEdicaoVenda(vendaId)}
+            className="text-orange-400 hover:text-white hover:bg-orange-400"
+          >
+            <Pencil className="h-4 w-4" />
+            <span className="sr-only">Edit</span>
+          </Button>
 
-            <Button
-                size="icon"
-                variant="ghost"
-                onClick={() => setIdParaExcluir(vendaId)}
-                className="text-red-500 hover:text-white hover:bg-red-500"
-            >
-              <Trash2 className="h-4 w-4"/>
-              <span className="sr-only">Delete</span>
-            </Button>
-          </div>
+          <Button
+            size="icon"
+            variant="ghost"
+            onClick={() => setIdParaExcluir(vendaId)}
+            className="text-red-500 hover:text-white hover:bg-red-500"
+          >
+            <Trash2 className="h-4 w-4" />
+            <span className="sr-only">Delete</span>
+          </Button>
+        </div>
       );
     },
   },
