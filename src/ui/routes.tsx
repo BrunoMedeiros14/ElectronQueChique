@@ -1,7 +1,7 @@
 import {
   Navigate,
   Route,
-  createBrowserRouter,
+  createHashRouter,
   createRoutesFromElements,
 } from "react-router-dom";
 import { appLoader } from "./layouts/app-loader";
@@ -13,7 +13,7 @@ const ClientesComponent = () => import("./pages/clientes/clientesPainel");
 const ContasComponent = () => import("./pages/contas/contasPainel");
 const LoginPage = () => import("./pages/login");
 
-export const router = createBrowserRouter(
+export const router = createHashRouter(
   createRoutesFromElements(
     <Route path="/">
       <Route index element={<Navigate to="app" replace />} />
