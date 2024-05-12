@@ -74,7 +74,8 @@ export function DialogCadastrarVendaBeta({ isOpen }: { isOpen: boolean }) {
   const cadastrarVendaMutation = useMutation({
     mutationFn: cadastrarVendaApi,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["vendas", "estoque"] });
+      queryClient.invalidateQueries({ queryKey: ["vendas"] });
+      queryClient.invalidateQueries({ queryKey: ["estoque"] });
       refBtnClose.current.click();
     },
   });
@@ -111,7 +112,6 @@ export function DialogCadastrarVendaBeta({ isOpen }: { isOpen: boolean }) {
       return;
     }
     const desconto = 1 - Number(form.getValues().desconto) / 100;
-    console.log(desconto);
     const valorTotal =
       estoqueSelecionado.reduce((i, a) => i + a.valorVenda, 0) * desconto;
     const valorPago = gerarDoublePorValorMonetario(form.getValues().valorPago);

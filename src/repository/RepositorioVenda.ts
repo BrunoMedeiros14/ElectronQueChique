@@ -106,13 +106,9 @@ export const buscarTodasVendas = () => {
     LEFT JOIN clientes c ON v.cliente_id = c.id
     GROUP BY v.id
   `;
-  console.log(db.prepare(selectAllQuery).all())
 
   return db.prepare(selectAllQuery).all()
     .map((vendaDb: VendaDb) => modelDbParaVenda(vendaDb))
-
-  // const vendasDb = db.prepare(selectAllQuery).all() as VendaDb[];
-  // const vendas = vendasDb.map(vendaDb => modelDbParaVenda(vendaDb));
 };
 
 buscarTodasVendas()

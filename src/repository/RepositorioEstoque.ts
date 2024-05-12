@@ -79,7 +79,7 @@ export const buscarTodosEstoques = () => {
 
 export const buscarEstoquesNaoVendidos = () => {
   const selectAllQuery = `
-    SELECT * FROM estoques e WHERE e.venda_id = 'null'
+    SELECT * FROM estoques e WHERE e.venda_id IS NULL
   `;
 
   const estoquesDb = db.prepare(selectAllQuery).all() as EstoqueDb[];

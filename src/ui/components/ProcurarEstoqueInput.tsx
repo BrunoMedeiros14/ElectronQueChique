@@ -60,8 +60,15 @@ export default function ProcurarEstoqueInput({
                   <CommandItem
                     onSelect={() => handleAdicionarEstoque(estoque)}
                     key={estoque.id}
+                    className="flex justify-between"
                   >
-                    {`${estoque.nome} - ${estoque.cor}`}
+                    <span className="flex-1">{`${estoque.nome} - ${estoque.cor}`}</span>
+                    <span>
+                      {estoque.valorVenda.toLocaleString("pt-BR", {
+                        style: "currency",
+                        currency: "BRL",
+                      })}
+                    </span>
                   </CommandItem>
                 ))}
           </CommandGroup>
