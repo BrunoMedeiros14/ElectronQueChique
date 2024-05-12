@@ -1,30 +1,49 @@
-import {ProcurarClienteInput} from '@/components/ProcurarClienteInput'
+import { ProcurarClienteInput } from '@/components/ProcurarClienteInput'
 import ProcurarEstoqueInput from '@/components/ProcurarEstoqueInput'
-import {Button} from '@/components/ui/button'
-import {DialogClose, DialogContent, DialogDescription, DialogHeader, DialogTitle,} from '@/components/ui/dialog'
-import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage,} from '@/components/ui/form'
-import {Input} from '@/components/ui/input'
-import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue,} from '@/components/ui/select'
-import {zodResolver} from '@hookform/resolvers/zod'
-import {useNumberFormat} from '@react-input/number-format'
-import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query'
-import {Trash2} from 'lucide-react'
-import {useEffect, useRef, useState} from 'react'
-import {useForm} from 'react-hook-form'
-import {z} from 'zod'
-import {Cliente} from '../../../src-electron/models/Cliente'
-import {Estoque} from '../../../src-electron/models/Estoque'
-import {Venda} from '../../../src-electron/models/Venda'
-import {FormaPagamento as FormaPagamentoType} from '../../../src-electron/models/enums/FormaPagamento'
-import {cadastrarVendaApi} from '../../api/VendasApi'
-import {buscarTodosClientes} from '../../api/clientesApi'
-import {buscarEstoquesNaoVendidos} from '../../api/estoquesApi'
-import {FormaPagamento} from '../../enums/FormaPagamento'
-import {gerarDoublePorValorMonetario} from '../../utils/conversores'
+import { Button } from '@/components/ui/button'
+import {
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog'
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useNumberFormat } from '@react-input/number-format'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { Trash2 } from 'lucide-react'
+import { useEffect, useRef, useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
+import { Cliente } from '../../../src-electron/models/Cliente'
+import { Estoque } from '../../../src-electron/models/Estoque'
+import { Venda } from '../../../src-electron/models/Venda'
+import { FormaPagamento as FormaPagamentoType } from '../../../src-electron/models/enums/FormaPagamento'
+import { cadastrarVendaApi } from '../../api/VendasApi'
+import { buscarTodosClientes } from '../../api/clientesApi'
+import { buscarEstoquesNaoVendidos } from '../../api/estoquesApi'
+import { FormaPagamento } from '../../enums/FormaPagamento'
+import { gerarDoublePorValorMonetario } from '../../utils/conversores'
 
 const formSchemaVenda = z.object({
   formaPagamento: z.nativeEnum(FormaPagamento),
-  valorPago: z.string({message: 'Campo Obrigatório'}),
+  valorPago: z.string({ message: 'Campo Obrigatório' }),
   valorTotal: z.number(),
   troco: z.number(),
   desconto: z.string().refine((v) => v === '' || parseInt(v) <= 10, {
@@ -44,7 +63,7 @@ const gerarFormVazioVenda = () =>
     },
   })
 
-export function DialogCadastrarVendaBeta({isOpen}: { isOpen: boolean }) {
+export function DialogCadastrarVendaBeta({ isOpen }: { isOpen: boolean }) {
   const queryClient = useQueryClient()
   const refBtnClose = useRef<HTMLButtonElement>()
 
@@ -56,8 +75,8 @@ export function DialogCadastrarVendaBeta({isOpen}: { isOpen: boolean }) {
   const cadastrarVendaMutation = useMutation({
     mutationFn: cadastrarVendaApi,
     onSuccess: () => {
-      queryClient.invalidateQueries({queryKey: ['vendas']})
-      queryClient.invalidateQueries({queryKey: ['estoque']})
+      queryClient.invalidateQueries({ queryKey: ['vendas'] })
+      queryClient.invalidateQueries({ queryKey: ['estoque'] })
       refBtnClose.current.click()
     },
   })
@@ -69,12 +88,12 @@ export function DialogCadastrarVendaBeta({isOpen}: { isOpen: boolean }) {
   })
 
   async function onSubmit({
-                            formaPagamento,
-                            valorPago,
-                            troco,
-                            desconto,
-                            valorTotal,
-                          }: z.infer<typeof formSchemaVenda>) {
+    formaPagamento,
+    valorPago,
+    troco,
+    desconto,
+    valorTotal,
+  }: z.infer<typeof formSchemaVenda>) {
     const venda: Venda = {
       dataVenda: new Date(),
       estoque: estoqueSelecionado,
@@ -115,18 +134,18 @@ export function DialogCadastrarVendaBeta({isOpen}: { isOpen: boolean }) {
   }, [isOpen])
 
   useEffect(() => {
-    const desconto = 1 - Number(form.getValues().desconto) / 100;
+    const desconto = 1 - Number(form.getValues().desconto) / 100
     const valorTotal =
-      estoqueSelecionado.reduce((i, a) => i + a.valorVenda, 0) * desconto;
-    form.setValue('valorTotal', valorTotal);
-  }, [estoqueSelecionado, form.watch('desconto')]);
+      estoqueSelecionado.reduce((i, a) => i + a.valorVenda, 0) * desconto
+    form.setValue('valorTotal', valorTotal)
+  }, [estoqueSelecionado, form.watch('desconto')])
 
-  const {data: estoques} = useQuery<Estoque[]>({
+  const { data: estoques } = useQuery<Estoque[]>({
     queryKey: ['estoque'],
     queryFn: buscarEstoquesNaoVendidos,
   })
 
-  const {data: clientes} = useQuery<Cliente[]>({
+  const { data: clientes } = useQuery<Cliente[]>({
     queryKey: ['cliente'],
     queryFn: buscarTodosClientes,
   })
@@ -174,14 +193,13 @@ export function DialogCadastrarVendaBeta({isOpen}: { isOpen: boolean }) {
                   onClick={() => handleRemoverEstoque(estoque)}
                   className='text-red-500'
                 >
-                  <Trash2 className='h-4 w-4'/>
+                  <Trash2 className='h-4 w-4' />
                   <span className='sr-only'>Delete</span>
                 </Button>
               </div>
             ))}
             {estoqueSelecionado.length === 0 && (
-              <div
-                className='h-full w-full first:border-t-0 flex items-center justify-center text-lg font-normal text-gray-700'>
+              <div className='h-full w-full first:border-t-0 flex items-center justify-center text-lg font-normal text-gray-700'>
                 Nenhum Item selecionado
               </div>
             )}
@@ -229,14 +247,14 @@ export function DialogCadastrarVendaBeta({isOpen}: { isOpen: boolean }) {
                       }
                     />
                   </FormControl>
-                  <FormMessage/>
+                  <FormMessage />
                 </FormItem>
 
                 <div className='flex gap-2'>
                   <FormField
                     control={form.control}
                     name='formaPagamento'
-                    render={({field}) => (
+                    render={({ field }) => (
                       <FormItem className='flex-1'>
                         <FormLabel>Foma de Pagamento*</FormLabel>
                         <FormControl>
@@ -245,7 +263,7 @@ export function DialogCadastrarVendaBeta({isOpen}: { isOpen: boolean }) {
                             defaultValue={field.value}
                           >
                             <SelectTrigger>
-                              <SelectValue placeholder='Selecione uma forma...'/>
+                              <SelectValue placeholder='Selecione uma forma...' />
                             </SelectTrigger>
                             <SelectContent>
                               {Object.values(FormaPagamento).map(
@@ -261,7 +279,7 @@ export function DialogCadastrarVendaBeta({isOpen}: { isOpen: boolean }) {
                             </SelectContent>
                           </Select>
                         </FormControl>
-                        <FormMessage/>
+                        <FormMessage />
                       </FormItem>
                     )}
                   />
@@ -269,7 +287,7 @@ export function DialogCadastrarVendaBeta({isOpen}: { isOpen: boolean }) {
                   <FormField
                     control={form.control}
                     name='desconto'
-                    render={({field}) => (
+                    render={({ field }) => (
                       <FormItem>
                         <FormLabel>Desconto*</FormLabel>
                         <div className='flex items-center gap-2'>
@@ -282,7 +300,7 @@ export function DialogCadastrarVendaBeta({isOpen}: { isOpen: boolean }) {
                           </FormControl>
                           %
                         </div>
-                        <FormMessage/>
+                        <FormMessage />
                       </FormItem>
                     )}
                   />
@@ -292,7 +310,7 @@ export function DialogCadastrarVendaBeta({isOpen}: { isOpen: boolean }) {
                   <FormField
                     control={form.control}
                     name='valorPago'
-                    render={({field}) => (
+                    render={({ field }) => (
                       <FormItem className='flex-1'>
                         <FormLabel>Valor Pago*</FormLabel>
                         <FormControl>
@@ -303,7 +321,7 @@ export function DialogCadastrarVendaBeta({isOpen}: { isOpen: boolean }) {
                             onChange={field.onChange}
                           />
                         </FormControl>
-                        <FormMessage/>
+                        <FormMessage />
                       </FormItem>
                     )}
                   />
@@ -318,7 +336,7 @@ export function DialogCadastrarVendaBeta({isOpen}: { isOpen: boolean }) {
                         listaCliente={clientes}
                       />
                     </FormControl>
-                    <FormMessage/>
+                    <FormMessage />
                   </FormItem>
                 </div>
                 <div className='flex gap-2 justify-end flex-1 items-end'>

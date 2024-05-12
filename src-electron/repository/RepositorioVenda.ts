@@ -1,8 +1,13 @@
 import db from '../config/bancoDeDados'
-import {Venda} from '../models/Venda'
-import {FormaPagamento} from '../models/enums/FormaPagamento'
-import {EstoqueDb, inserirIdVenda, modelDbParaEstoque, removerIdVenda,} from './RepositorioEstoque'
-import {buscarTodosCaixas} from "./RepositorioCaixa";
+import { Venda } from '../models/Venda'
+import { FormaPagamento } from '../models/enums/FormaPagamento'
+import { buscarTodosCaixas } from './RepositorioCaixa'
+import {
+  EstoqueDb,
+  inserirIdVenda,
+  modelDbParaEstoque,
+  removerIdVenda,
+} from './RepositorioEstoque'
 
 type VendaDb = {
   id: number
@@ -15,9 +20,10 @@ type VendaDb = {
   cliente_id?: number
   estoque_json?: string
   cliente_json?: string
+  caixa_id?: number
 }
 
-const vendaParaModelDb = (venda: Venda): VendaDb => ({
+const vendaParaModelDb = (venda: Venda, caixaId?: number): VendaDb => ({
   id: venda.id,
   data_venda: venda.dataVenda
     ? venda.dataVenda.toISOString().split('T')[0]
@@ -28,6 +34,7 @@ const vendaParaModelDb = (venda: Venda): VendaDb => ({
   troco: venda.troco,
   desconto: venda.desconto,
   cliente_id: venda.cliente?.id,
+  caixa_id: caixaId,
 })
 
 const modelDbParaVenda = (vendaDb: VendaDb): Venda => ({
@@ -36,10 +43,10 @@ const modelDbParaVenda = (vendaDb: VendaDb): Venda => ({
   valorTotal: vendaDb.valor_total,
   estoque: vendaDb.estoque_json
     ? JSON.parse(vendaDb.estoque_json)
-      .filter((estoque: EstoqueDb) => estoque.id)
-      .map((estoque: EstoqueDb) =>
-        estoque.id ? modelDbParaEstoque(estoque) : null
-      )
+        .filter((estoque: EstoqueDb) => estoque.id)
+        .map((estoque: EstoqueDb) =>
+          estoque.id ? modelDbParaEstoque(estoque) : null
+        )
     : [],
   cliente: vendaDb.cliente_json
     ? JSON.parse(vendaDb.cliente_json).id
@@ -50,29 +57,29 @@ const modelDbParaVenda = (vendaDb: VendaDb): Venda => ({
   valorPago: vendaDb.valor_pago,
   troco: vendaDb.troco,
   desconto: vendaDb.desconto,
-});
+})
 
 export const criarVenda = (venda: Venda) => {
-  const caixaAtivo = buscarTodosCaixas().find(caixa => caixa.ativo === true);
+  const caixaAtivo = buscarTodosCaixas().find((caixa) => caixa.ativo === true)
 
   if (!caixaAtivo) {
-    throw new Error("Nenhum caixa ativo encontrado");
+    throw new Error('Nenhum caixa ativo encontrado')
   }
 
-  const caixaId = caixaAtivo.id;
+  const caixaId = caixaAtivo.id
 
-  const vendaDb = vendaParaModelDb(venda);
+  const vendaDb = vendaParaModelDb(venda, caixaId)
   const insertQuery = `
     INSERT INTO vendas (data_venda, valor_total, forma_pagamento, valor_pago, troco, desconto, cliente_id, caixa_id)
     VALUES (@data_venda, @valor_total, @forma_pagamento, @valor_pago, @troco, @desconto, @cliente_id, @caixa_id)
-  `;
+  `
 
-  const vendaId = db.prepare(insertQuery).run(vendaDb).lastInsertRowid;
+  const vendaId = db.prepare(insertQuery).run(vendaDb).lastInsertRowid
 
   venda.estoque.forEach((estoque) => {
-    inserirIdVenda(estoque.id, Number(vendaId));
-  });
-};
+    inserirIdVenda(estoque.id, Number(vendaId))
+  })
+}
 
 export const buscarVendaPorId = (vendaId: number): Venda => {
   const selectQuery = `

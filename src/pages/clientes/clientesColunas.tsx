@@ -1,8 +1,8 @@
-import {ColumnDef} from '@tanstack/react-table'
-import {Pencil, Trash2} from 'lucide-react'
-import {Cliente} from '../../../src-electron/models/Cliente'
-import {Button} from '../../components/ui/button'
-import {gerarStringPorDate} from '../../utils/conversores'
+import { ColumnDef } from '@tanstack/react-table'
+import { Pencil, Trash2 } from 'lucide-react'
+import { Cliente } from '../../../src-electron/models/Cliente'
+import { Button } from '../../components/ui/button'
+import { gerarStringPorDate } from '../../utils/conversores'
 
 type ColunasClienteProps = {
   setIdParaExcluir: React.Dispatch<React.SetStateAction<number>>
@@ -10,9 +10,9 @@ type ColunasClienteProps = {
 }
 
 export const pegarColunasCliente = ({
-                                      setIdParaExcluir,
-                                      abrirEdicaoCliente,
-                                    }: ColunasClienteProps): ColumnDef<Cliente>[] => [
+  setIdParaExcluir,
+  abrirEdicaoCliente,
+}: ColunasClienteProps): ColumnDef<Cliente>[] => [
   {
     accessorKey: 'id',
     header: 'Id',
@@ -33,7 +33,7 @@ export const pegarColunasCliente = ({
   {
     accessorKey: 'dataNascimento',
     header: 'Data de Nascimento',
-    cell: ({row}) => {
+    cell: ({ row }) => {
       return row.getValue('dataNascimento') === null
         ? 'Não cadastrado'
         : gerarStringPorDate(row.getValue('dataNascimento'))
@@ -42,7 +42,7 @@ export const pegarColunasCliente = ({
   {
     accessorKey: 'endereco',
     header: 'Endereço',
-    cell: ({row}) => {
+    cell: ({ row }) => {
       return row?.getValue('endereco') === ''
         ? 'Não cadastrado'
         : row?.getValue('endereco')
@@ -50,7 +50,7 @@ export const pegarColunasCliente = ({
   },
   {
     id: 'actions',
-    cell: ({row}) => {
+    cell: ({ row }) => {
       const clienteId = row.original.id
 
       return (
@@ -61,7 +61,7 @@ export const pegarColunasCliente = ({
             onClick={() => abrirEdicaoCliente(clienteId)}
             className='text-orange-400 hover:text-white hover:bg-orange-400'
           >
-            <Pencil className='h-4 w-4'/>
+            <Pencil className='h-4 w-4' />
             <span className='sr-only'>Edit</span>
           </Button>
 
@@ -71,7 +71,7 @@ export const pegarColunasCliente = ({
             onClick={() => setIdParaExcluir(clienteId)}
             className='text-red-500 hover:text-white hover:bg-red-500'
           >
-            <Trash2 className='h-4 w-4'/>
+            <Trash2 className='h-4 w-4' />
             <span className='sr-only'>Delete</span>
           </Button>
         </div>

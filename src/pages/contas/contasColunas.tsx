@@ -1,8 +1,8 @@
-import {ColumnDef} from '@tanstack/react-table'
-import {Pencil, Trash2} from 'lucide-react'
-import {Conta} from '../../../src-electron/models/Conta'
-import {Button} from '../../components/ui/button'
-import {gerarStringPorDate, gerarStringReal} from '../../utils/conversores'
+import { ColumnDef } from '@tanstack/react-table'
+import { Pencil, Trash2 } from 'lucide-react'
+import { Conta } from '../../../src-electron/models/Conta'
+import { Button } from '../../components/ui/button'
+import { gerarStringPorDate, gerarStringReal } from '../../utils/conversores'
 
 type ColunasContaProps = {
   setIdParaExcluir: React.Dispatch<React.SetStateAction<number>>
@@ -10,9 +10,9 @@ type ColunasContaProps = {
 }
 
 export const pegarColunasConta = ({
-                                    setIdParaExcluir,
-                                    abrirEdicaoConta,
-                                  }: ColunasContaProps): ColumnDef<Conta>[] => [
+  setIdParaExcluir,
+  abrirEdicaoConta,
+}: ColunasContaProps): ColumnDef<Conta>[] => [
   {
     accessorKey: 'id',
     header: 'Id',
@@ -29,44 +29,44 @@ export const pegarColunasConta = ({
   {
     accessorKey: 'dataVencimento',
     header: 'Data de Vencimento',
-    cell: ({row}) => {
+    cell: ({ row }) => {
       return row.getValue('dataVencimento')
         ? gerarStringPorDate(row.getValue('dataVencimento'))
         : 'Não inserido'
     },
   },
   {
-  id: 'vencido',
-  header: 'Vencido',
-  cell: ({row}) => {
-    const pago: boolean = row.getValue('pago');
-    const dataVencimento: string = row.getValue('dataVencimento');
-    const dataVencimentoDate = new Date(dataVencimento);
-    const hoje = new Date();
+    id: 'vencido',
+    header: 'Vencido',
+    cell: ({ row }) => {
+      const pago: boolean = row.getValue('pago')
+      const dataVencimento: string = row.getValue('dataVencimento')
+      const dataVencimentoDate = new Date(dataVencimento)
+      const hoje = new Date()
 
-    dataVencimentoDate.setHours(8, 0, 0, 0);
-    hoje.setHours(8, 0, 0, 0);
-    hoje.setDate(hoje.getDate() - 1);
+      dataVencimentoDate.setHours(8, 0, 0, 0)
+      hoje.setHours(8, 0, 0, 0)
+      hoje.setDate(hoje.getDate() - 1)
 
-    const vencido = !pago && dataVencimentoDate < hoje;
+      const vencido = !pago && dataVencimentoDate < hoje
 
-    return (
-      <div
-        className={`badge ${
-          vencido
-            ? 'bg-red-600 text-white hover:bg-red-600/80'
-            : 'bg-green-600 text-white hover:bg-green-600/80'
-        }`}
-      >
-        {vencido ? 'Atrasado' : 'Não'}
-      </div>
-    );
+      return (
+        <div
+          className={`badge ${
+            vencido
+              ? 'bg-red-600 text-white hover:bg-red-600/80'
+              : 'bg-green-600 text-white hover:bg-green-600/80'
+          }`}
+        >
+          {vencido ? 'Atrasado' : 'Não'}
+        </div>
+      )
+    },
   },
-},
   {
     accessorKey: 'valor',
     header: 'Valor',
-    cell: ({row}) => {
+    cell: ({ row }) => {
       const valor = parseFloat(row.getValue('valor'))
       const formatted = gerarStringReal(valor)
       return <div className='font-medium'>{formatted}</div>
@@ -75,7 +75,7 @@ export const pegarColunasConta = ({
   {
     accessorKey: 'dataPagamento',
     header: 'Data de Pagamento',
-    cell: ({row}) => {
+    cell: ({ row }) => {
       return row.getValue('dataPagamento')
         ? gerarStringPorDate(row.getValue('dataPagamento'))
         : 'Não inserido'
@@ -84,7 +84,7 @@ export const pegarColunasConta = ({
   {
     accessorKey: 'pago',
     header: 'Pago',
-    cell: ({row}) => {
+    cell: ({ row }) => {
       const pago: boolean = row.getValue('pago')
       const texto = pago ? 'Sim' : 'Não'
       return (
@@ -102,7 +102,7 @@ export const pegarColunasConta = ({
   },
   {
     id: 'actions',
-    cell: ({row}) => {
+    cell: ({ row }) => {
       const contaId = row.original.id
 
       return (
@@ -113,7 +113,7 @@ export const pegarColunasConta = ({
             onClick={() => abrirEdicaoConta(contaId)}
             className='text-orange-400 hover:text-white hover:bg-orange-400'
           >
-            <Pencil className='h-4 w-4'/>
+            <Pencil className='h-4 w-4' />
             <span className='sr-only'>Edit</span>
           </Button>
 
@@ -123,7 +123,7 @@ export const pegarColunasConta = ({
             onClick={() => setIdParaExcluir(contaId)}
             className='text-red-500 hover:text-white hover:bg-red-500'
           >
-            <Trash2 className='h-4 w-4'/>
+            <Trash2 className='h-4 w-4' />
             <span className='sr-only'>Delete</span>
           </Button>
         </div>

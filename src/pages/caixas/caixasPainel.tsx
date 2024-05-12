@@ -1,17 +1,24 @@
-import {useMutation, useQueryClient, useSuspenseQuery,} from '@tanstack/react-query'
-import {Receipt} from 'lucide-react'
-import {useRef, useState} from 'react'
-import {FaCashRegister} from 'react-icons/fa'
-import {Caixa} from '../../../src-electron/models/Caixa'
-import {buscarCaixas, removerCaixaApi} from '../../api/CaixasApi'
-import {buscarVendas, removerVendaApi} from '../../api/VendasApi'
-import {Button, buttonVariants} from '../../components/ui/button'
-import {DataTable} from '../../components/ui/data-table'
-import {Dialog, DialogTrigger} from '../../components/ui/dialog'
-import {escutarCliqueTeclado} from '../../hooks/escutarCliqueTeclado'
-import {DialogAtualizarVenda, DialogCadastrarCaixa} from '../../pages/caixas/caixasDialog'
-import {DialogCadastrarVendaBeta} from './cadastrarVendaDialog'
-import {pegarColunasCaixa, pegarColunasVenda} from './caixasColunas'
+import {
+  useMutation,
+  useQueryClient,
+  useSuspenseQuery,
+} from '@tanstack/react-query'
+import { Receipt } from 'lucide-react'
+import { useRef, useState } from 'react'
+import { FaCashRegister } from 'react-icons/fa'
+import { Caixa } from '../../../src-electron/models/Caixa'
+import { buscarCaixas, removerCaixaApi } from '../../api/CaixasApi'
+import { buscarVendas, removerVendaApi } from '../../api/VendasApi'
+import { Button, buttonVariants } from '../../components/ui/button'
+import { DataTable } from '../../components/ui/data-table'
+import { Dialog, DialogTrigger } from '../../components/ui/dialog'
+import { escutarCliqueTeclado } from '../../hooks/escutarCliqueTeclado'
+import {
+  DialogAtualizarVenda,
+  DialogCadastrarCaixa,
+} from '../../pages/caixas/caixasDialog'
+import { DialogCadastrarVendaBeta } from './cadastrarVendaDialog'
+import { pegarColunasCaixa, pegarColunasVenda } from './caixasColunas'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -20,11 +27,11 @@ import {
   AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
-  AlertDialogTitle
-} from "@/components/ui/alert-dialog";
-import {cn} from "@/components/lib/utils";
-import {FormaPagamento} from "../../../src-electron/models/enums/FormaPagamento";
-import {gerarStringReal} from "@/utils/conversores";
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog'
+import { cn } from '@/components/lib/utils'
+import { FormaPagamento } from '../../../src-electron/models/enums/FormaPagamento'
+import { gerarStringReal } from '@/utils/conversores'
 
 export function Component() {
   const refBotaoCadastro = useRef<HTMLButtonElement>()
@@ -34,15 +41,15 @@ export function Component() {
   const [idParaEditar, setIdParaEditar] = useState<number>(null)
   const [dialogAberto, setDialogAberto] = useState(false)
 
-  const {data: caixas} = useSuspenseQuery(buscarCaixas)
-  const {data: vendas} = useSuspenseQuery(buscarVendas)
+  const { data: caixas } = useSuspenseQuery(buscarCaixas)
+  const { data: vendas } = useSuspenseQuery(buscarVendas)
 
   const queryClient = useQueryClient()
 
   const removerCaixaMutation = useMutation({
     mutationFn: removerCaixaApi,
     onSuccess: () => {
-      queryClient.invalidateQueries({queryKey: ['caixas']})
+      queryClient.invalidateQueries({ queryKey: ['caixas'] })
       setIdParaExcluir(null)
     },
   })
@@ -50,7 +57,7 @@ export function Component() {
   const removerVendaMutation = useMutation({
     mutationFn: removerVendaApi,
     onSuccess: () => {
-      queryClient.invalidateQueries({queryKey: ['vendas']})
+      queryClient.invalidateQueries({ queryKey: ['vendas'] })
       setIdParaExcluir(null)
     },
   })
@@ -61,9 +68,9 @@ export function Component() {
   }
 
   const abrirEdicaoVenda = (vendaId: number) => {
-    setIdParaEditar(vendaId);
-    refBotaoAtualizacao.current.click();
-  };
+    setIdParaEditar(vendaId)
+    refBotaoAtualizacao.current.click()
+  }
 
   const colunasCaixa = pegarColunasCaixa({
     setIdParaExcluir,
@@ -84,32 +91,38 @@ export function Component() {
     value: number
   }
 
-  const {data: todosOsCaixas} = useSuspenseQuery(buscarCaixas);
-  const caixaAberto = todosOsCaixas.find(caixa => caixa.ativo === true);
+  const { data: todosOsCaixas } = useSuspenseQuery(buscarCaixas)
+  const caixaAberto = todosOsCaixas.find((caixa) => caixa.ativo === true)
 
-  const saldoInicial = caixaAberto?.valorInicial ? caixaAberto.valorInicial : 0;
+  const saldoInicial = caixaAberto?.valorInicial ? caixaAberto.valorInicial : 0
 
-  let saidasDeCaixa = 0;
+  let saidasDeCaixa = 0
 
   if (caixaAberto && caixaAberto.contas) {
-    caixaAberto.contas.forEach(c => {
-      saidasDeCaixa += c.valor;
-    });
+    caixaAberto.contas.forEach((c) => {
+      saidasDeCaixa += c.valor
+    })
   }
 
   let recebidoDinheiro = caixaAberto?.vendas
-    ? caixaAberto.vendas.filter(venda => venda.formaPagamento === FormaPagamento.Dinheiro).map(venda => venda.valorTotal).reduce((a, b) => a + b, 0)
-    : 0;
+    ? caixaAberto.vendas
+        .filter((venda) => venda.formaPagamento === FormaPagamento.Dinheiro)
+        .map((venda) => venda.valorTotal)
+        .reduce((a, b) => a + b, 0)
+    : 0
 
   let recebidoCartao = caixaAberto?.vendas
-    ? caixaAberto.vendas.filter(venda => venda.formaPagamento === FormaPagamento.Cartao).map(venda => venda.valorTotal).reduce((a, b) => a + b, 0)
-    : 0;
+    ? caixaAberto.vendas
+        .filter((venda) => venda.formaPagamento === FormaPagamento.Cartao)
+        .map((venda) => venda.valorTotal)
+        .reduce((a, b) => a + b, 0)
+    : 0
 
   let valorTotal: number = caixaAberto?.vendas
     ? caixaAberto.vendas.reduce((total, venda) => total + venda.valorTotal, 0)
-    : 0;
+    : 0
 
-  function CaixaInfo({title, value}: CaixaInfoProps) {
+  function CaixaInfo({ title, value }: CaixaInfoProps) {
     const isNegative = value < 0
     const valueClass = isNegative ? 'text-red-500' : 'text-green-500'
     const sign = isNegative ? '-' : '+'
@@ -121,7 +134,9 @@ export function Component() {
         </div>
         <div className='flex justify-between p-2 border border-blue-500 rounded-b-45'>
           <span className={`${valueClass} text-xl font-bold`}>{sign}</span>
-          <p className={`${valueClass} text-xl font-bold`}>{gerarStringReal(value)}</p>
+          <p className={`${valueClass} text-xl font-bold`}>
+            {gerarStringReal(value)}
+          </p>
         </div>
       </div>
     )
@@ -142,11 +157,11 @@ export function Component() {
                 ref={refBotaoCadastro}
                 className='w-140 h-110 ml-auto text-white bg-blue-500 text-5xl p-4'
               >
-                <FaCashRegister className='mr-4 text-5xl'/>
+                <FaCashRegister className='mr-4 text-5xl' />
                 Abrir Caixa
               </Button>
             </DialogTrigger>
-            <DialogCadastrarCaixa isOpen={dialogAberto}/>
+            <DialogCadastrarCaixa isOpen={dialogAberto} />
           </Dialog>
         </div>
       </div>
@@ -162,11 +177,11 @@ export function Component() {
               <Dialog onOpenChange={setDialogAberto}>
                 <DialogTrigger asChild>
                   <Button ref={refBotaoCadastro} className='ml-auto h-10'>
-                    <Receipt className='mr-2'/>
+                    <Receipt className='mr-2' />
                     Nova Venda (F1)
                   </Button>
                 </DialogTrigger>
-                <DialogCadastrarVendaBeta isOpen={dialogAberto}/>
+                <DialogCadastrarVendaBeta isOpen={dialogAberto} />
               </Dialog>
             </div>
 
@@ -183,8 +198,8 @@ export function Component() {
               <AlertDialogHeader>
                 <AlertDialogTitle>A Venda Será Apagada</AlertDialogTitle>
                 <AlertDialogDescription>
-                  Se essa ação for realizada, não será possível recuperar os dados
-                  da venda, deseja continuar?
+                  Se essa ação for realizada, não será possível recuperar os
+                  dados da venda, deseja continuar?
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
@@ -195,7 +210,7 @@ export function Component() {
                   Cancelar
                 </AlertDialogCancel>
                 <AlertDialogAction
-                  className={cn(buttonVariants({variant: 'destructive'}))}
+                  className={cn(buttonVariants({ variant: 'destructive' }))}
                   onClick={() => removerVendaMutation.mutate(idParaExcluir)}
                 >
                   Apagar
@@ -204,24 +219,24 @@ export function Component() {
             </AlertDialogContent>
           </AlertDialog>
           <Dialog>
-            <DialogTrigger ref={refBotaoAtualizacao}/>
-            <DialogAtualizarVenda vendaId={idParaEditar}/>
+            <DialogTrigger ref={refBotaoAtualizacao} />
+            <DialogAtualizarVenda vendaId={idParaEditar} />
           </Dialog>
 
           <div className='grid grid-cols-5 gap-4 fixed bottom-0'>
-            <CaixaInfo title='Saldo Inicial' value={saldoInicial}/>
-            <CaixaInfo title='Saídas de Caixa' value={saidasDeCaixa}/>
-            <CaixaInfo title='Recebido Cartão' value={recebidoCartao}/>
-            <CaixaInfo title='Recebido Dinheiro' value={recebidoDinheiro}/>
-            <CaixaInfo title='Valor Total' value={valorTotal}/>
+            <CaixaInfo title='Saldo Inicial' value={saldoInicial} />
+            <CaixaInfo title='Saídas de Caixa' value={saidasDeCaixa} />
+            <CaixaInfo title='Recebido Cartão' value={recebidoCartao} />
+            <CaixaInfo title='Recebido Dinheiro' value={recebidoDinheiro} />
+            <CaixaInfo title='Valor Total' value={valorTotal} />
           </div>
 
           <Dialog>
-            <DialogTrigger ref={refBotaoAtualizacao}/>
+            <DialogTrigger ref={refBotaoAtualizacao} />
           </Dialog>
         </main>
       </div>
-    );
+    )
   }
 
   return verificarStatusCaixas()

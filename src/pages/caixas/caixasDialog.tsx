@@ -1,14 +1,14 @@
-import {zodResolver} from '@hookform/resolvers/zod'
-import {useNumberFormat} from '@react-input/number-format'
-import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query'
-import {useEffect, useRef, useState} from 'react'
-import {useForm} from 'react-hook-form'
-import {z} from 'zod'
-import {Caixa} from '../../../src-electron/models/Caixa'
-import {cadastrarCaixaApi} from '@/api/CaixasApi'
-import {InputComMascara} from '@/components/InputComMascara'
-import {Button} from '@/components/ui/button'
-import {FormaPagamento} from '@/enums/FormaPagamento';
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useNumberFormat } from '@react-input/number-format'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useEffect, useRef, useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
+import { Caixa } from '../../../src-electron/models/Caixa'
+import { cadastrarCaixaApi } from '@/api/CaixasApi'
+import { InputComMascara } from '@/components/InputComMascara'
+import { Button } from '@/components/ui/button'
+import { FormaPagamento } from '@/enums/FormaPagamento'
 import {
   DialogClose,
   DialogContent,
@@ -17,8 +17,15 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage,} from '@/components/ui/form'
-import {Input} from '@/components/ui/input'
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
 import {
   gerarDatePorString,
   gerarDoublePorValorMonetario,
@@ -26,23 +33,29 @@ import {
   gerarStringPorDate,
   gerarStringReal,
 } from '@/utils/conversores'
-import {atualizarVendaApi, buscarVendaPorId} from "@/api/VendasApi";
-import {Venda} from "../../../src-electron/models/Venda";
-import {FormaPagamento as FormaPagamentoType} from "../../../src-electron/models/enums/FormaPagamento";
-import {Estoque} from "../../../src-electron/models/Estoque";
-import {Cliente} from "../../../src-electron/models/Cliente";
-import {Trash2} from "lucide-react";
-import ProcurarEstoqueInput from "@/components/ProcurarEstoqueInput";
-import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
-import {ProcurarClienteInput} from "@/components/ProcurarClienteInput";
-import {buscarTodosClientes} from "@/api/clientesApi";
-import {buscarEstoquesNaoVendidos} from "@/api/estoquesApi";
+import { atualizarVendaApi, buscarVendaPorId } from '@/api/VendasApi'
+import { Venda } from '../../../src-electron/models/Venda'
+import { FormaPagamento as FormaPagamentoType } from '../../../src-electron/models/enums/FormaPagamento'
+import { Estoque } from '../../../src-electron/models/Estoque'
+import { Cliente } from '../../../src-electron/models/Cliente'
+import { Trash2 } from 'lucide-react'
+import ProcurarEstoqueInput from '@/components/ProcurarEstoqueInput'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+import { ProcurarClienteInput } from '@/components/ProcurarClienteInput'
+import { buscarTodosClientes } from '@/api/clientesApi'
+import { buscarEstoquesNaoVendidos } from '@/api/estoquesApi'
 
 const formSchemaCaixa = z.object({
   ativo: z.boolean(),
   dataHoraAbertura: z.string(),
   dataHoraFechamento: z.string().nullable().optional(),
-  valorInicial: z.string({message: 'Campo Obrigatório'}),
+  valorInicial: z.string({ message: 'Campo Obrigatório' }),
 })
 
 const gerarFormVazioCaixa = () =>
@@ -58,7 +71,7 @@ const gerarFormVazioCaixa = () =>
 
 const formSchemaVenda = z.object({
   formaPagamento: z.nativeEnum(FormaPagamento),
-  valorPago: z.string({message: 'Campo Obrigatório'}),
+  valorPago: z.string({ message: 'Campo Obrigatório' }),
   valorTotal: z.number(),
   troco: z.number(),
   desconto: z.string().refine((v) => v === '' || parseInt(v) <= 10, {
@@ -78,7 +91,7 @@ const gerarFormVazioVenda = () =>
     },
   })
 
-export function DialogCadastrarCaixa({isOpen}: { isOpen: boolean }) {
+export function DialogCadastrarCaixa({ isOpen }: { isOpen: boolean }) {
   const queryClient = useQueryClient()
 
   const refBtnClose = useRef<HTMLButtonElement>()
@@ -91,7 +104,7 @@ export function DialogCadastrarCaixa({isOpen}: { isOpen: boolean }) {
   const cadastrarCaixaMutation = useMutation({
     mutationFn: cadastrarCaixaApi,
     onSuccess: () => {
-      queryClient.invalidateQueries({queryKey: ['caixas']})
+      queryClient.invalidateQueries({ queryKey: ['caixas'] })
       refBtnClose.current.click()
     },
   })
@@ -108,9 +121,9 @@ export function DialogCadastrarCaixa({isOpen}: { isOpen: boolean }) {
   }, [isOpen])
 
   function onSubmit({
-                      dataHoraAbertura: dataAberturaString,
-                      valorInicial,
-                    }: z.infer<typeof formSchemaCaixa>) {
+    dataHoraAbertura: dataAberturaString,
+    valorInicial,
+  }: z.infer<typeof formSchemaCaixa>) {
     const caixa: Caixa = {
       ativo: true,
       dataHoraAbertura: gerarDatePorString(dataAberturaString),
@@ -138,7 +151,7 @@ export function DialogCadastrarCaixa({isOpen}: { isOpen: boolean }) {
             <FormField
               control={form.control}
               name='dataHoraAbertura'
-              render={({field}) => (
+              render={({ field }) => (
                 <FormItem>
                   <FormLabel>Data de Abertura*</FormLabel>
                   <FormControl>
@@ -150,7 +163,7 @@ export function DialogCadastrarCaixa({isOpen}: { isOpen: boolean }) {
                       {...field}
                     />
                   </FormControl>
-                  <FormMessage/>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -158,7 +171,7 @@ export function DialogCadastrarCaixa({isOpen}: { isOpen: boolean }) {
             <FormField
               control={form.control}
               name='valorInicial'
-              render={({field}) => (
+              render={({ field }) => (
                 <FormItem>
                   <FormLabel>Valor Abertura do Caixa*</FormLabel>
                   <FormControl>
@@ -169,7 +182,7 @@ export function DialogCadastrarCaixa({isOpen}: { isOpen: boolean }) {
                       onChange={field.onChange}
                     />
                   </FormControl>
-                  <FormMessage/>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -192,7 +205,7 @@ export function DialogCadastrarCaixa({isOpen}: { isOpen: boolean }) {
   )
 }
 
-export function DialogAtualizarVenda({vendaId}: { vendaId?: number }) {
+export function DialogAtualizarVenda({ vendaId }: { vendaId?: number }) {
   const queryClient = useQueryClient()
 
   const refBtnClose = useRef<HTMLButtonElement>()
@@ -200,7 +213,7 @@ export function DialogAtualizarVenda({vendaId}: { vendaId?: number }) {
   const atualizarVendaMutation = useMutation({
     mutationFn: atualizarVendaApi,
     onSuccess: () => {
-      queryClient.invalidateQueries({queryKey: ['vendas']})
+      queryClient.invalidateQueries({ queryKey: ['vendas'] })
       refBtnClose.current.click()
     },
   })
@@ -217,12 +230,12 @@ export function DialogAtualizarVenda({vendaId}: { vendaId?: number }) {
   const form = gerarFormVazioVenda()
 
   async function onSubmit({
-                            formaPagamento,
-                            valorPago,
-                            troco,
-                            desconto,
-                            valorTotal,
-                          }: z.infer<typeof formSchemaVenda>) {
+    formaPagamento,
+    valorPago,
+    troco,
+    desconto,
+    valorTotal,
+  }: z.infer<typeof formSchemaVenda>) {
     const venda: Venda = {
       dataVenda: new Date(),
       estoque: estoqueSelecionado,
@@ -247,12 +260,12 @@ export function DialogAtualizarVenda({vendaId}: { vendaId?: number }) {
     )
   }
 
-  const {data: clientes} = useQuery<Cliente[]>({
+  const { data: clientes } = useQuery<Cliente[]>({
     queryKey: ['cliente'],
     queryFn: buscarTodosClientes,
   })
 
-  const {data: estoques} = useQuery<Estoque[]>({
+  const { data: estoques } = useQuery<Estoque[]>({
     queryKey: ['estoque'],
     queryFn: buscarEstoquesNaoVendidos,
   })
@@ -271,16 +284,26 @@ export function DialogAtualizarVenda({vendaId}: { vendaId?: number }) {
     form.setValue('troco', troco)
   }, [form.watch('valorPago'), form.watch('desconto'), estoqueSelecionado])
 
-
   useEffect(() => {
     if (vendaId) {
       buscarVendaPorId(vendaId).then(
-        ({formaPagamento, valorTotal, valorPago, troco, desconto, cliente, estoque}) => {
+        ({
+          formaPagamento,
+          valorTotal,
+          valorPago,
+          troco,
+          desconto,
+          cliente,
+          estoque,
+        }) => {
           //form.setValue('formaPagamento', formaPagamento)
           form.setValue('valorTotal', valorTotal)
           form.setValue('valorPago', gerarStringReal(valorPago))
           form.setValue('troco', troco)
-          form.setValue('desconto', gerarStringPorcentagemPorNumeroInteiro(desconto))
+          form.setValue(
+            'desconto',
+            gerarStringPorcentagemPorNumeroInteiro(desconto)
+          )
           //form.setValue('cliente', cliente)
           //form.setValue('estoque', clienteSelecionado)
         }
@@ -289,11 +312,11 @@ export function DialogAtualizarVenda({vendaId}: { vendaId?: number }) {
   }, [vendaId])
 
   useEffect(() => {
-    const desconto = 1 - Number(form.getValues().desconto) / 100;
+    const desconto = 1 - Number(form.getValues().desconto) / 100
     const valorTotal =
-      estoqueSelecionado.reduce((i, a) => i + a.valorVenda, 0) * desconto;
-    form.setValue('valorTotal', valorTotal);
-  }, [estoqueSelecionado, form.watch('desconto')]);
+      estoqueSelecionado.reduce((i, a) => i + a.valorVenda, 0) * desconto
+    form.setValue('valorTotal', valorTotal)
+  }, [estoqueSelecionado, form.watch('desconto')])
 
   return (
     <DialogContent className='sm:max-w-[64rem]'>
@@ -328,14 +351,13 @@ export function DialogAtualizarVenda({vendaId}: { vendaId?: number }) {
                   onClick={() => handleRemoverEstoque(estoque)}
                   className='text-red-500'
                 >
-                  <Trash2 className='h-4 w-4'/>
+                  <Trash2 className='h-4 w-4' />
                   <span className='sr-only'>Delete</span>
                 </Button>
               </div>
             ))}
             {estoqueSelecionado.length === 0 && (
-              <div
-                className='h-full w-full first:border-t-0 flex items-center justify-center text-lg font-normal text-gray-700'>
+              <div className='h-full w-full first:border-t-0 flex items-center justify-center text-lg font-normal text-gray-700'>
                 Nenhum Item selecionado
               </div>
             )}
@@ -383,14 +405,14 @@ export function DialogAtualizarVenda({vendaId}: { vendaId?: number }) {
                       }
                     />
                   </FormControl>
-                  <FormMessage/>
+                  <FormMessage />
                 </FormItem>
 
                 <div className='flex gap-2'>
                   <FormField
                     control={form.control}
                     name='formaPagamento'
-                    render={({field}) => (
+                    render={({ field }) => (
                       <FormItem className='flex-1'>
                         <FormLabel>Foma de Pagamento*</FormLabel>
                         <FormControl>
@@ -399,7 +421,7 @@ export function DialogAtualizarVenda({vendaId}: { vendaId?: number }) {
                             defaultValue={field.value}
                           >
                             <SelectTrigger>
-                              <SelectValue placeholder='Selecione uma forma...'/>
+                              <SelectValue placeholder='Selecione uma forma...' />
                             </SelectTrigger>
                             <SelectContent>
                               {Object.values(FormaPagamento).map(
@@ -415,7 +437,7 @@ export function DialogAtualizarVenda({vendaId}: { vendaId?: number }) {
                             </SelectContent>
                           </Select>
                         </FormControl>
-                        <FormMessage/>
+                        <FormMessage />
                       </FormItem>
                     )}
                   />
@@ -423,7 +445,7 @@ export function DialogAtualizarVenda({vendaId}: { vendaId?: number }) {
                   <FormField
                     control={form.control}
                     name='desconto'
-                    render={({field}) => (
+                    render={({ field }) => (
                       <FormItem>
                         <FormLabel>Desconto*</FormLabel>
                         <div className='flex items-center gap-2'>
@@ -436,7 +458,7 @@ export function DialogAtualizarVenda({vendaId}: { vendaId?: number }) {
                           </FormControl>
                           %
                         </div>
-                        <FormMessage/>
+                        <FormMessage />
                       </FormItem>
                     )}
                   />
@@ -446,7 +468,7 @@ export function DialogAtualizarVenda({vendaId}: { vendaId?: number }) {
                   <FormField
                     control={form.control}
                     name='valorPago'
-                    render={({field}) => (
+                    render={({ field }) => (
                       <FormItem className='flex-1'>
                         <FormLabel>Valor Pago*</FormLabel>
                         <FormControl>
@@ -457,7 +479,7 @@ export function DialogAtualizarVenda({vendaId}: { vendaId?: number }) {
                             onChange={field.onChange}
                           />
                         </FormControl>
-                        <FormMessage/>
+                        <FormMessage />
                       </FormItem>
                     )}
                   />
@@ -472,7 +494,7 @@ export function DialogAtualizarVenda({vendaId}: { vendaId?: number }) {
                         listaCliente={clientes}
                       />
                     </FormControl>
-                    <FormMessage/>
+                    <FormMessage />
                   </FormItem>
                 </div>
                 <div className='flex gap-2 justify-end flex-1 items-end'>

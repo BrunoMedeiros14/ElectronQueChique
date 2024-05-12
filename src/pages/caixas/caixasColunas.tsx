@@ -1,12 +1,16 @@
-import {Button} from '@/components/ui/button'
-import {ColumnDef} from '@tanstack/react-table'
-import {Pencil, Trash2} from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { ColumnDef } from '@tanstack/react-table'
+import { Pencil, Trash2 } from 'lucide-react'
 import React from 'react'
-import {Caixa} from '../../../src-electron/models/Caixa'
-import {Cliente} from '../../../src-electron/models/Cliente'
-import {Estoque} from '../../../src-electron/models/Estoque'
-import {Venda} from '../../../src-electron/models/Venda'
-import {gerarStringPorcentagemPorNumeroInteiro, gerarStringPorDate, gerarStringReal,} from '../../utils/conversores'
+import { Caixa } from '../../../src-electron/models/Caixa'
+import { Cliente } from '../../../src-electron/models/Cliente'
+import { Estoque } from '../../../src-electron/models/Estoque'
+import { Venda } from '../../../src-electron/models/Venda'
+import {
+  gerarStringPorcentagemPorNumeroInteiro,
+  gerarStringPorDate,
+  gerarStringReal,
+} from '../../utils/conversores'
 
 type ColunasCaixaProps = {
   setIdParaExcluir: React.Dispatch<React.SetStateAction<number>>
@@ -19,9 +23,9 @@ type ColunasVendaProps = {
 }
 
 export const pegarColunasCaixa = ({
-                                    setIdParaExcluir,
-                                    abrirEdicaoCaixa,
-                                  }: ColunasCaixaProps): ColumnDef<Caixa>[] => [
+  setIdParaExcluir,
+  abrirEdicaoCaixa,
+}: ColunasCaixaProps): ColumnDef<Caixa>[] => [
   {
     accessorKey: 'id',
     header: 'Id',
@@ -29,14 +33,14 @@ export const pegarColunasCaixa = ({
   {
     accessorKey: 'ativo',
     header: 'Ativo',
-    cell: ({row}) => {
+    cell: ({ row }) => {
       return row.getValue('ativo') ? 'Sim' : 'Não'
     },
   },
   {
     accessorKey: 'dataHoraAbertura',
     header: 'Data Abertura',
-    cell: ({row}) => {
+    cell: ({ row }) => {
       return row.getValue('dataPagamento')
         ? gerarStringPorDate(row.getValue('dataPagamento'))
         : 'Não inserido'
@@ -45,7 +49,7 @@ export const pegarColunasCaixa = ({
   {
     accessorKey: 'dataHoraFechamento',
     header: 'Data Fechamento',
-    cell: ({row}) => {
+    cell: ({ row }) => {
       return row.getValue('dataPagamento')
         ? gerarStringPorDate(row.getValue('dataPagamento'))
         : 'Não inserido'
@@ -54,7 +58,7 @@ export const pegarColunasCaixa = ({
   {
     accessorKey: 'valorInicial',
     header: 'Valor Inicial',
-    cell: ({row}) => {
+    cell: ({ row }) => {
       return gerarStringReal(row.getValue('valorInicial'))
     },
   },
@@ -68,7 +72,7 @@ export const pegarColunasCaixa = ({
   },
   {
     id: 'actions',
-    cell: ({row}) => {
+    cell: ({ row }) => {
       const caixaId = row.original.id
 
       return (
@@ -79,7 +83,7 @@ export const pegarColunasCaixa = ({
             onClick={() => abrirEdicaoCaixa(caixaId)}
             className='text-orange-400 hover:text-white hover:bg-orange-400'
           >
-            <Pencil className='h-4 w-4'/>
+            <Pencil className='h-4 w-4' />
             <span className='sr-only'>Edit</span>
           </Button>
 
@@ -89,7 +93,7 @@ export const pegarColunasCaixa = ({
             onClick={() => setIdParaExcluir(caixaId)}
             className='text-red-500 hover:text-white hover:bg-red-500'
           >
-            <Trash2 className='h-4 w-4'/>
+            <Trash2 className='h-4 w-4' />
             <span className='sr-only'>Delete</span>
           </Button>
         </div>
@@ -99,9 +103,9 @@ export const pegarColunasCaixa = ({
 ]
 
 export const pegarColunasVenda = ({
-                                    setIdParaExcluir,
-                                    abrirEdicaoVenda,
-                                  }: ColunasVendaProps): ColumnDef<Venda>[] => [
+  setIdParaExcluir,
+  abrirEdicaoVenda,
+}: ColunasVendaProps): ColumnDef<Venda>[] => [
   {
     accessorKey: 'id',
     header: 'Id',
@@ -109,7 +113,7 @@ export const pegarColunasVenda = ({
   {
     accessorKey: 'estoque',
     header: 'Produtos',
-    cell: ({row}) => {
+    cell: ({ row }) => {
       const estoques = row.getValue('estoque') as Estoque[]
 
       return estoques.length > 0
@@ -120,7 +124,7 @@ export const pegarColunasVenda = ({
   {
     accessorKey: 'cliente',
     header: 'Cliente',
-    cell: ({row}) => {
+    cell: ({ row }) => {
       const cliente = row.getValue('cliente') as Cliente
 
       return cliente ? cliente.nome : 'Cliente não informado'
@@ -133,20 +137,20 @@ export const pegarColunasVenda = ({
   {
     accessorKey: 'desconto',
     header: 'Desconto',
-    cell: ({row}) => {
+    cell: ({ row }) => {
       return gerarStringPorcentagemPorNumeroInteiro(row.getValue('desconto'))
     },
   },
   {
     accessorKey: 'valorTotal',
     header: 'Valor Total',
-    cell: ({row}) => {
+    cell: ({ row }) => {
       return gerarStringReal(row.getValue('valorTotal'))
     },
   },
   {
     id: 'actions',
-    cell: ({row}) => {
+    cell: ({ row }) => {
       const vendaId = row.original.id
 
       return (
@@ -157,7 +161,7 @@ export const pegarColunasVenda = ({
             onClick={() => abrirEdicaoVenda(vendaId)}
             className='text-orange-400 hover:text-white hover:bg-orange-400'
           >
-            <Pencil className='h-4 w-4'/>
+            <Pencil className='h-4 w-4' />
             <span className='sr-only'>Edit</span>
           </Button>
 
@@ -167,7 +171,7 @@ export const pegarColunasVenda = ({
             onClick={() => setIdParaExcluir(vendaId)}
             className='text-red-500 hover:text-white hover:bg-red-500'
           >
-            <Trash2 className='h-4 w-4'/>
+            <Trash2 className='h-4 w-4' />
             <span className='sr-only'>Delete</span>
           </Button>
         </div>
