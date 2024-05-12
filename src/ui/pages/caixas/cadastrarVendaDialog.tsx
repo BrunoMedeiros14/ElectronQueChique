@@ -5,12 +5,15 @@ import { Trash2 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { Cliente } from "../../../shared/models/Cliente";
 import { Estoque } from "../../../shared/models/Estoque";
 import { Venda } from "../../../shared/models/Venda";
 import { FormaPagamento } from "../../../shared/models/enums/FormaPagamento";
 import { cadastrarVendaApi } from "../../../ui/api/VendasApi";
+import { buscarTodosClientes } from "../../../ui/api/clientesApi";
 import { buscarEstoquesNaoVendidos } from "../../../ui/api/estoquesApi";
 import { gerarDoublePorValorMonetario } from "../../../ui/utils/conversores";
+import { ProcurarClienteInput } from "../../components/ProcurarClienteInput";
 import ProcurarEstoqueInput from "../../components/ProcurarEstoqueInput";
 import { Button } from "../../components/ui/button";
 import {
@@ -64,6 +67,7 @@ export function DialogCadastrarVendaBeta({ isOpen }: { isOpen: boolean }) {
   const refBtnClose = useRef<HTMLButtonElement>();
 
   const [estoqueSelecionado, setEstoqueSelecionado] = useState<Estoque[]>([]);
+  const [clienteSelecionado, setClienteSelecionado] = useState<Cliente>(null);
 
   const form = gerarFormVazioVenda();
 
@@ -96,7 +100,7 @@ export function DialogCadastrarVendaBeta({ isOpen }: { isOpen: boolean }) {
       troco: troco,
       desconto: desconto ? parseFloat(desconto) : null,
       valorTotal: valorTotal,
-      cliente: null,
+      cliente: clienteSelecionado,
     };
 
     cadastrarVendaMutation.mutate(venda);
@@ -131,6 +135,11 @@ export function DialogCadastrarVendaBeta({ isOpen }: { isOpen: boolean }) {
   const { data: estoques } = useQuery<Estoque[]>({
     queryKey: ["estoque"],
     queryFn: buscarEstoquesNaoVendidos,
+  });
+
+  const { data: clientes } = useQuery<Cliente[]>({
+    queryKey: ["cliente"],
+    queryFn: buscarTodosClientes,
   });
 
   const handleAdicionarEstoque = (estoque: Estoque) => {
@@ -308,25 +317,19 @@ export function DialogCadastrarVendaBeta({ isOpen }: { isOpen: boolean }) {
                       </FormItem>
                     )}
                   />
-                  <FormField
-                    control={form.control}
-                    name="valorPago"
-                    render={() => (
-                      <FormItem className="flex-1">
-                        <FormLabel>Cliente</FormLabel>
-                        <FormControl>
-                          <Input
-                            disabled
-                            placeholder="Valor Pago"
-                            ref={valorMonetario}
-                            // value={field.value}
-                            // onChange={field.onChange}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                  <FormItem className="flex-1 h-full">
+                    <div>
+                      <FormLabel>Cliente</FormLabel>
+                    </div>
+                    <FormControl>
+                      <ProcurarClienteInput
+                        clienteSelecionado={clienteSelecionado}
+                        selecionarCliente={setClienteSelecionado}
+                        listaCliente={clientes}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
                 </div>
                 <div className="flex gap-2 justify-end flex-1 items-end">
                   <Button onClick={form.handleSubmit(onSubmit)} type="submit">

@@ -2,11 +2,13 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Pencil, Trash2 } from "lucide-react";
 import React from "react";
 import { Caixa } from "src/shared/models/Caixa";
+import { Cliente } from "src/shared/models/Cliente";
+import { Estoque } from "src/shared/models/Estoque";
 import { Venda } from "src/shared/models/Venda";
 import { Button } from "../../../ui/components/ui/button";
 import {
-  gerarStringPorcentagemPorNumeroInteiro,
   gerarStringPorDate,
+  gerarStringPorcentagemPorNumeroInteiro,
   gerarStringReal,
 } from "../../../ui/utils/conversores";
 
@@ -111,10 +113,24 @@ export const pegarColunasVenda = ({
   {
     accessorKey: "estoque",
     header: "Produtos",
+    cell: ({ row }) => {
+      const estoques = row.getValue("estoque") as Estoque[];
+
+      return estoques.length > 0
+        ? estoques.map(estoque => estoque.nome).join(", ")
+        : "Sem item cadastrado";
+    },
   },
   {
     accessorKey: "cliente",
     header: "Cliente",
+    cell: ({ row }) => {
+      const cliente = row.getValue("cliente") as Cliente;
+
+      return cliente
+        ? cliente.nome
+        : "Cliente não informado";
+    },
   },
   {
     accessorKey: "formaPagamento",
