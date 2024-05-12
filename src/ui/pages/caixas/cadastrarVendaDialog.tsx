@@ -74,7 +74,7 @@ export function DialogCadastrarVendaBeta({ isOpen }: { isOpen: boolean }) {
   const cadastrarVendaMutation = useMutation({
     mutationFn: cadastrarVendaApi,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["vendas"] });
+      queryClient.invalidateQueries({ queryKey: ["vendas", "estoque"] });
       refBtnClose.current.click();
     },
   });

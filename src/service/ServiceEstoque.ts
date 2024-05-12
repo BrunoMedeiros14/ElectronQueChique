@@ -1,6 +1,7 @@
 import { ipcMain } from 'electron';
 import {
   buscarEstoquePorId,
+  buscarEstoquesNaoVendidos,
   buscarTodosEstoques,
   criarEstoque,
   editarEstoque,
@@ -20,4 +21,5 @@ export function serviceEstoque() {
   ipcMain.handle("editarEstoque", (_, ...args: Parameters<EditarEstoque>) => editarEstoque(...args))
   ipcMain.handle("buscarEstoquePorId", (_, ...args: Parameters<BuscarEstoquePorId>) => buscarEstoquePorId(...args))
   ipcMain.handle("buscarTodosEstoques", (_, ...args: Parameters<BuscarTodosEstoques>) => buscarTodosEstoques(...args))
+  ipcMain.handle("buscarEstoquesNaoVendidos", (_, ...args: Parameters<BuscarTodosEstoques>) => buscarEstoquesNaoVendidos(...args))
 }

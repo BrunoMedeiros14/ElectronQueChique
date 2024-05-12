@@ -1,8 +1,8 @@
-import {Cliente} from "./models/Cliente";
-import {Conta} from "./models/Conta";
-import {Venda} from "./models/Venda";
-import {Estoque} from "./models/Estoque";
-import {Caixa} from "./models/Caixa";
+import { Caixa } from "./models/Caixa";
+import { Cliente } from "./models/Cliente";
+import { Conta } from "./models/Conta";
+import { Estoque } from "./models/Estoque";
+import { Venda } from "./models/Venda";
 
 export type CriarCliente = (cliente: Cliente) => Promise<Cliente>
 export type RemoverCliente = (clienteId: number) => Promise<number>
@@ -26,6 +26,7 @@ export type CriarEstoque = (estoque: Estoque) => Promise<Estoque>
 export type RemoverEstoque = (estoqueId: number) => Promise<number>
 export type EditarEstoque = (estoque: Estoque) => Promise<Estoque>
 export type BuscarEstoquePorId = (estoqueId: number) => Promise<Estoque>
+export type BuscarEstoquesNaoVendidos = () => Promise<Estoque[]>
 export type BuscarTodosEstoques = () => Promise<Estoque[]>
 
 export type CriarCaixa = (caixa: Caixa) => Promise<Caixa>

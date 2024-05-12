@@ -77,6 +77,15 @@ export const buscarTodosEstoques = () => {
   return estoquesDb.map(estoqueDb => modelDbParaEstoque(estoqueDb));
 };
 
+export const buscarEstoquesNaoVendidos = () => {
+  const selectAllQuery = `
+    SELECT * FROM estoques e WHERE e.venda_id = 'null'
+  `;
+
+  const estoquesDb = db.prepare(selectAllQuery).all() as EstoqueDb[];
+  return estoquesDb.map(estoqueDb => modelDbParaEstoque(estoqueDb));
+};
+
 export const editarEstoque = (estoque: Estoque) => {
   const estoqueDb = estoqueParaModelDb(estoque)
   const updateQuery = `

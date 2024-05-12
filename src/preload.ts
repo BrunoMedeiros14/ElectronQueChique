@@ -1,9 +1,10 @@
-import {contextBridge, ipcRenderer} from 'electron';
+import { contextBridge, ipcRenderer } from 'electron';
 import {
   BuscarCaixaPorId,
   BuscarClientePorId,
   BuscarContaPorId,
   BuscarEstoquePorId,
+  BuscarEstoquesNaoVendidos,
   BuscarTodasContas,
   BuscarTodasVendas,
   BuscarTodosCaixas,
@@ -60,7 +61,8 @@ export const apiEstoque = {
   removerEstoque: (...args: Parameters<RemoverEstoque>): ReturnType<RemoverEstoque> => ipcRenderer.invoke('removerEstoque', ...args),
   editarEstoque: (...args: Parameters<EditarEstoque>): ReturnType<EditarEstoque> => ipcRenderer.invoke('editarEstoque', ...args),
   buscarEstoquePorId: (...args: Parameters<BuscarEstoquePorId>): ReturnType<BuscarEstoquePorId> => ipcRenderer.invoke('buscarEstoquePorId', ...args),
-  buscarTodosEstoques: (...args: Parameters<BuscarTodosEstoques>): ReturnType<BuscarTodosEstoques> => ipcRenderer.invoke('buscarTodosEstoques', ...args)
+  buscarTodosEstoques: (...args: Parameters<BuscarTodosEstoques>): ReturnType<BuscarTodosEstoques> => ipcRenderer.invoke('buscarTodosEstoques', ...args),
+  buscarEstoquesNaoVendidos: (...args: Parameters<BuscarEstoquesNaoVendidos>): ReturnType<BuscarEstoquesNaoVendidos> => ipcRenderer.invoke('buscarEstoquesNaoVendidos', ...args)
 }
 
 export const apiVenda = {
