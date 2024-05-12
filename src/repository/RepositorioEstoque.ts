@@ -3,7 +3,7 @@ import { Cor } from "src/shared/models/enums/Cor";
 import { Tecido } from "src/shared/models/enums/Tecido";
 import db from "../config/bancoDeDados";
 
-type EstoqueDb = {
+export type EstoqueDb = {
   id: number,
   nome: string,
   descricao: string,
@@ -17,7 +17,7 @@ type EstoqueDb = {
   venda_id?: number,
 }
 
-const estoqueParaModelDb = (estoque: Estoque, vendaId: number = null): EstoqueDb => ({
+export const estoqueParaModelDb = (estoque: Estoque, vendaId: number = null): EstoqueDb => ({
   id: estoque.id,
   nome: estoque.nome,
   descricao: estoque.descricao,
@@ -31,7 +31,7 @@ const estoqueParaModelDb = (estoque: Estoque, vendaId: number = null): EstoqueDb
   venda_id: vendaId
 })
 
-const modelDbParaEstoque = (estoqueDb: EstoqueDb): Estoque => ({
+export const modelDbParaEstoque = (estoqueDb: EstoqueDb): Estoque => ({
   id: estoqueDb.id,
   nome: estoqueDb.nome,
   descricao: estoqueDb.descricao,

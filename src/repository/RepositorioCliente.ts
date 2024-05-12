@@ -1,7 +1,7 @@
 import { Cliente } from "src/shared/models/Cliente";
 import db from "../config/bancoDeDados";
 
-type ClienteDb = {
+export type ClienteDb = {
   id: number
   nome: string
   data_nascimento: string
@@ -19,7 +19,7 @@ const clienteParaModelDb = (cliente: Cliente): ClienteDb => ({
   email: cliente.email,
 })
 
-const modelDbParaCliente = (clienteDb: ClienteDb): Cliente => ({
+export const modelDbParaCliente = (clienteDb: ClienteDb): Cliente => ({
   id: clienteDb.id,
   nome: clienteDb.nome,
   dataNascimento: clienteDb.data_nascimento ? new Date(clienteDb.data_nascimento) : null,

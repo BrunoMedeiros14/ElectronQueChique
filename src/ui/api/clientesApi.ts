@@ -1,10 +1,13 @@
-import {queryOptions} from "@tanstack/react-query";
-import {Cliente} from "src/shared/models/Cliente";
+import { queryOptions } from "@tanstack/react-query";
+import { Cliente } from "src/shared/models/Cliente";
 
 export const buscarClientes = queryOptions({
   queryKey: ["clientes"],
   queryFn: () => window.apiCliente.buscarTodosClientes(),
 });
+
+export const buscarTodosClientes = async () =>
+    await window.apiCliente.buscarTodosClientes()
 
 export const buscarClientePorId = async (clienteId: number) =>
     await window.apiCliente.buscarClientePorId(clienteId)
