@@ -1,4 +1,7 @@
-const formatoData = new Intl.DateTimeFormat('pt-Br', { dateStyle: 'short' })
+const formatoData = new Intl.DateTimeFormat('pt-Br', {
+  dateStyle: 'short',
+  timeZone: 'UTC',
+})
 const formatoReal = new Intl.NumberFormat('pt-BR', {
   style: 'currency',
   currency: 'BRL',

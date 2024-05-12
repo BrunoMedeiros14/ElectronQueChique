@@ -11,7 +11,7 @@ module.exports = {
     'plugin:import/typescript',
     'plugin:prettier/recommended',
   ],
-  ignorePatterns: ['dist', '.eslintrc.cjs'],
+  ignorePatterns: ['dist', '.eslintrc.cjs', './config/*'],
   parser: '@typescript-eslint/parser',
   plugins: ['react-refresh'],
   rules: {
@@ -25,7 +25,7 @@ module.exports = {
         printWidth: 80,
         tabWidth: 2,
         singleQuote: true,
-        trailingComma: 'all',
+        trailingComma: 'es5',
         arrowParens: 'always',
         semi: false,
         endOfLine: 'auto',
