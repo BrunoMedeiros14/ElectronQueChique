@@ -13,15 +13,7 @@
     "resolveJsonModule": true,
     "jsx": "react-jsx",
     "paths": {
-      "@/ui/*": [
-        "./src/ui/*"
-      ],
-      "@/components/*": [
-        "./src/ui/components/*"
-      ],
-      "@/lib/*": [
-        "./src/ui/components/lib/*"
-      ]
+      "@/*": ["./src/*"]
     }
   }
 }
