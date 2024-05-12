@@ -1,11 +1,5 @@
-import { ipcMain } from 'electron'
-import {
-  BuscarTodasVendas,
-  BuscarVendaPorId,
-  CriarVenda,
-  EditarVenda,
-  RemoverVenda,
-} from '../Api'
+import {ipcMain} from 'electron'
+import {BuscarTodasVendas, BuscarVendaPorId, CriarVenda, EditarVenda, RemoverVenda,} from '../Api'
 import {
   buscarTodasVendas,
   buscarVendaPorId,

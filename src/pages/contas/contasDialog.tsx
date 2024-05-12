@@ -1,17 +1,17 @@
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useNumberFormat } from '@react-input/number-format'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { useEffect, useRef } from 'react'
-import { useForm } from 'react-hook-form'
-import { z } from 'zod'
-import { Conta } from '../../../src-electron/models/Conta'
+import {zodResolver} from '@hookform/resolvers/zod'
+import {useNumberFormat} from '@react-input/number-format'
+import {useMutation, useQueryClient} from '@tanstack/react-query'
+import {useEffect, useRef} from 'react'
+import {useForm} from 'react-hook-form'
+import {z} from 'zod'
+import {Conta} from '../../../src-electron/models/Conta'
 import {
   atualizarContaApi,
   buscarContaPorId,
   cadastrarContaApi,
 } from '../../api/contasApi'
-import { InputComMascara } from '../../components/InputComMascara'
-import { Button } from '../../components/ui/button'
+import {InputComMascara} from '../../components/InputComMascara'
+import {Button} from '../../components/ui/button'
 import {
   DialogClose,
   DialogContent,
@@ -28,8 +28,8 @@ import {
   FormLabel,
   FormMessage,
 } from '../../components/ui/form'
-import { Input } from '../../components/ui/input'
-import { Switch } from '../../components/ui/switch'
+import {Input} from '../../components/ui/input'
+import {Switch} from '../../components/ui/switch'
 import {
   gerarDatePorString,
   gerarDoublePorValorMonetario,
@@ -39,12 +39,12 @@ import {
 
 const formSchema = z.object({
   nome: z
-    .string({ message: 'Campo Obrigatório.' })
-    .min(3, { message: 'Nome Deve Conter Pelo Menos 3 Letras' }),
+    .string({message: 'Campo Obrigatório.'})
+    .min(3, {message: 'Nome Deve Conter Pelo Menos 3 Letras'}),
   descricao: z
-    .string({ message: 'Campo Obrigatório.' })
-    .min(3, { message: 'Descrição Deve Possuir Pelo Menos 3 Letras' }),
-  valor: z.string({ message: 'Campo Obrigatório' }),
+    .string({message: 'Campo Obrigatório.'})
+    .min(3, {message: 'Descrição Deve Possuir Pelo Menos 3 Letras'}),
+  valor: z.string({message: 'Campo Obrigatório'}),
   dataVencimento: z.string().nullable(),
   dataPagamento: z.string().nullable(),
   pago: z.boolean().nullable(),
@@ -63,7 +63,7 @@ const gerarFormVazio = () =>
     },
   })
 
-export function DialogCadastrarConta({ isOpen }: { isOpen: boolean }) {
+export function DialogCadastrarConta({isOpen}: { isOpen: boolean }) {
   const queryClient = useQueryClient()
 
   const refBtnClose = useRef<HTMLButtonElement>()
@@ -76,7 +76,7 @@ export function DialogCadastrarConta({ isOpen }: { isOpen: boolean }) {
   const cadastrarContaMutation = useMutation({
     mutationFn: cadastrarContaApi,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['contas'] })
+      queryClient.invalidateQueries({queryKey: ['contas']})
       refBtnClose.current.click()
     },
   })
@@ -95,13 +95,13 @@ export function DialogCadastrarConta({ isOpen }: { isOpen: boolean }) {
   }, [isOpen])
 
   function onSubmit({
-    nome,
-    descricao,
-    valor,
-    dataVencimento,
-    dataPagamento,
-    pago,
-  }: z.infer<typeof formSchema>) {
+                      nome,
+                      descricao,
+                      valor,
+                      dataVencimento,
+                      dataPagamento,
+                      pago,
+                    }: z.infer<typeof formSchema>) {
     const conta: Conta = {
       nome,
       descricao,
@@ -129,13 +129,13 @@ export function DialogCadastrarConta({ isOpen }: { isOpen: boolean }) {
             <FormField
               control={form.control}
               name='nome'
-              render={({ field }) => (
+              render={({field}) => (
                 <FormItem>
                   <FormLabel>Nome*</FormLabel>
                   <FormControl>
                     <Input placeholder='Nome da Conta' {...field} />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage/>
                 </FormItem>
               )}
             />
@@ -143,13 +143,13 @@ export function DialogCadastrarConta({ isOpen }: { isOpen: boolean }) {
             <FormField
               control={form.control}
               name='descricao'
-              render={({ field }) => (
+              render={({field}) => (
                 <FormItem>
                   <FormLabel>Descrição*</FormLabel>
                   <FormControl>
                     <Input placeholder='Descrição da Conta' {...field} />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage/>
                 </FormItem>
               )}
             />
@@ -157,7 +157,7 @@ export function DialogCadastrarConta({ isOpen }: { isOpen: boolean }) {
             <FormField
               control={form.control}
               name='valor'
-              render={({ field }) => (
+              render={({field}) => (
                 <FormItem>
                   <FormLabel>Valor*</FormLabel>
                   <FormControl>
@@ -168,7 +168,7 @@ export function DialogCadastrarConta({ isOpen }: { isOpen: boolean }) {
                       onChange={field.onChange}
                     />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage/>
                 </FormItem>
               )}
             />
@@ -176,7 +176,7 @@ export function DialogCadastrarConta({ isOpen }: { isOpen: boolean }) {
             <FormField
               control={form.control}
               name='dataVencimento'
-              render={({ field }) => (
+              render={({field}) => (
                 <FormItem>
                   <FormLabel>Data de Vencimento</FormLabel>
                   <FormControl>
@@ -188,7 +188,7 @@ export function DialogCadastrarConta({ isOpen }: { isOpen: boolean }) {
                       {...field}
                     />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage/>
                 </FormItem>
               )}
             />
@@ -196,7 +196,7 @@ export function DialogCadastrarConta({ isOpen }: { isOpen: boolean }) {
             <FormField
               control={form.control}
               name='dataPagamento'
-              render={({ field }) => (
+              render={({field}) => (
                 <FormItem>
                   <FormLabel>Data de Pagamento</FormLabel>
                   <FormControl>
@@ -208,7 +208,7 @@ export function DialogCadastrarConta({ isOpen }: { isOpen: boolean }) {
                       {...field}
                     />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage/>
                 </FormItem>
               )}
             />
@@ -216,7 +216,7 @@ export function DialogCadastrarConta({ isOpen }: { isOpen: boolean }) {
             <FormField
               control={form.control}
               name='pago'
-              render={({ field }) => (
+              render={({field}) => (
                 <FormItem className='flex gap-2 items-center justify-center'>
                   <FormLabel className='mt-2'>Pago</FormLabel>
                   <FormControl>
@@ -225,7 +225,7 @@ export function DialogCadastrarConta({ isOpen }: { isOpen: boolean }) {
                       onCheckedChange={field.onChange}
                     />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage/>
                 </FormItem>
               )}
             />
@@ -248,7 +248,7 @@ export function DialogCadastrarConta({ isOpen }: { isOpen: boolean }) {
   )
 }
 
-export function DialogAtualizarConta({ contaId }: { contaId?: number }) {
+export function DialogAtualizarConta({contaId}: { contaId?: number }) {
   const queryClient = useQueryClient()
 
   const refBtnClose = useRef<HTMLButtonElement>()
@@ -256,7 +256,7 @@ export function DialogAtualizarConta({ contaId }: { contaId?: number }) {
   const atualizarContaMutation = useMutation({
     mutationFn: atualizarContaApi,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['contas'] })
+      queryClient.invalidateQueries({queryKey: ['contas']})
       refBtnClose.current.click()
     },
   })
@@ -270,13 +270,13 @@ export function DialogAtualizarConta({ contaId }: { contaId?: number }) {
   const form = gerarFormVazio()
 
   function onSubmit({
-    nome,
-    descricao,
-    valor,
-    dataVencimento,
-    dataPagamento,
-    pago,
-  }: z.infer<typeof formSchema>) {
+                      nome,
+                      descricao,
+                      valor,
+                      dataVencimento,
+                      dataPagamento,
+                      pago,
+                    }: z.infer<typeof formSchema>) {
     const conta: Conta = {
       id: contaId,
       nome,
@@ -292,7 +292,7 @@ export function DialogAtualizarConta({ contaId }: { contaId?: number }) {
   useEffect(() => {
     if (contaId) {
       buscarContaPorId(contaId).then(
-        ({ nome, descricao, valor, dataVencimento, dataPagamento, pago }) => {
+        ({nome, descricao, valor, dataVencimento, dataPagamento, pago}) => {
           form.setValue('nome', nome)
           form.setValue('descricao', descricao)
           form.setValue('valor', gerarStringReal(valor))
@@ -321,13 +321,13 @@ export function DialogAtualizarConta({ contaId }: { contaId?: number }) {
             <FormField
               control={form.control}
               name='nome'
-              render={({ field }) => (
+              render={({field}) => (
                 <FormItem>
                   <FormLabel>Nome*</FormLabel>
                   <FormControl>
                     <Input placeholder='Nome da Conta' {...field} />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage/>
                 </FormItem>
               )}
             />
@@ -335,13 +335,13 @@ export function DialogAtualizarConta({ contaId }: { contaId?: number }) {
             <FormField
               control={form.control}
               name='descricao'
-              render={({ field }) => (
+              render={({field}) => (
                 <FormItem>
                   <FormLabel>Descrição*</FormLabel>
                   <FormControl>
                     <Input placeholder='Descrição da Conta' {...field} />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage/>
                 </FormItem>
               )}
             />
@@ -349,7 +349,7 @@ export function DialogAtualizarConta({ contaId }: { contaId?: number }) {
             <FormField
               control={form.control}
               name='valor'
-              render={({ field }) => (
+              render={({field}) => (
                 <FormItem>
                   <FormLabel>Valor*</FormLabel>
                   <FormControl>
@@ -360,14 +360,14 @@ export function DialogAtualizarConta({ contaId }: { contaId?: number }) {
                       onChange={field.onChange}
                     />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage/>
                 </FormItem>
               )}
             />
             <FormField
               control={form.control}
               name='dataVencimento'
-              render={({ field }) => (
+              render={({field}) => (
                 <FormItem>
                   <FormLabel>Data de Vencimento</FormLabel>
                   <FormControl>
@@ -379,14 +379,14 @@ export function DialogAtualizarConta({ contaId }: { contaId?: number }) {
                       {...field}
                     />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage/>
                 </FormItem>
               )}
             />
             <FormField
               control={form.control}
               name='dataPagamento'
-              render={({ field }) => (
+              render={({field}) => (
                 <FormItem>
                   <FormLabel>Data de Pagamento</FormLabel>
                   <FormControl>
@@ -398,14 +398,14 @@ export function DialogAtualizarConta({ contaId }: { contaId?: number }) {
                       {...field}
                     />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage/>
                 </FormItem>
               )}
             />
             <FormField
               control={form.control}
               name='pago'
-              render={({ field }) => (
+              render={({field}) => (
                 <FormItem className='flex gap-2 items-center justify-center'>
                   <FormLabel className='mt-2'>Pago</FormLabel>
                   <FormControl>
@@ -414,7 +414,7 @@ export function DialogAtualizarConta({ contaId }: { contaId?: number }) {
                       onCheckedChange={field.onChange}
                     />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage/>
                 </FormItem>
               )}
             />

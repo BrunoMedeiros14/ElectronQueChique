@@ -1,11 +1,8 @@
 import db from '../config/bancoDeDados'
-import { Venda } from '../models/Venda'
-import { FormaPagamento } from '../models/enums/FormaPagamento'
-import {
-  EstoqueDb,
-  inserirIdVenda,
-  modelDbParaEstoque,
-} from './RepositorioEstoque'
+import {Venda} from '../models/Venda'
+import {FormaPagamento} from '../models/enums/FormaPagamento'
+import {EstoqueDb, inserirIdVenda, modelDbParaEstoque, removerIdVenda,} from './RepositorioEstoque'
+import {buscarTodosCaixas} from "./RepositorioCaixa";
 
 type VendaDb = {
   id: number
@@ -37,33 +34,45 @@ const modelDbParaVenda = (vendaDb: VendaDb): Venda => ({
   id: vendaDb.id,
   dataVenda: vendaDb.data_venda ? new Date(vendaDb.data_venda) : null,
   valorTotal: vendaDb.valor_total,
-  estoque: JSON.parse(vendaDb.estoque_json)
-    .filter((estoque: EstoqueDb) => estoque.id)
-    .map((estoque: EstoqueDb) =>
-      estoque.id ? modelDbParaEstoque(estoque) : null
-    ),
-  cliente: JSON.parse(vendaDb.cliente_json).id
-    ? JSON.parse(vendaDb.cliente_json)
+  estoque: vendaDb.estoque_json
+    ? JSON.parse(vendaDb.estoque_json)
+      .filter((estoque: EstoqueDb) => estoque.id)
+      .map((estoque: EstoqueDb) =>
+        estoque.id ? modelDbParaEstoque(estoque) : null
+      )
+    : [],
+  cliente: vendaDb.cliente_json
+    ? JSON.parse(vendaDb.cliente_json).id
+      ? JSON.parse(vendaDb.cliente_json)
+      : null
     : null,
   formaPagamento: vendaDb.forma_pagamento as FormaPagamento,
   valorPago: vendaDb.valor_pago,
   troco: vendaDb.troco,
   desconto: vendaDb.desconto,
-})
+});
 
 export const criarVenda = (venda: Venda) => {
-  const vendaDb = vendaParaModelDb(venda)
-  const insertQuery = `
-    INSERT INTO vendas (data_venda, valor_total, forma_pagamento, valor_pago, troco, desconto, cliente_id)
-    VALUES (@data_venda, @valor_total, @forma_pagamento, @valor_pago, @troco, @desconto, @cliente_id)
-  `
+  const caixaAtivo = buscarTodosCaixas().find(caixa => caixa.ativo === true);
 
-  const vendaId = db.prepare(insertQuery).run(vendaDb).lastInsertRowid
+  if (!caixaAtivo) {
+    throw new Error("Nenhum caixa ativo encontrado");
+  }
+
+  const caixaId = caixaAtivo.id;
+
+  const vendaDb = vendaParaModelDb(venda);
+  const insertQuery = `
+    INSERT INTO vendas (data_venda, valor_total, forma_pagamento, valor_pago, troco, desconto, cliente_id, caixa_id)
+    VALUES (@data_venda, @valor_total, @forma_pagamento, @valor_pago, @troco, @desconto, @cliente_id, @caixa_id)
+  `;
+
+  const vendaId = db.prepare(insertQuery).run(vendaDb).lastInsertRowid;
 
   venda.estoque.forEach((estoque) => {
-    inserirIdVenda(estoque.id, Number(vendaId))
-  })
-}
+    inserirIdVenda(estoque.id, Number(vendaId));
+  });
+};
 
 export const buscarVendaPorId = (vendaId: number): Venda => {
   const selectQuery = `
@@ -78,7 +87,7 @@ export const buscarVendaPorId = (vendaId: number): Venda => {
 
 export const buscarTodasVendas = () => {
   const selectAllQuery = `
-    SELECT 
+    SELECT
       v.id,
       v.data_venda,
       v.valor_total,
@@ -107,7 +116,7 @@ export const buscarTodasVendas = () => {
       'endereco', c.endereco,
       'telefone', c.telefone,
       'email', c.email
-    ) as cliente_json 
+    ) as cliente_json
     FROM vendas v
     LEFT JOIN estoques e ON v.id = e.venda_id
     LEFT JOIN clientes c ON v.cliente_id = c.id
@@ -135,6 +144,8 @@ export const editarVenda = (venda: Venda) => {
 }
 
 export const removerVenda = (id: number) => {
+  removerIdVenda(id)
+
   const deleteQuery = `
     DELETE FROM vendas WHERE id = ?
   `

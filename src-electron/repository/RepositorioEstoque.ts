@@ -119,3 +119,13 @@ export const inserirIdVenda = (estoqueId: number, vendaId: number) => {
 
   return db.prepare(updateQuery).run(estoqueDb)
 }
+
+export const removerIdVenda = (vendaId: number) => {
+  const updateQuery = `
+    UPDATE estoques
+    SET venda_id = NULL
+    WHERE venda_id = ?
+  `
+
+  return db.prepare(updateQuery).run(vendaId)
+}
