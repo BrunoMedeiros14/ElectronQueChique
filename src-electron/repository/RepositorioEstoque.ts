@@ -1,7 +1,7 @@
 import db from '../config/bancoDeDados'
-import { Estoque } from '../models/Estoque'
-import { Cor } from '../models/enums/Cor'
-import { Tecido } from '../models/enums/Tecido'
+import {Estoque} from '../models/Estoque'
+import {Cor} from '../models/enums/Cor'
+import {Tecido} from '../models/enums/Tecido'
 
 export type EstoqueDb = {
   id: number
@@ -128,4 +128,15 @@ export const removerIdVenda = (vendaId: number) => {
   `
 
   return db.prepare(updateQuery).run(vendaId)
+}
+
+export const buscarEstoquesPorData = (dataInicio: string, dataFim: string) => {
+  const selectQuery = `
+    SELECT * FROM estoques WHERE data BETWEEN ? AND ?
+  `;
+
+  const stmt = db.prepare(selectQuery);
+  const estoquesDb = stmt.all(dataInicio, dataFim) as EstoqueDb[];
+
+  return estoquesDb.map((estoqueDb: EstoqueDb) => modelDbParaEstoque(estoqueDb));
 }

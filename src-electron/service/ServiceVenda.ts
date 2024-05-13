@@ -8,7 +8,7 @@ import {
 } from '../Api'
 import {
   buscarTodasVendas,
-  buscarVendaPorId,
+  buscarVendaPorId, buscarVendasPorCaixaId,
   criarVenda,
   editarVenda,
   removerVenda,
@@ -32,5 +32,9 @@ export function serviceVenda() {
   ipcMain.handle(
     'buscarTodasVendas',
     (_, ...args: Parameters<BuscarTodasVendas>) => buscarTodasVendas(...args)
+  )
+  ipcMain.handle(
+    'buscarVendasPorCaixaId',
+    (_, ...args: Parameters<BuscarTodasVendas>) => buscarVendasPorCaixaId(...args)
   )
 }

@@ -11,6 +11,7 @@ const CaixaComponent = () => import('./pages/caixas/caixasPainel')
 const EstoqueComponent = () => import('./pages/estoque/estoquePainel')
 const ClientesComponent = () => import('./pages/clientes/clientesPainel')
 const ContasComponent = () => import('./pages/contas/contasPainel')
+const RelatorioComponent = () => import('./pages/relatorios/relatorioPainel')
 const LoginPage = () => import('./pages/login')
 
 export const router = createHashRouter(
@@ -23,6 +24,7 @@ export const router = createHashRouter(
         <Route path='estoque' lazy={EstoqueComponent} />
         <Route path='clientes' lazy={ClientesComponent} />
         <Route path='contas' lazy={ContasComponent} />
+        <Route path='relatorios' lazy={RelatorioComponent} />
       </Route>
       <Route path='login' lazy={LoginPage} />
     </Route>

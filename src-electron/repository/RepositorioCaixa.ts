@@ -77,3 +77,14 @@ export const removerCaixa = (id: number) => {
 
   return db.prepare(deleteQuery).run(id)
 }
+
+export const buscarCaixasPorData = (dataInicio: string, dataFim: string) => {
+  const selectQuery = `
+    SELECT * FROM caixas WHERE data_hora_abertura BETWEEN ? AND ?
+  `;
+
+  const stmt = db.prepare(selectQuery);
+  const caixasDb = stmt.all(dataInicio, dataFim) as CaixaDb[];
+
+  return caixasDb.map((caixaDb: CaixaDb) => modelDbParaCaixa(caixaDb));
+}

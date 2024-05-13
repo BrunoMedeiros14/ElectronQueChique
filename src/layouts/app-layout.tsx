@@ -1,7 +1,11 @@
-import { Menu, Package2, ShoppingBag, Users, Wallet } from 'lucide-react'
+import {Menu, Package2, ShoppingBag, Table2Icon, Users, Wallet} from 'lucide-react'
 import { useState } from 'react'
 import { Outlet } from 'react-router-dom'
 import { SidebarLi } from '../components/SidebarLi'
+import {GoReport} from "react-icons/go";
+import {BiSolidReport} from "react-icons/bi";
+import {PiAperture} from "react-icons/pi";
+import {TbFileSpreadsheet} from "react-icons/tb";
 
 export function Component() {
   const [menuAtivo, setMenuAtivo] = useState(true)
@@ -40,7 +44,7 @@ export function Component() {
             />
             <SidebarLi
               icone={<Package2 />}
-              texto='Estoque'
+              texto='Produtos'
               rota='/app/estoque'
               ativo={menuAtivo}
             />
@@ -54,6 +58,12 @@ export function Component() {
               icone={<Wallet />}
               texto='Contas'
               rota='/app/contas'
+              ativo={menuAtivo}
+            />
+            <SidebarLi
+              icone={<Table2Icon />}
+              texto='Relatórios'
+              rota='/app/relatorios'
               ativo={menuAtivo}
             />
           </ul>

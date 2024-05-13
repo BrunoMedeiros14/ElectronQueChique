@@ -80,3 +80,14 @@ export const removerCliente = (id: number) => {
 
   return db.prepare(deleteQuery).run(id)
 }
+
+export const buscarClientesPorData = (dataInicio: string, dataFim: string) => {
+  const selectQuery = `
+    SELECT * FROM clientes WHERE data_nascimento BETWEEN ? AND ?
+  `;
+
+  const stmt = db.prepare(selectQuery);
+  const clientesDb = stmt.all(dataInicio, dataFim) as ClienteDb[];
+
+  return clientesDb.map((clienteDb: ClienteDb) => modelDbParaCliente(clienteDb));
+}

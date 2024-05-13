@@ -10,7 +10,7 @@ import {
   BuscarTodosCaixas,
   BuscarTodosClientes,
   BuscarTodosEstoques,
-  BuscarVendaPorId,
+  BuscarVendaPorId, BuscarVendasPorCaixaId,
   CriarCaixa,
   CriarCliente,
   CriarConta,
@@ -125,6 +125,10 @@ export const apiVenda = {
     ...args: Parameters<BuscarTodasVendas>
   ): ReturnType<BuscarTodasVendas> =>
     ipcRenderer.invoke('buscarTodasVendas', ...args),
+  buscarVendasPorCaixaId: (
+    ...args: Parameters<BuscarVendasPorCaixaId>
+  ): ReturnType<BuscarVendasPorCaixaId> =>
+    ipcRenderer.invoke('buscarVendasPorCaixaId', ...args),
 }
 
 try {

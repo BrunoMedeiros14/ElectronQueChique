@@ -21,6 +21,7 @@ export type RemoverVenda = (vendaId: number) => Promise<number>
 export type EditarVenda = (venda: Venda) => Promise<Venda>
 export type BuscarVendaPorId = (vendaId: number) => Promise<Venda>
 export type BuscarTodasVendas = () => Promise<Venda[]>
+export type BuscarVendasPorCaixaId = (caixaId: number) => Promise<Venda[]>
 
 export type CriarEstoque = (estoque: Estoque) => Promise<Estoque>
 export type RemoverEstoque = (estoqueId: number) => Promise<number>

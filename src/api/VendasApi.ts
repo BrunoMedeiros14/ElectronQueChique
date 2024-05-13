@@ -17,3 +17,6 @@ export const cadastrarVendaApi = async (venda: Venda) =>
 
 export const removerVendaApi = async (vendaId: number) =>
   await window.apiVenda.removerVenda(vendaId)
+
+export const buscarVendasPorCaixaId = async (caixaId: number) =>
+  await window.apiVenda.buscarVendasPorCaixaId(caixaId)

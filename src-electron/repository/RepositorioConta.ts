@@ -88,3 +88,14 @@ export const removerConta = (id: number) => {
 
   return db.prepare(deleteQuery).run(id)
 }
+
+export const buscarContasPorData = (dataInicio: string, dataFim: string) => {
+  const selectQuery = `
+    SELECT * FROM contas WHERE data_vencimento BETWEEN ? AND ?
+  `;
+
+  const stmt = db.prepare(selectQuery);
+  const contasDb = stmt.all(dataInicio, dataFim) as ContaDb[];
+
+  return contasDb.map((contaDb: ContaDb) => modelDbParaConta(contaDb));
+}
