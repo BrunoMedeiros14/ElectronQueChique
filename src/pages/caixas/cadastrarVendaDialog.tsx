@@ -362,3 +362,4 @@ export function DialogCadastrarVendaBeta({ isOpen }: { isOpen: boolean }) {
     </DialogContent>
   )
 }
+

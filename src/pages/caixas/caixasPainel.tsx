@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient, useSuspenseQuery } from '@tanstack/react-query'
 import { Receipt } from 'lucide-react'
 import { useRef, useState } from 'react'
-import { FaCashRegister } from 'react-icons/fa'
+import { FaCashRegister, FaMoneyBillWave } from 'react-icons/fa'
 import { Caixa } from '../../../src-electron/models/Caixa'
 import { buscarCaixas } from '../../api/CaixasApi'
 import { buscarVendasPorCaixaId, removerVendaApi } from '../../api/VendasApi'
@@ -9,7 +9,7 @@ import { Button, buttonVariants } from '../../components/ui/button'
 import { DataTable } from '../../components/ui/data-table'
 import { Dialog, DialogTrigger } from '../../components/ui/dialog'
 import { escutarCliqueTeclado } from '../../hooks/escutarCliqueTeclado'
-import { DialogAtualizarVenda, DialogCadastrarCaixa } from '../../pages/caixas/caixasDialog'
+import { DialogAtualizarVenda, DialogCadastrarCaixa, DialogFecharCaixa } from '../../pages/caixas/caixasDialog'
 import { DialogCadastrarVendaBeta } from './cadastrarVendaDialog'
 import { pegarColunasVenda } from './caixasColunas'
 import {
@@ -148,7 +148,7 @@ export function Component() {
               <h1 className="font-semibold text-lg md:text-2xl h-10">{`Caixa do Dia`}</h1>
             </div>
 
-            <div className="flex items-center justify-between py-3 gap-2">
+            <div className="flex items-end justify-end py-3 gap-2">
               <Dialog onOpenChange={setDialogAberto}>
                 <DialogTrigger asChild>
                   <Button ref={refBotaoCadastro} className="ml-auto h-10">
@@ -157,6 +157,26 @@ export function Component() {
                   </Button>
                 </DialogTrigger>
                 <DialogCadastrarVendaBeta isOpen={dialogAberto} />
+              </Dialog>
+
+              <Dialog onOpenChange={setDialogAberto}>
+                <DialogTrigger asChild>
+                  <Button className="ml-auto h-10">
+                    <FaMoneyBillWave className="mr-2" />
+                    Adicionar Saída de Valores
+                  </Button>
+                </DialogTrigger>
+                {/*<DialogAdicionarSaidaValores isOpen={dialogAberto} />*/}
+              </Dialog>
+
+              <Dialog onOpenChange={setDialogAberto}>
+                <DialogTrigger asChild>
+                  <Button className="ml-auto h-10">
+                    <FaCashRegister className="mr-2" />
+                    Fechar Caixa
+                  </Button>
+                </DialogTrigger>
+                <DialogFecharCaixa caixaId={caixaAberto.id} />
               </Dialog>
             </div>
 

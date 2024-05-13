@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { Caixa } from '../../../src-electron/models/Caixa'
-import { cadastrarCaixaApi } from '@/api/CaixasApi'
+import { atualizarCaixaApi, buscarCaixaPorId, cadastrarCaixaApi } from '@/api/CaixasApi'
 import { InputComMascara } from '@/components/InputComMascara'
 import { Button } from '@/components/ui/button'
 import { FormaPagamento } from '@/enums/FormaPagamento'
@@ -17,14 +17,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form'
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import {
   gerarDatePorString,
@@ -40,13 +33,7 @@ import { Estoque } from '../../../src-electron/models/Estoque'
 import { Cliente } from '../../../src-electron/models/Cliente'
 import { Trash2 } from 'lucide-react'
 import ProcurarEstoqueInput from '@/components/ProcurarEstoqueInput'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { ProcurarClienteInput } from '@/components/ProcurarClienteInput'
 import { buscarTodosClientes } from '@/api/clientesApi'
 import { buscarEstoquesNaoVendidos } from '@/api/estoquesApi'
@@ -121,9 +108,9 @@ export function DialogCadastrarCaixa({ isOpen }: { isOpen: boolean }) {
   }, [isOpen])
 
   function onSubmit({
-    dataHoraAbertura: dataAberturaString,
-    valorInicial,
-  }: z.infer<typeof formSchemaCaixa>) {
+                      dataHoraAbertura: dataAberturaString,
+                      valorInicial,
+                    }: z.infer<typeof formSchemaCaixa>) {
     const caixa: Caixa = {
       ativo: true,
       dataHoraAbertura: gerarDatePorString(dataAberturaString),
@@ -137,29 +124,29 @@ export function DialogCadastrarCaixa({ isOpen }: { isOpen: boolean }) {
   }
 
   return (
-    <DialogContent className='sm:max-w-[32rem]'>
+    <DialogContent className="sm:max-w-[32rem]">
       <DialogHeader>
         <DialogTitle>Abertura de Caixa</DialogTitle>
         <DialogDescription>Insira abaixo os dados do caixa.</DialogDescription>
       </DialogHeader>
-      <div className='grid gap-4 py-4'>
+      <div className="grid gap-4 py-4">
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className='grid grid-cols-2 gap-3'
+            className="grid grid-cols-2 gap-3"
           >
             <FormField
               control={form.control}
-              name='dataHoraAbertura'
+              name="dataHoraAbertura"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Data de Abertura*</FormLabel>
                   <FormControl>
                     <InputComMascara
-                      radix='.'
+                      radix="."
                       mask={'00/00/0000'}
                       unmask={true}
-                      placeholder='dd/mm/aaaa'
+                      placeholder="dd/mm/aaaa"
                       {...field}
                     />
                   </FormControl>
@@ -170,13 +157,13 @@ export function DialogCadastrarCaixa({ isOpen }: { isOpen: boolean }) {
 
             <FormField
               control={form.control}
-              name='valorInicial'
+              name="valorInicial"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Valor Abertura do Caixa*</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder='Valor Inicial'
+                      placeholder="Valor Inicial"
                       ref={valorMonetario}
                       value={field.value}
                       onChange={field.onChange}
@@ -187,16 +174,16 @@ export function DialogCadastrarCaixa({ isOpen }: { isOpen: boolean }) {
               )}
             />
 
-            <Button className='hidden' type='submit'></Button>
+            <Button className="hidden" type="submit"></Button>
           </form>
         </Form>
       </div>
       <DialogFooter>
-        <Button onClick={form.handleSubmit(onSubmit)} type='submit'>
+        <Button onClick={form.handleSubmit(onSubmit)} type="submit">
           Abrir Caixa
         </Button>
         <DialogClose asChild>
-          <Button ref={refBtnClose} type='button' variant='destructive'>
+          <Button ref={refBtnClose} type="button" variant="destructive">
             Cancelar
           </Button>
         </DialogClose>
@@ -230,12 +217,12 @@ export function DialogAtualizarVenda({ vendaId }: { vendaId?: number }) {
   const form = gerarFormVazioVenda()
 
   async function onSubmit({
-    formaPagamento,
-    valorPago,
-    troco,
-    desconto,
-    valorTotal,
-  }: z.infer<typeof formSchemaVenda>) {
+                            formaPagamento,
+                            valorPago,
+                            troco,
+                            desconto,
+                            valorTotal,
+                          }: z.infer<typeof formSchemaVenda>) {
     const venda: Venda = {
       dataVenda: new Date(),
       estoque: estoqueSelecionado,
@@ -256,7 +243,7 @@ export function DialogAtualizarVenda({ vendaId }: { vendaId?: number }) {
 
   const handleRemoverEstoque = (estoque: Estoque) => {
     setEstoqueSelecionado((estoques) =>
-      estoques.filter((estoqueAtual) => estoqueAtual !== estoque)
+      estoques.filter((estoqueAtual) => estoqueAtual !== estoque),
     )
   }
 
@@ -288,25 +275,25 @@ export function DialogAtualizarVenda({ vendaId }: { vendaId?: number }) {
     if (vendaId) {
       buscarVendaPorId(vendaId).then(
         ({
-          formaPagamento,
-          valorTotal,
-          valorPago,
-          troco,
-          desconto,
-          cliente,
-          estoque,
-        }) => {
+           formaPagamento,
+           valorTotal,
+           valorPago,
+           troco,
+           desconto,
+           cliente,
+           estoque,
+         }) => {
           //form.setValue('formaPagamento', formaPagamento)
           form.setValue('valorTotal', valorTotal)
           form.setValue('valorPago', gerarStringReal(valorPago))
           form.setValue('troco', troco)
           form.setValue(
             'desconto',
-            gerarStringPorcentagemPorNumeroInteiro(desconto)
+            gerarStringPorcentagemPorNumeroInteiro(desconto),
           )
           //form.setValue('cliente', cliente)
           //form.setValue('estoque', clienteSelecionado)
-        }
+        },
       )
     }
   }, [vendaId])
@@ -319,25 +306,25 @@ export function DialogAtualizarVenda({ vendaId }: { vendaId?: number }) {
   }, [estoqueSelecionado, form.watch('desconto')])
 
   return (
-    <DialogContent className='sm:max-w-[64rem]'>
+    <DialogContent className="sm:max-w-[64rem]">
       <DialogHeader>
         <DialogTitle>Cadastro de Venda</DialogTitle>
         <DialogDescription>Insira abaixo os dados da venda.</DialogDescription>
       </DialogHeader>
-      <div className='flex gap-4 py-4'>
-        <div className='border rounded-lg p-2 h-80 flex flex-col flex-1'>
-          <h2 className='font-semibold text-lg'>Resumo da venda</h2>
-          <div className='overflow-y-auto h-56 [&>*]:border-t'>
+      <div className="flex gap-4 py-4">
+        <div className="border rounded-lg p-2 h-80 flex flex-col flex-1">
+          <h2 className="font-semibold text-lg">Resumo da venda</h2>
+          <div className="overflow-y-auto h-56 [&>*]:border-t">
             {estoqueSelecionado.map((estoque) => (
               <div
                 key={estoque.id}
-                className='flex justify-between p-1 gap-1 items-center first:border-t-0'
+                className="flex justify-between p-1 gap-1 items-center first:border-t-0"
               >
-                <div className='flex-1'>
-                  <h4 className='font-normal'>
+                <div className="flex-1">
+                  <h4 className="font-normal">
                     {estoque.nome} - {estoque.cor}
                   </h4>
-                  <p className='text-sm'>{estoque.descricao}</p>
+                  <p className="text-sm">{estoque.descricao}</p>
                 </div>
                 <p>
                   {estoque.valorVenda.toLocaleString('pt-BR', {
@@ -346,31 +333,32 @@ export function DialogAtualizarVenda({ vendaId }: { vendaId?: number }) {
                   })}
                 </p>
                 <Button
-                  size='icon'
-                  variant='ghost'
+                  size="icon"
+                  variant="ghost"
                   onClick={() => handleRemoverEstoque(estoque)}
-                  className='text-red-500'
+                  className="text-red-500"
                 >
-                  <Trash2 className='h-4 w-4' />
-                  <span className='sr-only'>Delete</span>
+                  <Trash2 className="h-4 w-4" />
+                  <span className="sr-only">Delete</span>
                 </Button>
               </div>
             ))}
             {estoqueSelecionado.length === 0 && (
-              <div className='h-full w-full first:border-t-0 flex items-center justify-center text-lg font-normal text-gray-700'>
+              <div
+                className="h-full w-full first:border-t-0 flex items-center justify-center text-lg font-normal text-gray-700">
                 Nenhum Item selecionado
               </div>
             )}
           </div>
-          <div className='flex items-center flex-1 borde border-t p-2'>
-            <div className='flex-1'>
+          <div className="flex items-center flex-1 borde border-t p-2">
+            <div className="flex-1">
               Total:{' '}
               {form.watch('valorTotal').toLocaleString('pt-BR', {
                 style: 'currency',
                 currency: 'BRL',
               })}
             </div>
-            <div className='flex-1'>
+            <div className="flex-1">
               Troco:{' '}
               <span
                 className={
@@ -387,20 +375,20 @@ export function DialogAtualizarVenda({ vendaId }: { vendaId?: number }) {
             </div>
           </div>
         </div>
-        <div className='w-[32rem]'>
+        <div className="w-[32rem]">
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className='h-full'>
-              <div className='flex flex-col gap-3 h-full'>
-                <FormItem className='mb-10'>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="h-full">
+              <div className="flex flex-col gap-3 h-full">
+                <FormItem className="mb-10">
                   <FormLabel>Produtos comprados*</FormLabel>
                   <FormControl>
                     <ProcurarEstoqueInput
                       adicionarEstoque={handleAdicionarEstoque}
-                      placeholder='Selecione o estoque'
+                      placeholder="Selecione o estoque"
                       estoques={
                         estoques &&
                         estoques.filter(
-                          (estoque) => !estoqueSelecionado.includes(estoque)
+                          (estoque) => !estoqueSelecionado.includes(estoque),
                         )
                       }
                     />
@@ -408,12 +396,12 @@ export function DialogAtualizarVenda({ vendaId }: { vendaId?: number }) {
                   <FormMessage />
                 </FormItem>
 
-                <div className='flex gap-2'>
+                <div className="flex gap-2">
                   <FormField
                     control={form.control}
-                    name='formaPagamento'
+                    name="formaPagamento"
                     render={({ field }) => (
-                      <FormItem className='flex-1'>
+                      <FormItem className="flex-1">
                         <FormLabel>Foma de Pagamento*</FormLabel>
                         <FormControl>
                           <Select
@@ -421,7 +409,7 @@ export function DialogAtualizarVenda({ vendaId }: { vendaId?: number }) {
                             defaultValue={field.value}
                           >
                             <SelectTrigger>
-                              <SelectValue placeholder='Selecione uma forma...' />
+                              <SelectValue placeholder="Selecione uma forma..." />
                             </SelectTrigger>
                             <SelectContent>
                               {Object.values(FormaPagamento).map(
@@ -432,7 +420,7 @@ export function DialogAtualizarVenda({ vendaId }: { vendaId?: number }) {
                                   >
                                     {formaPagamento}
                                   </SelectItem>
-                                )
+                                ),
                               )}
                             </SelectContent>
                           </Select>
@@ -444,15 +432,15 @@ export function DialogAtualizarVenda({ vendaId }: { vendaId?: number }) {
 
                   <FormField
                     control={form.control}
-                    name='desconto'
+                    name="desconto"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Desconto*</FormLabel>
-                        <div className='flex items-center gap-2'>
+                        <div className="flex items-center gap-2">
                           <FormControl>
                             <Input
-                              className='w-28'
-                              placeholder='Desconto'
+                              className="w-28"
+                              placeholder="Desconto"
                               {...field}
                             />
                           </FormControl>
@@ -464,16 +452,16 @@ export function DialogAtualizarVenda({ vendaId }: { vendaId?: number }) {
                   />
                 </div>
 
-                <div className='flex gap-2'>
+                <div className="flex gap-2">
                   <FormField
                     control={form.control}
-                    name='valorPago'
+                    name="valorPago"
                     render={({ field }) => (
-                      <FormItem className='flex-1'>
+                      <FormItem className="flex-1">
                         <FormLabel>Valor Pago*</FormLabel>
                         <FormControl>
                           <Input
-                            placeholder='Valor Pago'
+                            placeholder="Valor Pago"
                             ref={valorMonetario}
                             value={field.value}
                             onChange={field.onChange}
@@ -483,7 +471,7 @@ export function DialogAtualizarVenda({ vendaId }: { vendaId?: number }) {
                       </FormItem>
                     )}
                   />
-                  <FormItem className='flex-1 h-full'>
+                  <FormItem className="flex-1 h-full">
                     <div>
                       <FormLabel>Cliente</FormLabel>
                     </div>
@@ -497,26 +485,118 @@ export function DialogAtualizarVenda({ vendaId }: { vendaId?: number }) {
                     <FormMessage />
                   </FormItem>
                 </div>
-                <div className='flex gap-2 justify-end flex-1 items-end'>
-                  <Button onClick={form.handleSubmit(onSubmit)} type='submit'>
+                <div className="flex gap-2 justify-end flex-1 items-end">
+                  <Button onClick={form.handleSubmit(onSubmit)} type="submit">
                     Cadastrar Venda
                   </Button>
                   <DialogClose asChild>
                     <Button
                       ref={refBtnClose}
-                      type='button'
-                      variant='destructive'
+                      type="button"
+                      variant="destructive"
                     >
                       Cancelar
                     </Button>
                   </DialogClose>
                 </div>
               </div>
-              <Button className='hidden' type='submit'></Button>
+              <Button className="hidden" type="submit"></Button>
             </form>
           </Form>
         </div>
       </div>
+    </DialogContent>
+  )
+}
+
+export function DialogFecharCaixa({ caixaId }: { caixaId?: number }) {
+  const queryClient = useQueryClient()
+
+  const refBtnClose = useRef<HTMLButtonElement>()
+
+  const atualizarCaixaMutation = useMutation({
+    mutationFn: atualizarCaixaApi,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['caixas'] })
+      refBtnClose.current.click()
+    },
+  })
+
+  const form = gerarFormVazioCaixa()
+
+  useEffect(() => {
+    if (caixaId) {
+      buscarCaixaPorId(caixaId).then(
+        ({
+           ativo,
+           dataHoraAbertura,
+           dataHoraFechamento,
+           valorInicial,
+         }) => {
+          form.setValue('ativo', ativo)
+          form.setValue('dataHoraAbertura', gerarStringPorDate(dataHoraAbertura))
+          form.setValue('dataHoraFechamento', gerarStringPorDate(new Date()))
+          form.setValue('valorInicial', gerarStringReal(valorInicial))
+        },
+      )
+    }
+  }, [caixaId])
+
+  async function onSubmit({
+                            dataHoraFechamento: dataFechamentoString,
+                          }: z.infer<typeof formSchemaCaixa>) {
+    const currentCaixa = await buscarCaixaPorId(caixaId)
+
+    currentCaixa.ativo = false
+    currentCaixa.dataHoraFechamento = gerarDatePorString(dataFechamentoString)
+
+    atualizarCaixaMutation.mutate(currentCaixa)
+  }
+
+  return (
+    <DialogContent className="sm:max-w-[32rem]">
+      <DialogHeader>
+        <DialogTitle>Fechamento do Caixa</DialogTitle>
+      </DialogHeader>
+      <div className="grid gap-4 py-4">
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="grid grid-cols-2 gap-3"
+          >
+            <FormField
+              control={form.control}
+              name="dataHoraFechamento"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Data de Fechamento*</FormLabel>
+                  <FormControl>
+                    <InputComMascara
+                      radix="."
+                      mask={'00/00/0000'}
+                      unmask={true}
+                      placeholder="dd/mm/aaaa"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button className="hidden" type="submit"></Button>
+          </form>
+        </Form>
+      </div>
+      <DialogFooter>
+        <Button onClick={form.handleSubmit(onSubmit)} type="submit">
+          Fechar Caixa
+        </Button>
+        <DialogClose asChild>
+          <Button ref={refBtnClose} type="button" variant="destructive">
+            Cancelar
+          </Button>
+        </DialogClose>
+      </DialogFooter>
     </DialogContent>
   )
 }
