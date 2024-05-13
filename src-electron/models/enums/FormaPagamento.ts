@@ -1,8 +1,6 @@
 export enum FormaPagamento {
-  Dinheiro = 'Dinheiro',
-  Pix = 'Pix',
-  Cartao = 'Cartão',
-  Boleto = 'Boleto',
-  Cheque = 'Cheque',
-  Outros = 'Outros',
+  Dinheiro = 'DINHEIRO',
+  Pix = 'PIX',
+  Cartao = 'CARTAO',
+  Outro = 'OUTRO',
 }
