@@ -163,21 +163,21 @@ export const removerVenda = (id: number) => {
 export const buscarVendasPorData = (dataInicio: string, dataFim: string) => {
   const selectQuery = `
     SELECT * FROM vendas WHERE data_venda BETWEEN ? AND ?
-  `;
+  `
 
-  const stmt = db.prepare(selectQuery);
-  const vendasDb = stmt.all(dataInicio, dataFim) as VendaDb[];
+  const stmt = db.prepare(selectQuery)
+  const vendasDb = stmt.all(dataInicio, dataFim) as VendaDb[]
 
-  return vendasDb.map((vendaDb: VendaDb) => modelDbParaVenda(vendaDb));
+  return vendasDb.map((vendaDb: VendaDb) => modelDbParaVenda(vendaDb))
 }
 
 export const buscarVendasPorCaixaId = (caixaId: number) => {
   const selectQuery = `
     SELECT * FROM vendas WHERE caixa_id = ?
-  `;
+  `
 
-  const stmt = db.prepare(selectQuery);
-  const vendasDb = stmt.all(caixaId) as VendaDb[];
+  const stmt = db.prepare(selectQuery)
+  const vendasDb = stmt.all(caixaId) as VendaDb[]
 
-  return vendasDb.map((vendaDb: VendaDb) => modelDbParaVenda(vendaDb));
+  return vendasDb?.map((vendaDb: VendaDb) => modelDbParaVenda(vendaDb)) ?? []
 }

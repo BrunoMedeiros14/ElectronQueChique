@@ -6,11 +6,7 @@ import { Caixa } from '../../../src-electron/models/Caixa'
 import { Cliente } from '../../../src-electron/models/Cliente'
 import { Estoque } from '../../../src-electron/models/Estoque'
 import { Venda } from '../../../src-electron/models/Venda'
-import {
-  gerarStringPorcentagemPorNumeroInteiro,
-  gerarStringPorDate,
-  gerarStringReal,
-} from '../../utils/conversores'
+import { gerarStringPorDate, gerarStringPorcentagemPorNumeroInteiro, gerarStringReal } from '../../utils/conversores'
 
 type ColunasCaixaProps = {
   setIdParaExcluir: React.Dispatch<React.SetStateAction<number>>
@@ -22,10 +18,7 @@ type ColunasVendaProps = {
   abrirEdicaoVenda: (vendaId: number) => void
 }
 
-export const pegarColunasCaixa = ({
-  setIdParaExcluir,
-  abrirEdicaoCaixa,
-}: ColunasCaixaProps): ColumnDef<Caixa>[] => [
+export const pegarColunasCaixa = ({ setIdParaExcluir, abrirEdicaoCaixa }: ColunasCaixaProps): ColumnDef<Caixa>[] => [
   {
     accessorKey: 'id',
     header: 'Id',
@@ -41,18 +34,14 @@ export const pegarColunasCaixa = ({
     accessorKey: 'dataHoraAbertura',
     header: 'Data Abertura',
     cell: ({ row }) => {
-      return row.getValue('dataPagamento')
-        ? gerarStringPorDate(row.getValue('dataPagamento'))
-        : 'Não inserido'
+      return row.getValue('dataPagamento') ? gerarStringPorDate(row.getValue('dataPagamento')) : 'Não inserido'
     },
   },
   {
     accessorKey: 'dataHoraFechamento',
     header: 'Data Fechamento',
     cell: ({ row }) => {
-      return row.getValue('dataPagamento')
-        ? gerarStringPorDate(row.getValue('dataPagamento'))
-        : 'Não inserido'
+      return row.getValue('dataPagamento') ? gerarStringPorDate(row.getValue('dataPagamento')) : 'Não inserido'
     },
   },
   {
@@ -81,8 +70,7 @@ export const pegarColunasCaixa = ({
             size='icon'
             variant='ghost'
             onClick={() => abrirEdicaoCaixa(caixaId)}
-            className='text-orange-400 hover:text-white hover:bg-orange-400'
-          >
+            className='text-orange-400 hover:text-white hover:bg-orange-400'>
             <Pencil className='h-4 w-4' />
             <span className='sr-only'>Edit</span>
           </Button>
@@ -91,8 +79,7 @@ export const pegarColunasCaixa = ({
             size='icon'
             variant='ghost'
             onClick={() => setIdParaExcluir(caixaId)}
-            className='text-red-500 hover:text-white hover:bg-red-500'
-          >
+            className='text-red-500 hover:text-white hover:bg-red-500'>
             <Trash2 className='h-4 w-4' />
             <span className='sr-only'>Delete</span>
           </Button>
@@ -102,10 +89,7 @@ export const pegarColunasCaixa = ({
   },
 ]
 
-export const pegarColunasVenda = ({
-  setIdParaExcluir,
-  abrirEdicaoVenda,
-}: ColunasVendaProps): ColumnDef<Venda>[] => [
+export const pegarColunasVenda = ({ setIdParaExcluir, abrirEdicaoVenda }: ColunasVendaProps): ColumnDef<Venda>[] => [
   {
     accessorKey: 'id',
     header: 'Id',
@@ -116,9 +100,7 @@ export const pegarColunasVenda = ({
     cell: ({ row }) => {
       const estoques = row.getValue('estoque') as Estoque[]
 
-      return estoques.length > 0
-        ? estoques.map((estoque) => estoque.nome).join(', ')
-        : 'Sem item cadastrado'
+      return estoques.length > 0 ? estoques.map((estoque) => estoque.nome).join(', ') : 'Sem item cadastrado'
     },
   },
   {
@@ -159,8 +141,7 @@ export const pegarColunasVenda = ({
             size='icon'
             variant='ghost'
             onClick={() => abrirEdicaoVenda(vendaId)}
-            className='text-orange-400 hover:text-white hover:bg-orange-400'
-          >
+            className='text-orange-400 hover:text-white hover:bg-orange-400'>
             <Pencil className='h-4 w-4' />
             <span className='sr-only'>Edit</span>
           </Button>
@@ -169,8 +150,7 @@ export const pegarColunasVenda = ({
             size='icon'
             variant='ghost'
             onClick={() => setIdParaExcluir(vendaId)}
-            className='text-red-500 hover:text-white hover:bg-red-500'
-          >
+            className='text-red-500 hover:text-white hover:bg-red-500'>
             <Trash2 className='h-4 w-4' />
             <span className='sr-only'>Delete</span>
           </Button>

@@ -1,32 +1,22 @@
-import {
-  Navigate,
-  Route,
-  createHashRouter,
-  createRoutesFromElements,
-} from 'react-router-dom'
+import { Navigate, Outlet, Route, createHashRouter, createRoutesFromElements } from 'react-router-dom'
 import { appLoader } from './layouts/app-loader'
-
-const AppLayout = () => import('./layouts/app-layout')
-const CaixaComponent = () => import('./pages/caixas/caixasPainel')
-const EstoqueComponent = () => import('./pages/estoque/estoquePainel')
-const ClientesComponent = () => import('./pages/clientes/clientesPainel')
-const ContasComponent = () => import('./pages/contas/contasPainel')
-const RelatorioComponent = () => import('./pages/relatorios/relatorioPainel')
-const LoginPage = () => import('./pages/login')
 
 export const router = createHashRouter(
   createRoutesFromElements(
     <Route path='/'>
       <Route index element={<Navigate to='app' replace />} />
-      <Route path='app' lazy={AppLayout} loader={appLoader}>
+      <Route path='app' lazy={() => import('./layouts/app-layout')} loader={appLoader}>
         <Route index element={<Navigate to='caixa' replace />} />
-        <Route path='caixa' lazy={CaixaComponent} />
-        <Route path='estoque' lazy={EstoqueComponent} />
-        <Route path='clientes' lazy={ClientesComponent} />
-        <Route path='contas' lazy={ContasComponent} />
-        <Route path='relatorios' lazy={RelatorioComponent} />
+        <Route path='caixa' element={<Outlet />}>
+          <Route index lazy={() => import('./pages/caixas/CaixaLayout')} />
+          <Route path='painel' lazy={() => import('./pages/caixas/caixasPainel')} />
+        </Route>
+        <Route path='estoque' lazy={() => import('./pages/estoque/estoquePainel')} />
+        <Route path='clientes' lazy={() => import('./pages/clientes/clientesPainel')} />
+        <Route path='contas' lazy={() => import('./pages/contas/contasPainel')} />
+        <Route path='relatorios' lazy={() => import('./pages/relatorios/relatorioPainel')} />
       </Route>
-      <Route path='login' lazy={LoginPage} />
+      <Route path='login' lazy={() => import('./pages/login')} />
     </Route>
   )
 )

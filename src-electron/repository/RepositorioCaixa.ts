@@ -11,9 +11,7 @@ type CaixaDb = {
 const caixaParaModelDb = (caixa: Caixa): CaixaDb => ({
   id: caixa.id,
   data_hora_abertura: caixa.dataHoraAbertura.toISOString(),
-  data_hora_fechamento: caixa.dataHoraFechamento
-    ? caixa.dataHoraFechamento.toISOString()
-    : null,
+  data_hora_fechamento: caixa.dataHoraFechamento ? caixa.dataHoraFechamento.toISOString() : null,
   valor_inicial: caixa.valorInicial,
 })
 
@@ -21,9 +19,7 @@ const modelDbParaCaixa = (caixaDb: CaixaDb): Caixa => ({
   id: caixaDb.id,
   ativo: !caixaDb.data_hora_fechamento,
   dataHoraAbertura: new Date(caixaDb.data_hora_abertura),
-  dataHoraFechamento: caixaDb.data_hora_fechamento
-    ? new Date(caixaDb.data_hora_fechamento)
-    : null,
+  dataHoraFechamento: caixaDb.data_hora_fechamento ? new Date(caixaDb.data_hora_fechamento) : null,
   valorInicial: caixaDb.valor_inicial,
   vendas: null,
   contas: null,
@@ -81,10 +77,10 @@ export const removerCaixa = (id: number) => {
 export const buscarCaixasPorData = (dataInicio: string, dataFim: string) => {
   const selectQuery = `
     SELECT * FROM caixas WHERE data_hora_abertura BETWEEN ? AND ?
-  `;
+  `
 
-  const stmt = db.prepare(selectQuery);
-  const caixasDb = stmt.all(dataInicio, dataFim) as CaixaDb[];
+  const stmt = db.prepare(selectQuery)
+  const caixasDb = stmt.all(dataInicio, dataFim) as CaixaDb[]
 
-  return caixasDb.map((caixaDb: CaixaDb) => modelDbParaCaixa(caixaDb));
+  return caixasDb.map((caixaDb: CaixaDb) => modelDbParaCaixa(caixaDb))
 }
