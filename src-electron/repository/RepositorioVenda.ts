@@ -2,12 +2,7 @@ import db from '../config/bancoDeDados'
 import { Venda } from '../models/Venda'
 import { FormaPagamento } from '../models/enums/FormaPagamento'
 import { buscarTodosCaixas } from './RepositorioCaixa'
-import {
-  EstoqueDb,
-  inserirIdVenda,
-  modelDbParaEstoque,
-  removerIdVenda,
-} from './RepositorioEstoque'
+import { EstoqueDb, inserirIdVenda, modelDbParaEstoque, removerIdVenda } from './RepositorioEstoque'
 
 type VendaDb = {
   id: number
@@ -25,9 +20,7 @@ type VendaDb = {
 
 const vendaParaModelDb = (venda: Venda, caixaId?: number): VendaDb => ({
   id: venda.id,
-  data_venda: venda.dataVenda
-    ? venda.dataVenda.toISOString().split('T')[0]
-    : null,
+  data_venda: venda.dataVenda ? venda.dataVenda.toISOString().split('T')[0] : null,
   valor_total: venda.valorTotal,
   forma_pagamento: venda.formaPagamento,
   valor_pago: venda.valorPago,
@@ -44,9 +37,7 @@ const modelDbParaVenda = (vendaDb: VendaDb): Venda => ({
   estoque: vendaDb.estoque_json
     ? JSON.parse(vendaDb.estoque_json)
         .filter((estoque: EstoqueDb) => estoque.id)
-        .map((estoque: EstoqueDb) =>
-          estoque.id ? modelDbParaEstoque(estoque) : null
-        )
+        .map((estoque: EstoqueDb) => (estoque.id ? modelDbParaEstoque(estoque) : null))
     : [],
   cliente: vendaDb.cliente_json
     ? JSON.parse(vendaDb.cliente_json).id
@@ -83,7 +74,42 @@ export const criarVenda = (venda: Venda) => {
 
 export const buscarVendaPorId = (vendaId: number): Venda => {
   const selectQuery = `
-    SELECT * FROM vendas WHERE id = ?
+    SELECT
+      v.id,
+      v.data_venda,
+      v.valor_total,
+      v.forma_pagamento,
+      v.valor_pago,
+      v.troco,
+      v.desconto,
+      v.cliente_id,
+    JSON_GROUP_ARRAY(json_object(
+      'id', e.id,
+      'nome', e.nome,
+      'descricao', e.descricao,
+      'cor', e.cor,
+      'tamanho', e.tamanho,
+      'tecido', e.tecido,
+      'fornecedor', e.fornecedor,
+      'quantidade', e.quantidade,
+      'valor_compra', e.valor_compra,
+      'valor_venda', e.valor_venda,
+      'venda_id', e.venda_id
+    )) as estoque_json,
+    json_object(
+      'id', c.id,
+      'nome', c.nome,
+      'data_nascimento', c.data_nascimento,
+      'endereco', c.endereco,
+      'telefone', c.telefone,
+      'email', c.email
+    ) as cliente_json
+    FROM vendas v
+    LEFT JOIN estoques e ON v.id = e.venda_id
+    LEFT JOIN clientes c ON v.cliente_id = c.id
+    WHERE v.id = ?
+    GROUP BY v.id
+
   `
 
   const stmt = db.prepare(selectQuery)
@@ -135,8 +161,6 @@ export const buscarTodasVendas = () => {
     .all()
     .map((vendaDb: VendaDb) => modelDbParaVenda(vendaDb))
 }
-
-buscarTodasVendas()
 
 export const editarVenda = (venda: Venda) => {
   const vendaDb = vendaParaModelDb(venda)

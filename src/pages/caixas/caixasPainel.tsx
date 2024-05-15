@@ -23,10 +23,11 @@ import { DataTable } from '../../components/ui/data-table'
 import { Dialog, DialogTrigger } from '../../components/ui/dialog'
 import { FormaPagamento } from '../../enums/FormaPagamento'
 import { escutarCliqueTeclado } from '../../hooks/escutarCliqueTeclado'
-import { DialogAtualizarVenda, DialogFecharCaixa } from '../../pages/caixas/caixasDialog'
+import { DialogFecharCaixa } from '../../pages/caixas/caixasDialog'
 import { gerarStringReal } from '../../utils/conversores'
+import { DialogAtualizarVenda } from './atualizarVendaDialog'
 import { DialogCadastrarVendaBeta } from './cadastrarVendaDialog'
-import { pegarColunasVenda } from './caixasColunas'
+import { pegarColunasVenda } from './vendasColunas'
 
 type CaixaInfoProps = {
   title: string
@@ -54,7 +55,6 @@ export function Component() {
     staleTime: 5 * 1000,
   })
 
-  console.log('🚀 ~ Component ~ vendas:', vendas)
   const removerVendaMutation = useMutation({
     mutationFn: removerVendaApi,
     onSuccess: () => {
@@ -123,10 +123,10 @@ export function Component() {
             <h1 className='font-semibold text-lg md:text-2xl h-10'>{`Caixa do Dia`}</h1>
           </div>
 
-          <div className='flex items-end justify-end py-3 gap-2'>
+          <div className='flex justify-end py-3 gap-4'>
             <Dialog onOpenChange={setDialogAberto}>
               <DialogTrigger asChild>
-                <Button ref={refBotaoCadastro} className='ml-auto h-10'>
+                <Button ref={refBotaoCadastro} className='h-10'>
                   <Receipt className='mr-2' />
                   Nova Venda (F1)
                 </Button>
@@ -136,16 +136,17 @@ export function Component() {
 
             <Dialog onOpenChange={setDialogAberto}>
               <DialogTrigger asChild>
-                <Button className='ml-auto h-10'>
+                <Button className='h-10'>
                   <FaMoneyBillWave className='mr-2' />
                   Adicionar Saída de Valores
                 </Button>
               </DialogTrigger>
               {/*<DialogAdicionarSaidaValores isOpen={dialogAberto} />*/}
             </Dialog>
+
             <Dialog onOpenChange={setDialogAberto}>
               <DialogTrigger asChild>
-                <Button className='ml-auto h-10'>
+                <Button className='h-10'>
                   <FaCashRegister className='mr-2' />
                   Fechar Caixa
                 </Button>
@@ -154,7 +155,7 @@ export function Component() {
             </Dialog>
           </div>
 
-          {vendas.data && <DataTable columns={colunasVenda} dados={vendas.data} colunaParaFiltrar='id' filtro={null} />}
+          {vendas.data && <DataTable columns={colunasVenda} dados={vendas.data} />}
         </div>
 
         <AlertDialog open={idParaExcluir !== null}>
@@ -177,22 +178,19 @@ export function Component() {
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
+
         <Dialog>
           <DialogTrigger ref={refBotaoAtualizacao} />
           <DialogAtualizarVenda vendaId={idParaEditar} />
         </Dialog>
 
-        <div className='grid grid-cols-5 gap-4 fixed bottom-0'>
+        <div className='flex gap-2 fixed bottom-0'>
           <CaixaInfo title='Saldo Inicial' value={saldoInicial} />
           <CaixaInfo title='Saídas de Caixa' value={saidasDeCaixa} />
           <CaixaInfo title='Recebido Cartão' value={recebidoCartao} />
           <CaixaInfo title='Recebido Dinheiro' value={recebidoDinheiro} />
           <CaixaInfo title='Valor Total' value={valorTotal} />
         </div>
-
-        <Dialog>
-          <DialogTrigger ref={refBotaoAtualizacao} />
-        </Dialog>
       </main>
     </div>
   )

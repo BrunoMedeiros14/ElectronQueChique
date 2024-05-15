@@ -1,60 +1,26 @@
-import { atualizarCaixaApi, buscarCaixaPorId, cadastrarCaixaApi } from '@/api/CaixasApi'
 import { atualizarVendaApi, buscarVendaPorId } from '@/api/VendasApi'
 import { buscarTodosClientes } from '@/api/clientesApi'
 import { buscarEstoquesNaoVendidos } from '@/api/estoquesApi'
-import { InputComMascara } from '@/components/InputComMascara'
 import { ProcurarClienteInput } from '@/components/ProcurarClienteInput'
 import ProcurarEstoqueInput from '@/components/ProcurarEstoqueInput'
 import { Button } from '@/components/ui/button'
-import {
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog'
+import { DialogClose, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { FormaPagamento } from '@/enums/FormaPagamento'
-import {
-  gerarDatePorString,
-  gerarDoublePorValorMonetario,
-  gerarStringPorDate,
-  gerarStringReal,
-} from '@/utils/conversores'
+import { gerarDoublePorValorMonetario, gerarStringReal } from '@/utils/conversores'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useNumberFormat } from '@react-input/number-format'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Trash2 } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { redirect } from 'react-router-dom'
 import { z } from 'zod'
-import { Caixa } from '../../../src-electron/models/Caixa'
 import { Cliente } from '../../../src-electron/models/Cliente'
 import { Estoque } from '../../../src-electron/models/Estoque'
 import { Venda } from '../../../src-electron/models/Venda'
 import { FormaPagamento as FormaPagamentoType } from '../../../src-electron/models/enums/FormaPagamento'
-
-const formSchemaCaixa = z.object({
-  ativo: z.boolean(),
-  dataHoraAbertura: z.string(),
-  dataHoraFechamento: z.string().nullable().optional(),
-  valorInicial: z.string({ message: 'Campo Obrigatório' }),
-})
-
-const gerarFormVazioCaixa = () =>
-  useForm<z.infer<typeof formSchemaCaixa>>({
-    resolver: zodResolver(formSchemaCaixa),
-    defaultValues: {
-      ativo: true,
-      dataHoraAbertura: gerarStringPorDate(new Date()),
-      dataHoraFechamento: '',
-      valorInicial: '',
-    },
-  })
 
 const formSchemaVenda = z.object({
   formaPagamento: z.nativeEnum(FormaPagamento),
@@ -77,109 +43,6 @@ const gerarFormVazioVenda = () =>
       desconto: '',
     },
   })
-
-export function DialogCadastrarCaixa({ isOpen }: { isOpen: boolean }) {
-  const queryClient = useQueryClient()
-
-  const refBtnClose = useRef<HTMLButtonElement>()
-  const valorMonetario = useNumberFormat({
-    locales: 'pt-BR',
-    format: 'currency',
-    currency: 'BRL',
-  })
-
-  const cadastrarCaixaMutation = useMutation({
-    mutationFn: cadastrarCaixaApi,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['caixas'] })
-      refBtnClose.current.click()
-      redirect('/caixa/painel')
-    },
-  })
-
-  const form = gerarFormVazioCaixa()
-
-  useEffect(() => {
-    if (isOpen) {
-      form.setValue('ativo', true)
-      form.setValue('dataHoraAbertura', gerarStringPorDate(new Date()))
-      form.setValue('dataHoraFechamento', null)
-      form.setValue('valorInicial', '')
-    }
-  }, [isOpen])
-
-  function onSubmit({ dataHoraAbertura: dataAberturaString, valorInicial }: z.infer<typeof formSchemaCaixa>) {
-    const caixa: Caixa = {
-      ativo: true,
-      dataHoraAbertura: gerarDatePorString(dataAberturaString),
-      dataHoraFechamento: null,
-      valorInicial: gerarDoublePorValorMonetario(valorInicial) || 0,
-      contas: [],
-      vendas: [],
-    }
-
-    cadastrarCaixaMutation.mutate(caixa)
-  }
-
-  return (
-    <DialogContent className='sm:max-w-[32rem]'>
-      <DialogHeader>
-        <DialogTitle>Abertura de Caixa</DialogTitle>
-        <DialogDescription>Insira abaixo os dados do caixa.</DialogDescription>
-      </DialogHeader>
-      <div className='grid gap-4 py-4'>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className='grid grid-cols-2 gap-3'>
-            <FormField
-              control={form.control}
-              name='dataHoraAbertura'
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Data de Abertura*</FormLabel>
-                  <FormControl>
-                    <InputComMascara radix='.' mask={'00/00/0000'} unmask={true} placeholder='dd/mm/aaaa' {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name='valorInicial'
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Valor Abertura do Caixa*</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder='Valor Inicial'
-                      ref={valorMonetario}
-                      value={field.value}
-                      onChange={field.onChange}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <Button className='hidden' type='submit'></Button>
-          </form>
-        </Form>
-      </div>
-      <DialogFooter>
-        <Button onClick={form.handleSubmit(onSubmit)} type='submit'>
-          Abrir Caixa
-        </Button>
-        <DialogClose asChild>
-          <Button ref={refBtnClose} type='button' variant='destructive'>
-            Cancelar
-          </Button>
-        </DialogClose>
-      </DialogFooter>
-    </DialogContent>
-  )
-}
 
 export function DialogAtualizarVenda({ vendaId }: { vendaId?: number }) {
   const queryClient = useQueryClient()
@@ -438,81 +301,6 @@ export function DialogAtualizarVenda({ vendaId }: { vendaId?: number }) {
           </Form>
         </div>
       </div>
-    </DialogContent>
-  )
-}
-
-export function DialogFecharCaixa({ caixaId }: { caixaId?: number }) {
-  const queryClient = useQueryClient()
-
-  const refBtnClose = useRef<HTMLButtonElement>()
-
-  const atualizarCaixaMutation = useMutation({
-    mutationFn: atualizarCaixaApi,
-    onSuccess: () => {
-      redirect('/caixa')
-      queryClient.invalidateQueries({ queryKey: ['caixas'] })
-      refBtnClose.current.click()
-    },
-  })
-
-  const form = gerarFormVazioCaixa()
-
-  useEffect(() => {
-    if (caixaId) {
-      buscarCaixaPorId(caixaId).then(({ ativo, dataHoraAbertura, valorInicial }) => {
-        form.setValue('ativo', ativo)
-        form.setValue('dataHoraAbertura', gerarStringPorDate(dataHoraAbertura))
-        form.setValue('dataHoraFechamento', gerarStringPorDate(new Date()))
-        form.setValue('valorInicial', gerarStringReal(valorInicial))
-      })
-    }
-  }, [caixaId])
-
-  async function onSubmit({ dataHoraFechamento: dataFechamentoString }: z.infer<typeof formSchemaCaixa>) {
-    const currentCaixa = await buscarCaixaPorId(caixaId)
-
-    currentCaixa.ativo = false
-    currentCaixa.dataHoraFechamento = gerarDatePorString(dataFechamentoString)
-
-    atualizarCaixaMutation.mutate(currentCaixa)
-  }
-
-  return (
-    <DialogContent className='sm:max-w-[32rem]'>
-      <DialogHeader>
-        <DialogTitle>Fechamento do Caixa</DialogTitle>
-      </DialogHeader>
-      <div className='grid gap-4 py-4'>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className='grid grid-cols-2 gap-3'>
-            <FormField
-              control={form.control}
-              name='dataHoraFechamento'
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Data de Fechamento*</FormLabel>
-                  <FormControl>
-                    <InputComMascara radix='.' mask={'00/00/0000'} unmask={true} placeholder='dd/mm/aaaa' {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <Button className='hidden' type='submit'></Button>
-          </form>
-        </Form>
-      </div>
-      <DialogFooter>
-        <Button onClick={form.handleSubmit(onSubmit)} type='submit'>
-          Fechar Caixa
-        </Button>
-        <DialogClose asChild>
-          <Button ref={refBtnClose} type='button' variant='destructive'>
-            Cancelar
-          </Button>
-        </DialogClose>
-      </DialogFooter>
     </DialogContent>
   )
 }

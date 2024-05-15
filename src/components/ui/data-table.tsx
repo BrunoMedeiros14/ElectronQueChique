@@ -16,8 +16,8 @@ import { Button } from './button'
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   dados: TData[]
-  colunaParaFiltrar: string
-  filtro: string
+  colunaParaFiltrar?: string
+  filtro?: string
   textoParaVazio?: string
 }
 
@@ -25,7 +25,7 @@ export function DataTable<TData, TValue>({
   columns,
   dados,
   colunaParaFiltrar,
-  filtro,
+  filtro = '',
   textoParaVazio = 'Sem Dados Registrados',
 }: DataTableProps<TData, TValue>) {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
@@ -48,7 +48,7 @@ export function DataTable<TData, TValue>({
   })
 
   useEffect(() => {
-    table.getColumn(colunaParaFiltrar).setFilterValue(filtro)
+    if (colunaParaFiltrar) table.getColumn(colunaParaFiltrar).setFilterValue(filtro)
   }, [filtro])
 
   return (

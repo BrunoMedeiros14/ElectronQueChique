@@ -7,6 +7,9 @@ const formatoReal = new Intl.NumberFormat('pt-BR', {
   currency: 'BRL',
 })
 
+const preencherZeroNumeroData = (numero: Number) =>
+  numero.toString().padStart(2, '0')
+
 export const gerarDatePorString = (dataString: string) => {
   if (dataString) {
     const [dia, mes, ano] = dataString.split('/')
@@ -15,8 +18,13 @@ export const gerarDatePorString = (dataString: string) => {
   return null
 }
 
-export const gerarStringPorDate = (dataNascimento: Date) =>
-  dataNascimento ? formatoData.format(dataNascimento) : null
+export const gerarStringPorDate = (data: Date) =>
+  data
+    ? `${preencherZeroNumeroData(data.getDate())}
+      /${preencherZeroNumeroData(data.getMonth())}
+      /${data.getFullYear()}`
+  : null
+
 
 export const gerarStringReal = (valor: number) => formatoReal.format(valor)
 
