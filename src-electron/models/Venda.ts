@@ -13,3 +13,15 @@ export type Venda = {
   troco: number
   desconto: number
 }
+
+export type VendaRelatorio = {
+  id?: number
+  dataVenda: Date
+  valorTotal: number
+  estoque: string
+  cliente?: string
+  formaPagamento: FormaPagamento
+  valorPago: number
+  troco: number
+  desconto: number
+}

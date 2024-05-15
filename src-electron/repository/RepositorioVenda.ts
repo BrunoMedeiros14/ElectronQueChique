@@ -1,5 +1,6 @@
 import db from '../config/bancoDeDados'
-import { Venda } from '../models/Venda'
+import { Estoque } from '../models/Estoque'
+import { Venda, VendaRelatorio } from '../models/Venda'
 import { FormaPagamento } from '../models/enums/FormaPagamento'
 import { buscarTodosCaixas } from './RepositorioCaixa'
 import { EstoqueDb, inserirIdVenda, modelDbParaEstoque, removerIdVenda } from './RepositorioEstoque'
@@ -186,13 +187,60 @@ export const removerVenda = (id: number) => {
 
 export const buscarVendasPorData = (dataInicio: string, dataFim: string) => {
   const selectQuery = `
-    SELECT * FROM vendas WHERE data_venda BETWEEN ? AND ?
+    SELECT
+      v.id,
+      v.data_venda,
+      v.valor_total,
+      v.forma_pagamento,
+      v.valor_pago,
+      v.troco,
+      v.desconto,
+      v.cliente_id,
+    JSON_GROUP_ARRAY(json_object(
+      'id', e.id,
+      'nome', e.nome,
+      'descricao', e.descricao,
+      'cor', e.cor,
+      'tamanho', e.tamanho,
+      'tecido', e.tecido,
+      'fornecedor', e.fornecedor,
+      'quantidade', e.quantidade,
+      'valor_compra', e.valor_compra,
+      'valor_venda', e.valor_venda,
+      'venda_id', e.venda_id
+    )) as estoque_json,
+    json_object(
+      'id', c.id,
+      'nome', c.nome,
+      'data_nascimento', c.data_nascimento,
+      'endereco', c.endereco,
+      'telefone', c.telefone,
+      'email', c.email
+    ) as cliente_json
+    FROM vendas v
+    LEFT JOIN estoques e ON v.id = e.venda_id
+    LEFT JOIN clientes c ON v.cliente_id = c.id
+    WHERE v.data_venda BETWEEN ? AND ?
   `
 
   const stmt = db.prepare(selectQuery)
   const vendasDb = stmt.all(dataInicio, dataFim) as VendaDb[]
 
-  return vendasDb.map((vendaDb: VendaDb) => modelDbParaVenda(vendaDb))
+  return vendasDb
+    .map((vendaDb: VendaDb) => modelDbParaVenda(vendaDb))
+    .map(
+      (venda: Venda): VendaRelatorio => ({
+        id: venda.id,
+        dataVenda: venda.dataVenda,
+        valorTotal: venda.valorTotal,
+        estoque: venda.estoque.map((estoque: Estoque) => estoque.nome).join(', '),
+        cliente: venda.cliente.nome,
+        formaPagamento: venda.formaPagamento,
+        valorPago: venda.valorPago,
+        troco: venda.troco,
+        desconto: venda.desconto,
+      })
+    )
 }
 
 export const buscarVendasPorCaixaId = (caixaId: number) => {
