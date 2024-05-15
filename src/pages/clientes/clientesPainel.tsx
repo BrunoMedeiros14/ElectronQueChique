@@ -1,8 +1,4 @@
-import {
-  useMutation,
-  useQueryClient,
-  useSuspenseQuery,
-} from '@tanstack/react-query'
+import { useMutation, useQueryClient, useSuspenseQuery } from '@tanstack/react-query'
 import { UserPlus } from 'lucide-react'
 import { useRef, useState } from 'react'
 import { buscarClientes, removerClienteApi } from '../../api/clientesApi'
@@ -80,32 +76,22 @@ export function Component() {
           <DialogCadastrarCliente isOpen={dialogAberto} />
         </Dialog>
       </div>
-      <DataTable
-        columns={colunasCliente}
-        dados={clientes}
-        colunaParaFiltrar='nome'
-        filtro={searchValue}
-      />
+      <DataTable columns={colunasCliente} dados={clientes} colunaParaFiltrar='nome' filtro={searchValue} />
       <AlertDialog open={idParaExcluir !== null}>
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>O Cliente Será Apagado</AlertDialogTitle>
             <AlertDialogDescription>
-              Se essa ação for realizada, não será possível recuperar os dados
-              do cliente, deseja continuar?
+              Se essa ação for realizada, não será possível recuperar os dados do cliente, deseja continuar?
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel
-              onClick={() => setIdParaExcluir(null)}
-              className='destructive'
-            >
+            <AlertDialogCancel onClick={() => setIdParaExcluir(null)} className='destructive'>
               Cancelar
             </AlertDialogCancel>
             <AlertDialogAction
               className={cn(buttonVariants({ variant: 'destructive' }))}
-              onClick={() => removerClienteMutation.mutate(idParaExcluir)}
-            >
+              onClick={() => removerClienteMutation.mutate(idParaExcluir)}>
               Apagar
             </AlertDialogAction>
           </AlertDialogFooter>

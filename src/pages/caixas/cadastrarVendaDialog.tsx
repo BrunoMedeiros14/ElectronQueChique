@@ -1,29 +1,10 @@
 import { ProcurarClienteInput } from '@/components/ProcurarClienteInput'
 import ProcurarEstoqueInput from '@/components/ProcurarEstoqueInput'
 import { Button } from '@/components/ui/button'
-import {
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog'
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form'
+import { DialogClose, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useNumberFormat } from '@react-input/number-format'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
@@ -35,9 +16,9 @@ import { Cliente } from '../../../src-electron/models/Cliente'
 import { Estoque } from '../../../src-electron/models/Estoque'
 import { Venda } from '../../../src-electron/models/Venda'
 import { FormaPagamento as FormaPagamentoType } from '../../../src-electron/models/enums/FormaPagamento'
-import { cadastrarVendaApi } from '../../api/VendasApi'
 import { buscarTodosClientes } from '../../api/clientesApi'
 import { buscarEstoquesNaoVendidos } from '../../api/estoquesApi'
+import { cadastrarVendaApi } from '../../api/vendasApi'
 import { FormaPagamento } from '../../enums/FormaPagamento'
 import { gerarDoublePorValorMonetario } from '../../utils/conversores'
 
@@ -87,13 +68,7 @@ export function DialogCadastrarVendaBeta({ isOpen }: { isOpen: boolean }) {
     currency: 'BRL',
   })
 
-  async function onSubmit({
-    formaPagamento,
-    valorPago,
-    troco,
-    desconto,
-    valorTotal,
-  }: z.infer<typeof formSchemaVenda>) {
+  async function onSubmit({ formaPagamento, valorPago, troco, desconto, valorTotal }: z.infer<typeof formSchemaVenda>) {
     const venda: Venda = {
       dataVenda: new Date(),
       estoque: estoqueSelecionado,
@@ -113,8 +88,7 @@ export function DialogCadastrarVendaBeta({ isOpen }: { isOpen: boolean }) {
       return
     }
     const desconto = 1 - Number(form.getValues().desconto) / 100
-    const valorTotal =
-      estoqueSelecionado.reduce((i, a) => i + a.valorVenda, 0) * desconto
+    const valorTotal = estoqueSelecionado.reduce((i, a) => i + a.valorVenda, 0) * desconto
     const valorPago = gerarDoublePorValorMonetario(form.getValues().valorPago)
     const troco = valorPago - valorTotal
 
@@ -135,8 +109,7 @@ export function DialogCadastrarVendaBeta({ isOpen }: { isOpen: boolean }) {
 
   useEffect(() => {
     const desconto = 1 - Number(form.getValues().desconto) / 100
-    const valorTotal =
-      estoqueSelecionado.reduce((i, a) => i + a.valorVenda, 0) * desconto
+    const valorTotal = estoqueSelecionado.reduce((i, a) => i + a.valorVenda, 0) * desconto
     form.setValue('valorTotal', valorTotal)
   }, [estoqueSelecionado, form.watch('desconto')])
 
@@ -155,9 +128,7 @@ export function DialogCadastrarVendaBeta({ isOpen }: { isOpen: boolean }) {
   }
 
   const handleRemoverEstoque = (estoque: Estoque) => {
-    setEstoqueSelecionado((estoques) =>
-      estoques.filter((estoqueAtual) => estoqueAtual !== estoque)
-    )
+    setEstoqueSelecionado((estoques) => estoques.filter((estoqueAtual) => estoqueAtual !== estoque))
   }
 
   return (
@@ -171,10 +142,7 @@ export function DialogCadastrarVendaBeta({ isOpen }: { isOpen: boolean }) {
           <h2 className='font-semibold text-lg'>Resumo da venda</h2>
           <div className='overflow-y-auto h-56 [&>*]:border-t'>
             {estoqueSelecionado.map((estoque) => (
-              <div
-                key={estoque.id}
-                className='flex justify-between p-1 gap-1 items-center first:border-t-0'
-              >
+              <div key={estoque.id} className='flex justify-between p-1 gap-1 items-center first:border-t-0'>
                 <div className='flex-1'>
                   <h4 className='font-normal'>
                     {estoque.nome} - {estoque.cor}
@@ -191,8 +159,7 @@ export function DialogCadastrarVendaBeta({ isOpen }: { isOpen: boolean }) {
                   size='icon'
                   variant='ghost'
                   onClick={() => handleRemoverEstoque(estoque)}
-                  className='text-red-500'
-                >
+                  className='text-red-500'>
                   <Trash2 className='h-4 w-4' />
                   <span className='sr-only'>Delete</span>
                 </Button>
@@ -214,13 +181,7 @@ export function DialogCadastrarVendaBeta({ isOpen }: { isOpen: boolean }) {
             </div>
             <div className='flex-1'>
               Troco:{' '}
-              <span
-                className={
-                  form.getValues().troco >= 0
-                    ? 'text-green-500'
-                    : 'text-red-500'
-                }
-              >
+              <span className={form.getValues().troco >= 0 ? 'text-green-500' : 'text-red-500'}>
                 {form.watch('troco').toLocaleString('pt-BR', {
                   style: 'currency',
                   currency: 'BRL',
@@ -239,12 +200,7 @@ export function DialogCadastrarVendaBeta({ isOpen }: { isOpen: boolean }) {
                     <ProcurarEstoqueInput
                       adicionarEstoque={handleAdicionarEstoque}
                       placeholder='Selecione o estoque'
-                      estoques={
-                        estoques &&
-                        estoques.filter(
-                          (estoque) => !estoqueSelecionado.includes(estoque)
-                        )
-                      }
+                      estoques={estoques && estoques.filter((estoque) => !estoqueSelecionado.includes(estoque))}
                     />
                   </FormControl>
                   <FormMessage />
@@ -258,24 +214,16 @@ export function DialogCadastrarVendaBeta({ isOpen }: { isOpen: boolean }) {
                       <FormItem className='flex-1'>
                         <FormLabel>Foma de Pagamento*</FormLabel>
                         <FormControl>
-                          <Select
-                            onValueChange={field.onChange}
-                            defaultValue={field.value}
-                          >
+                          <Select onValueChange={field.onChange} defaultValue={field.value}>
                             <SelectTrigger>
                               <SelectValue placeholder='Selecione uma forma...' />
                             </SelectTrigger>
                             <SelectContent>
-                              {Object.values(FormaPagamento).map(
-                                (formaPagamento) => (
-                                  <SelectItem
-                                    key={formaPagamento}
-                                    value={formaPagamento}
-                                  >
-                                    {formaPagamento}
-                                  </SelectItem>
-                                )
-                              )}
+                              {Object.values(FormaPagamento).map((formaPagamento) => (
+                                <SelectItem key={formaPagamento} value={formaPagamento}>
+                                  {formaPagamento}
+                                </SelectItem>
+                              ))}
                             </SelectContent>
                           </Select>
                         </FormControl>
@@ -292,11 +240,7 @@ export function DialogCadastrarVendaBeta({ isOpen }: { isOpen: boolean }) {
                         <FormLabel>Desconto*</FormLabel>
                         <div className='flex items-center gap-2'>
                           <FormControl>
-                            <Input
-                              className='w-28'
-                              placeholder='Desconto'
-                              {...field}
-                            />
+                            <Input className='w-28' placeholder='Desconto' {...field} />
                           </FormControl>
                           %
                         </div>
@@ -344,11 +288,7 @@ export function DialogCadastrarVendaBeta({ isOpen }: { isOpen: boolean }) {
                     Cadastrar Venda
                   </Button>
                   <DialogClose asChild>
-                    <Button
-                      ref={refBtnClose}
-                      type='button'
-                      variant='destructive'
-                    >
+                    <Button ref={refBtnClose} type='button' variant='destructive'>
                       Cancelar
                     </Button>
                   </DialogClose>
@@ -362,4 +302,3 @@ export function DialogCadastrarVendaBeta({ isOpen }: { isOpen: boolean }) {
     </DialogContent>
   )
 }
-

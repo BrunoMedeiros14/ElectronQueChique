@@ -5,11 +5,7 @@ import { useEffect, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { Conta } from '../../../src-electron/models/Conta'
-import {
-  atualizarContaApi,
-  buscarContaPorId,
-  cadastrarContaApi,
-} from '../../api/contasApi'
+import { atualizarContaApi, buscarContaPorId, cadastrarContaApi } from '../../api/contasApi'
 import { InputComMascara } from '../../components/InputComMascara'
 import { Button } from '../../components/ui/button'
 import {
@@ -20,14 +16,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '../../components/ui/dialog'
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '../../components/ui/form'
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../../components/ui/form'
 import { Input } from '../../components/ui/input'
 import { Switch } from '../../components/ui/switch'
 import {
@@ -38,9 +27,7 @@ import {
 } from '../../utils/conversores'
 
 const formSchema = z.object({
-  nome: z
-    .string({ message: 'Campo Obrigatório.' })
-    .min(3, { message: 'Nome Deve Conter Pelo Menos 3 Letras' }),
+  nome: z.string({ message: 'Campo Obrigatório.' }).min(3, { message: 'Nome Deve Conter Pelo Menos 3 Letras' }),
   descricao: z
     .string({ message: 'Campo Obrigatório.' })
     .min(3, { message: 'Descrição Deve Possuir Pelo Menos 3 Letras' }),
@@ -94,14 +81,7 @@ export function DialogCadastrarConta({ isOpen }: { isOpen: boolean }) {
     }
   }, [isOpen])
 
-  function onSubmit({
-    nome,
-    descricao,
-    valor,
-    dataVencimento,
-    dataPagamento,
-    pago,
-  }: z.infer<typeof formSchema>) {
+  function onSubmit({ nome, descricao, valor, dataVencimento, dataPagamento, pago }: z.infer<typeof formSchema>) {
     const conta: Conta = {
       nome,
       descricao,
@@ -122,10 +102,7 @@ export function DialogCadastrarConta({ isOpen }: { isOpen: boolean }) {
       </DialogHeader>
       <div className='grid gap-4 py-4'>
         <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className='grid grid-cols-2 gap-3'
-          >
+          <form onSubmit={form.handleSubmit(onSubmit)} className='grid grid-cols-2 gap-3'>
             <FormField
               control={form.control}
               name='nome'
@@ -180,13 +157,7 @@ export function DialogCadastrarConta({ isOpen }: { isOpen: boolean }) {
                 <FormItem>
                   <FormLabel>Data de Vencimento</FormLabel>
                   <FormControl>
-                    <InputComMascara
-                      radix='.'
-                      mask={'00/00/0000'}
-                      unmask={true}
-                      placeholder='dd/mm/aaaa'
-                      {...field}
-                    />
+                    <InputComMascara radix='.' mask={'00/00/0000'} unmask={true} placeholder='dd/mm/aaaa' {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -200,13 +171,7 @@ export function DialogCadastrarConta({ isOpen }: { isOpen: boolean }) {
                 <FormItem>
                   <FormLabel>Data de Pagamento</FormLabel>
                   <FormControl>
-                    <InputComMascara
-                      radix='.'
-                      mask={'00/00/0000'}
-                      unmask={true}
-                      placeholder='dd/mm/aaaa'
-                      {...field}
-                    />
+                    <InputComMascara radix='.' mask={'00/00/0000'} unmask={true} placeholder='dd/mm/aaaa' {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -220,10 +185,7 @@ export function DialogCadastrarConta({ isOpen }: { isOpen: boolean }) {
                 <FormItem className='flex gap-2 items-center justify-center'>
                   <FormLabel className='mt-2'>Pago</FormLabel>
                   <FormControl>
-                    <Switch
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                    />
+                    <Switch checked={field.value} onCheckedChange={field.onChange} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -269,14 +231,7 @@ export function DialogAtualizarConta({ contaId }: { contaId?: number }) {
 
   const form = gerarFormVazio()
 
-  function onSubmit({
-    nome,
-    descricao,
-    valor,
-    dataVencimento,
-    dataPagamento,
-    pago,
-  }: z.infer<typeof formSchema>) {
+  function onSubmit({ nome, descricao, valor, dataVencimento, dataPagamento, pago }: z.infer<typeof formSchema>) {
     const conta: Conta = {
       id: contaId,
       nome,
@@ -291,16 +246,14 @@ export function DialogAtualizarConta({ contaId }: { contaId?: number }) {
 
   useEffect(() => {
     if (contaId) {
-      buscarContaPorId(contaId).then(
-        ({ nome, descricao, valor, dataVencimento, dataPagamento, pago }) => {
-          form.setValue('nome', nome)
-          form.setValue('descricao', descricao)
-          form.setValue('valor', gerarStringReal(valor))
-          form.setValue('dataVencimento', gerarStringPorDate(dataVencimento))
-          form.setValue('dataPagamento', gerarStringPorDate(dataPagamento))
-          form.setValue('pago', pago)
-        }
-      )
+      buscarContaPorId(contaId).then(({ nome, descricao, valor, dataVencimento, dataPagamento, pago }) => {
+        form.setValue('nome', nome)
+        form.setValue('descricao', descricao)
+        form.setValue('valor', gerarStringReal(valor))
+        form.setValue('dataVencimento', gerarStringPorDate(dataVencimento))
+        form.setValue('dataPagamento', gerarStringPorDate(dataPagamento))
+        form.setValue('pago', pago)
+      })
     }
   }, [contaId])
 
@@ -308,16 +261,11 @@ export function DialogAtualizarConta({ contaId }: { contaId?: number }) {
     <DialogContent className='sm:max-w-[32rem]'>
       <DialogHeader>
         <DialogTitle>Atualizar Conta {form.getValues().nome}</DialogTitle>
-        <DialogDescription>
-          Insira abaixo os dados atualizados da conta.
-        </DialogDescription>
+        <DialogDescription>Insira abaixo os dados atualizados da conta.</DialogDescription>
       </DialogHeader>
       <div className='grid gap-4 py-4'>
         <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className='grid grid-cols-2 gap-3'
-          >
+          <form onSubmit={form.handleSubmit(onSubmit)} className='grid grid-cols-2 gap-3'>
             <FormField
               control={form.control}
               name='nome'
@@ -371,13 +319,7 @@ export function DialogAtualizarConta({ contaId }: { contaId?: number }) {
                 <FormItem>
                   <FormLabel>Data de Vencimento</FormLabel>
                   <FormControl>
-                    <InputComMascara
-                      radix='.'
-                      mask={'00/00/0000'}
-                      unmask={true}
-                      placeholder='dd/mm/aaaa'
-                      {...field}
-                    />
+                    <InputComMascara radix='.' mask={'00/00/0000'} unmask={true} placeholder='dd/mm/aaaa' {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -390,13 +332,7 @@ export function DialogAtualizarConta({ contaId }: { contaId?: number }) {
                 <FormItem>
                   <FormLabel>Data de Pagamento</FormLabel>
                   <FormControl>
-                    <InputComMascara
-                      radix='.'
-                      mask={'00/00/0000'}
-                      unmask={true}
-                      placeholder='dd/mm/aaaa'
-                      {...field}
-                    />
+                    <InputComMascara radix='.' mask={'00/00/0000'} unmask={true} placeholder='dd/mm/aaaa' {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -409,10 +345,7 @@ export function DialogAtualizarConta({ contaId }: { contaId?: number }) {
                 <FormItem className='flex gap-2 items-center justify-center'>
                   <FormLabel className='mt-2'>Pago</FormLabel>
                   <FormControl>
-                    <Switch
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                    />
+                    <Switch checked={field.value} onCheckedChange={field.onChange} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -423,11 +356,7 @@ export function DialogAtualizarConta({ contaId }: { contaId?: number }) {
         </Form>
       </div>
       <DialogFooter>
-        <Button
-          onClick={form.handleSubmit(onSubmit)}
-          className='bg-blue-500'
-          type='submit'
-        >
+        <Button onClick={form.handleSubmit(onSubmit)} className='bg-blue-500' type='submit'>
           Atualizar Conta
         </Button>
         <DialogClose asChild>

@@ -1,10 +1,4 @@
-import {
-  apiCaixa,
-  apiCliente,
-  apiConta,
-  apiEstoque,
-  apiVenda,
-} from '../../src-electron/preload'
+import { apiCaixa, apiCliente, apiConta, apiEstoque, apiRelatorio, apiVenda } from '../../src-electron/preload'
 
 declare global {
   interface Window {
@@ -13,5 +7,6 @@ declare global {
     apiConta: typeof apiConta
     apiCliente: typeof apiCliente
     apiEstoque: typeof apiEstoque
+    apiRelatorio: typeof apiRelatorio
   }
 }

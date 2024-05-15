@@ -4,11 +4,7 @@ import { useEffect, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { Cliente } from '../../../src-electron/models/Cliente'
-import {
-  atualizarClienteApi,
-  buscarClientePorId,
-  cadastrarClienteApi,
-} from '../../api/clientesApi'
+import { atualizarClienteApi, buscarClientePorId, cadastrarClienteApi } from '../../api/clientesApi'
 import { InputComMascara } from '../../components/InputComMascara'
 import { Button } from '../../components/ui/button'
 import {
@@ -19,14 +15,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '../../components/ui/dialog'
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '../../components/ui/form'
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../../components/ui/form'
 import { Input } from '../../components/ui/input'
 import { gerarDatePorString, gerarStringPorDate } from '../../utils/conversores'
 
@@ -34,11 +23,9 @@ const formSchema = z.object({
   nome: z.string({ message: 'Campo obrigatório.' }).min(3, {
     message: 'Nome deve conter pelo menos 3 letras',
   }),
-  celular: z
-    .string({ message: 'Campo obrigatório.' })
-    .regex(/^[(]?[0-9]{2}[)][-\s]?[9][-\s][0-9]{4}[-\s][0-9]{4}$/, {
-      message: 'Número de celular invalido.',
-    }),
+  celular: z.string({ message: 'Campo obrigatório.' }).regex(/^[(]?[0-9]{2}[)][-\s]?[9][-\s][0-9]{4}[-\s][0-9]{4}$/, {
+    message: 'Número de celular invalido.',
+  }),
   email: z
     .string({ message: 'Campo obrigatório' })
     .min(1, { message: 'Favor preencher este campo' })
@@ -84,13 +71,7 @@ export function DialogCadastrarCliente({ isOpen }: { isOpen: boolean }) {
     }
   }, [isOpen])
 
-  function onSubmit({
-    nome,
-    dataNascimento: dataString,
-    email,
-    celular,
-    endereco,
-  }: z.infer<typeof formSchema>) {
+  function onSubmit({ nome, dataNascimento: dataString, email, celular, endereco }: z.infer<typeof formSchema>) {
     const dataNascimento = dataString ? gerarDatePorString(dataString) : null
 
     const cliente: Cliente = {
@@ -108,16 +89,11 @@ export function DialogCadastrarCliente({ isOpen }: { isOpen: boolean }) {
     <DialogContent className='sm:max-w-[32rem]'>
       <DialogHeader>
         <DialogTitle>Cadastrar cliente</DialogTitle>
-        <DialogDescription>
-          Insira abaixo os dados do cliente.
-        </DialogDescription>
+        <DialogDescription>Insira abaixo os dados do cliente.</DialogDescription>
       </DialogHeader>
       <div className='grid gap-4 py-4'>
         <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className='grid grid-cols-2 gap-3'
-          >
+          <form onSubmit={form.handleSubmit(onSubmit)} className='grid grid-cols-2 gap-3'>
             <FormField
               control={form.control}
               name='nome'
@@ -139,12 +115,7 @@ export function DialogCadastrarCliente({ isOpen }: { isOpen: boolean }) {
                 <FormItem>
                   <FormLabel>Celular*</FormLabel>
                   <FormControl>
-                    <InputComMascara
-                      radix='.'
-                      mask={'(00) 0 0000-0000'}
-                      placeholder='(00) 0 0000-0000'
-                      {...field}
-                    />
+                    <InputComMascara radix='.' mask={'(00) 0 0000-0000'} placeholder='(00) 0 0000-0000' {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -171,13 +142,7 @@ export function DialogCadastrarCliente({ isOpen }: { isOpen: boolean }) {
                 <FormItem>
                   <FormLabel>Data de Nascimento</FormLabel>
                   <FormControl>
-                    <InputComMascara
-                      radix='.'
-                      mask={'00/00/0000'}
-                      unmask={true}
-                      placeholder='dd/mm/aaaa'
-                      {...field}
-                    />
+                    <InputComMascara radix='.' mask={'00/00/0000'} unmask={true} placeholder='dd/mm/aaaa' {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -229,13 +194,7 @@ export function DialogAtualizarCliente({ clienteId }: { clienteId?: number }) {
 
   const form = gerarFormVazio()
 
-  function onSubmit({
-    nome,
-    dataNascimento: dataString,
-    email,
-    celular,
-    endereco,
-  }: z.infer<typeof formSchema>) {
+  function onSubmit({ nome, dataNascimento: dataString, email, celular, endereco }: z.infer<typeof formSchema>) {
     const dataNascimento = gerarDatePorString(dataString)
 
     const cliente: Cliente = {
@@ -251,15 +210,13 @@ export function DialogAtualizarCliente({ clienteId }: { clienteId?: number }) {
 
   useEffect(() => {
     if (clienteId) {
-      buscarClientePorId(clienteId).then(
-        ({ dataNascimento, email, endereco, nome, telefone }) => {
-          form.setValue('dataNascimento', gerarStringPorDate(dataNascimento))
-          form.setValue('email', email)
-          form.setValue('endereco', endereco)
-          form.setValue('nome', nome)
-          form.setValue('celular', telefone)
-        }
-      )
+      buscarClientePorId(clienteId).then(({ dataNascimento, email, endereco, nome, telefone }) => {
+        form.setValue('dataNascimento', gerarStringPorDate(dataNascimento))
+        form.setValue('email', email)
+        form.setValue('endereco', endereco)
+        form.setValue('nome', nome)
+        form.setValue('celular', telefone)
+      })
     }
   }, [clienteId])
 
@@ -267,16 +224,11 @@ export function DialogAtualizarCliente({ clienteId }: { clienteId?: number }) {
     <DialogContent className='sm:max-w-[32rem]'>
       <DialogHeader>
         <DialogTitle>Atualizar Cliente {form.getValues().nome}</DialogTitle>
-        <DialogDescription>
-          Insira abaixo os dados atualizados do cliente.
-        </DialogDescription>
+        <DialogDescription>Insira abaixo os dados atualizados do cliente.</DialogDescription>
       </DialogHeader>
       <div className='grid gap-4 py-4'>
         <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className='grid grid-cols-2 gap-3'
-          >
+          <form onSubmit={form.handleSubmit(onSubmit)} className='grid grid-cols-2 gap-3'>
             <FormField
               control={form.control}
               name='nome'
@@ -298,12 +250,7 @@ export function DialogAtualizarCliente({ clienteId }: { clienteId?: number }) {
                 <FormItem>
                   <FormLabel>Celular*</FormLabel>
                   <FormControl>
-                    <InputComMascara
-                      radix='.'
-                      mask={'(00) 0 0000-0000'}
-                      placeholder='(00) 0 0000-0000'
-                      {...field}
-                    />
+                    <InputComMascara radix='.' mask={'(00) 0 0000-0000'} placeholder='(00) 0 0000-0000' {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -330,13 +277,7 @@ export function DialogAtualizarCliente({ clienteId }: { clienteId?: number }) {
                 <FormItem>
                   <FormLabel>Data de Nascimento</FormLabel>
                   <FormControl>
-                    <InputComMascara
-                      radix='.'
-                      mask={'00/00/0000'}
-                      unmask={true}
-                      placeholder='dd/mm/aaaa'
-                      {...field}
-                    />
+                    <InputComMascara radix='.' mask={'00/00/0000'} unmask={true} placeholder='dd/mm/aaaa' {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -360,11 +301,7 @@ export function DialogAtualizarCliente({ clienteId }: { clienteId?: number }) {
         </Form>
       </div>
       <DialogFooter>
-        <Button
-          onClick={form.handleSubmit(onSubmit)}
-          className='bg-blue-500'
-          type='submit'
-        >
+        <Button onClick={form.handleSubmit(onSubmit)} className='bg-blue-500' type='submit'>
           Atualizar Cliente
         </Button>
         <DialogClose asChild>

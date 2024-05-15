@@ -7,8 +7,7 @@ const formatoReal = new Intl.NumberFormat('pt-BR', {
   currency: 'BRL',
 })
 
-const preencherZeroNumeroData = (numero: Number) =>
-  numero.toString().padStart(2, '0')
+const preencherZeroNumeroData = (numero: Number) => numero.toString().padStart(2, '0')
 
 export const gerarDatePorString = (dataString: string) => {
   if (dataString) {
@@ -20,20 +19,15 @@ export const gerarDatePorString = (dataString: string) => {
 
 export const gerarStringPorDate = (data: Date) =>
   data
-    ? `${preencherZeroNumeroData(data.getDate())}
-      /${preencherZeroNumeroData(data.getMonth())}
-      /${data.getFullYear()}`
-  : null
-
+    ? `${preencherZeroNumeroData(data.getDate())}/${preencherZeroNumeroData(data.getMonth())}/${data.getFullYear()}`
+    : null
 
 export const gerarStringReal = (valor: number) => formatoReal.format(valor)
 
 export const gerarDoublePorValorMonetario = (valor: string): number =>
   parseFloat(valor.replace(/[^\d,]/g, '').replace(',', '.'))
 
-export const gerarStringPorcentagemPorNumeroInteiro = (
-  valor: number
-): string => (valor ? `${valor}%` : '0%')
+export const gerarStringPorcentagemPorNumeroInteiro = (valor: number): string => (valor ? `${valor}%` : '0%')
 
 export const gerarDoublePorValorPorcentagem = (valor: string): number => {
   const valorSemPorcentagem = valor.replace('%', '')

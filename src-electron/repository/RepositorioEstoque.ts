@@ -1,7 +1,7 @@
 import db from '../config/bancoDeDados'
-import {Estoque} from '../models/Estoque'
-import {Cor} from '../models/enums/Cor'
-import {Tecido} from '../models/enums/Tecido'
+import { Estoque } from '../models/Estoque'
+import { Cor } from '../models/enums/Cor'
+import { Tecido } from '../models/enums/Tecido'
 
 export type EstoqueDb = {
   id: number
@@ -17,10 +17,7 @@ export type EstoqueDb = {
   venda_id?: number
 }
 
-export const estoqueParaModelDb = (
-  estoque: Estoque,
-  vendaId: number = null
-): EstoqueDb => ({
+export const estoqueParaModelDb = (estoque: Estoque, vendaId: number = null): EstoqueDb => ({
   id: estoque.id,
   nome: estoque.nome,
   descricao: estoque.descricao,
@@ -132,11 +129,11 @@ export const removerIdVenda = (vendaId: number) => {
 
 export const buscarEstoquesPorData = (dataInicio: string, dataFim: string) => {
   const selectQuery = `
-    SELECT * FROM estoques WHERE data BETWEEN ? AND ?
-  `;
+    SELECT * FROM estoques
+  `
+  // WHERE data BETWEEN ? AND ?
+  const stmt = db.prepare(selectQuery)
+  const estoquesDb = stmt.all() //(dataInicio, dataFim) as EstoqueDb[]
 
-  const stmt = db.prepare(selectQuery);
-  const estoquesDb = stmt.all(dataInicio, dataFim) as EstoqueDb[];
-
-  return estoquesDb.map((estoqueDb: EstoqueDb) => modelDbParaEstoque(estoqueDb));
+  return estoquesDb.map((estoqueDb: EstoqueDb) => modelDbParaEstoque(estoqueDb))
 }

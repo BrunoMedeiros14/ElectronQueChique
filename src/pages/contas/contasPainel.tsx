@@ -1,8 +1,4 @@
-import {
-  useMutation,
-  useQueryClient,
-  useSuspenseQuery,
-} from '@tanstack/react-query'
+import { useMutation, useQueryClient, useSuspenseQuery } from '@tanstack/react-query'
 import { Receipt } from 'lucide-react'
 import { useRef, useState } from 'react'
 import { buscarContas, removerContaApi } from '../../api/contasApi'
@@ -94,21 +90,16 @@ export function Component() {
             <AlertDialogHeader>
               <AlertDialogTitle>A Conta será Apagada</AlertDialogTitle>
               <AlertDialogDescription>
-                Se essa ação for realizada, não será possível recuperar os dados
-                da conta, deseja continuar?
+                Se essa ação for realizada, não será possível recuperar os dados da conta, deseja continuar?
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel
-                onClick={() => setIdParaExcluir(null)}
-                className='destructive'
-              >
+              <AlertDialogCancel onClick={() => setIdParaExcluir(null)} className='destructive'>
                 Cancelar
               </AlertDialogCancel>
               <AlertDialogAction
                 className={cn(buttonVariants({ variant: 'destructive' }))}
-                onClick={() => removerContaMutation.mutate(idParaExcluir)}
-              >
+                onClick={() => removerContaMutation.mutate(idParaExcluir)}>
                 Apagar
               </AlertDialogAction>
             </AlertDialogFooter>

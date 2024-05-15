@@ -28,6 +28,7 @@ import {
   RemoverEstoque,
   RemoverVenda,
 } from './Api'
+import { RelatorioType } from './models/relatorio'
 
 if (!process.contextIsolated) {
   throw new Error('contextIsolation must be enabled in the BrowserWindow')
@@ -99,6 +100,11 @@ export const apiVenda = {
     ipcRenderer.invoke('buscarVendasPorCaixaId', ...args),
 }
 
+export const apiRelatorio = {
+  gerarRelatorio: (startDate: string, endDate: string): Promise<RelatorioType> =>
+    ipcRenderer.invoke('gerarRelatorio', startDate, endDate),
+}
+
 try {
   contextBridge.exposeInMainWorld('apiCliente', apiCliente)
   contextBridge.exposeInMainWorld('apiConta', apiConta)
@@ -106,6 +112,7 @@ try {
   contextBridge.exposeInMainWorld('apiCaixa', apiCaixa)
   contextBridge.exposeInMainWorld('apiEstoque', apiEstoque)
   contextBridge.exposeInMainWorld('apiVenda', apiVenda)
+  contextBridge.exposeInMainWorld('apiRelatorio', apiRelatorio)
   contextBridge.exposeInMainWorld('context', {
     locale: navigator.language,
   })

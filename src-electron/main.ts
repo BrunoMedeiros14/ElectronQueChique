@@ -4,6 +4,7 @@ import { serviceCaixa } from './service/ServiceCaixa'
 import { serviceCliente } from './service/ServiceCliente'
 import { serviceConta } from './service/ServiceConta'
 import { serviceEstoque } from './service/ServiceEstoque'
+import { servicoRelatorio } from './service/ServiceRelatorio'
 import { serviceVenda } from './service/ServiceVenda'
 
 if (require('electron-squirrel-startup')) {
@@ -41,6 +42,7 @@ app.on('ready', serviceVenda)
 app.on('ready', serviceConta)
 app.on('ready', serviceCliente)
 app.on('ready', serviceEstoque)
+app.on('ready', servicoRelatorio)
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
