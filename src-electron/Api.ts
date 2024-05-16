@@ -34,4 +34,5 @@ export type CriarCaixa = (caixa: Caixa) => Promise<Caixa>
 export type RemoverCaixa = (caixaId: number) => Promise<number>
 export type EditarCaixa = (caixa: Caixa) => Promise<Caixa>
 export type BuscarCaixaPorId = (caixaId: number) => Promise<Caixa>
+export type BuscarCaixaAtivo = () => Promise<Caixa | null>
 export type BuscarTodosCaixas = () => Promise<Caixa[]>

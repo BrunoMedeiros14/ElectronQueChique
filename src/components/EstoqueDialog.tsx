@@ -4,71 +4,37 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-import { Estoque } from '../../../src-electron/models/Estoque'
-import {
-  atualizarEstoqueApi,
-  buscarEstoquePorId,
-  cadastrarEstoqueApi,
-} from '../../api/estoquesApi'
-import { Button } from '../../components/ui/button'
-import {
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from '../../components/ui/dialog'
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '../../components/ui/form'
-import { Input } from '../../components/ui/input'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '../../components/ui/select'
-import { Cor } from '../../enums/Cor'
-import { Tecido } from '../../enums/Tecido'
-import { gerarDoublePorValorMonetario } from '../../utils/conversores'
+import { Estoque } from '../../src-electron/models/Estoque'
+import { atualizarEstoqueApi, buscarEstoquePorId, cadastrarEstoqueApi } from '../api/estoquesApi'
+import { Cor } from '../enums/Cor'
+import { Tecido } from '../enums/Tecido'
+import { gerarDoublePorValorMonetario } from '../utils/conversores'
+import { Button } from './ui/button'
+import { DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from './ui/dialog'
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from './ui/form'
+import { Input } from './ui/input'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select'
 
 const formSchema = z.object({
-  nome: z
-    .string({ message: 'Campo Obrigatório' })
-    .min(3, { message: 'Nome Deve Conter Pelo Menos 3 Letras' }),
+  nome: z.string({ message: 'Campo Obrigatório' }).min(3, { message: 'Nome Deve Conter Pelo Menos 3 Letras' }),
   descricao: z
     .string({ message: 'Campo obrigatório.' })
     .min(3, { message: 'Descrição Deve Conter Pelo Menos 3 Letras' }),
   cor: z.string().refine((value) => Object.values(Cor).includes(value as Cor), {
     message: 'Campo Obrigatório',
   }),
-  tamanho: z
-    .string({ message: 'Campo Obrigatório' })
-    .min(1, { message: 'Campo Obrigatório' }),
+  tamanho: z.string({ message: 'Campo Obrigatório' }).min(1, { message: 'Campo Obrigatório' }),
   vendido: z.boolean(),
-  tecido: z
-    .string()
-    .refine((value) => Object.values(Tecido).includes(value as Tecido), {
-      message: 'Campo Obrigatório',
-    }),
+  tecido: z.string().refine((value) => Object.values(Tecido).includes(value as Tecido), {
+    message: 'Campo Obrigatório',
+  }),
   fornecedor: z.string().nullable(),
   quantidade: z.string().min(1, { message: 'Quantidade Deve Ser Declarada' }),
-  valorCompra: z
-    .string()
-    .refine((value) => value !== '', { message: 'Campo Obrigatório' }),
-  valorVenda: z
-    .string()
-    .refine((value) => value !== '', { message: 'Campo Obrigatório' }),
+  valorCompra: z.string().refine((value) => value !== '', { message: 'Campo Obrigatório' }),
+  valorVenda: z.string().refine((value) => value !== '', { message: 'Campo Obrigatório' }),
 })
 
-const gerarFormVazio = () =>
+const GerarFormVazio = () =>
   useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -87,7 +53,7 @@ const gerarFormVazio = () =>
 
 export function DialogCadastrarEstoque({ isOpen }: { isOpen: boolean }) {
   const queryClient = useQueryClient()
-  const form = gerarFormVazio()
+  const form = GerarFormVazio()
 
   const [lucro, setLucro] = useState(0)
 
@@ -128,9 +94,7 @@ export function DialogCadastrarEstoque({ isOpen }: { isOpen: boolean }) {
   }, [isOpen])
 
   useEffect(() => {
-    const valorCompra = gerarDoublePorValorMonetario(
-      form.getValues().valorCompra
-    )
+    const valorCompra = gerarDoublePorValorMonetario(form.getValues().valorCompra)
 
     if (!isNaN(valorCompra)) {
       const valorComAcrescimo = valorCompra * 1.5
@@ -144,9 +108,7 @@ export function DialogCadastrarEstoque({ isOpen }: { isOpen: boolean }) {
   }, [form.watch('valorCompra')])
 
   useEffect(() => {
-    const valorCompra = gerarDoublePorValorMonetario(
-      form.getValues().valorCompra
-    )
+    const valorCompra = gerarDoublePorValorMonetario(form.getValues().valorCompra)
 
     const valorVenda = gerarDoublePorValorMonetario(form.getValues().valorVenda)
 
@@ -190,16 +152,11 @@ export function DialogCadastrarEstoque({ isOpen }: { isOpen: boolean }) {
     <DialogContent className='sm:max-w-[32rem]'>
       <DialogHeader>
         <DialogTitle>Cadastrar Estoque</DialogTitle>
-        <DialogDescription>
-          Insira abaixo os dados do estoque.
-        </DialogDescription>
+        <DialogDescription>Insira abaixo os dados do estoque.</DialogDescription>
       </DialogHeader>
       <div className='grid gap-4 py-4'>
         <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className='grid grid-cols-2 gap-3'
-          >
+          <form onSubmit={form.handleSubmit(onSubmit)} className='grid grid-cols-2 gap-3'>
             <FormField
               control={form.control}
               name='nome'
@@ -235,10 +192,7 @@ export function DialogCadastrarEstoque({ isOpen }: { isOpen: boolean }) {
                 <FormItem>
                   <FormLabel>Cor*</FormLabel>
                   <FormControl>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <SelectTrigger>
                         <SelectValue placeholder='Selecione uma Cor' />
                       </SelectTrigger>
@@ -263,10 +217,7 @@ export function DialogCadastrarEstoque({ isOpen }: { isOpen: boolean }) {
                 <FormItem>
                   <FormLabel>Tecido*</FormLabel>
                   <FormControl>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <SelectTrigger>
                         <SelectValue placeholder='Selecione um Tecido' />
                       </SelectTrigger>
@@ -368,11 +319,7 @@ export function DialogCadastrarEstoque({ isOpen }: { isOpen: boolean }) {
               <label>
                 <strong>Lucro Estimado</strong>
               </label>
-              <div
-                className={`${
-                  lucro >= 0 ? 'text-green-500' : 'text-red-500'
-                } font-bold mt-4`}
-              >
+              <div className={`${lucro >= 0 ? 'text-green-500' : 'text-red-500'} font-bold mt-4`}>
                 {isNaN(lucro)
                   ? 'R$ 0,00'
                   : lucro.toLocaleString('pt-BR', {
@@ -402,7 +349,7 @@ export function DialogCadastrarEstoque({ isOpen }: { isOpen: boolean }) {
 
 export function DialogAtualizarEstoque({ estoqueId }: { estoqueId?: number }) {
   const queryClient = useQueryClient()
-  const form = gerarFormVazio()
+  const form = GerarFormVazio()
 
   const [lucro, setLucro] = useState(0)
   const [pegouApi, setPegouApi] = useState(false)
@@ -431,18 +378,7 @@ export function DialogAtualizarEstoque({ estoqueId }: { estoqueId?: number }) {
   useEffect(() => {
     if (estoqueId) {
       buscarEstoquePorId(estoqueId).then(
-        ({
-          nome,
-          descricao,
-          cor,
-          tamanho,
-          vendido,
-          tecido,
-          fornecedor,
-          quantidade,
-          valorCompra,
-          valorVenda,
-        }) => {
+        ({ nome, descricao, cor, tamanho, vendido, tecido, fornecedor, quantidade, valorCompra, valorVenda }) => {
           form.setValue('nome', nome)
           form.setValue('descricao', descricao)
           form.setValue('cor', cor)
@@ -476,9 +412,7 @@ export function DialogAtualizarEstoque({ estoqueId }: { estoqueId?: number }) {
       setPegouApi(false)
       return
     }
-    const valorCompra = gerarDoublePorValorMonetario(
-      form.getValues().valorCompra
-    )
+    const valorCompra = gerarDoublePorValorMonetario(form.getValues().valorCompra)
 
     if (!isNaN(valorCompra)) {
       const valorComAcrescimo = valorCompra * 1.5
@@ -492,9 +426,7 @@ export function DialogAtualizarEstoque({ estoqueId }: { estoqueId?: number }) {
   }, [form.watch('valorCompra')])
 
   useEffect(() => {
-    const valorCompra = gerarDoublePorValorMonetario(
-      form.getValues().valorCompra
-    )
+    const valorCompra = gerarDoublePorValorMonetario(form.getValues().valorCompra)
 
     const valorVenda = gerarDoublePorValorMonetario(form.getValues().valorVenda)
 
@@ -538,16 +470,11 @@ export function DialogAtualizarEstoque({ estoqueId }: { estoqueId?: number }) {
     <DialogContent className='sm:max-w-[32rem]'>
       <DialogHeader>
         <DialogTitle>Atualizar {form.getValues().nome}</DialogTitle>
-        <DialogDescription>
-          Insira abaixo os dados atualizados do estoque.
-        </DialogDescription>
+        <DialogDescription>Insira abaixo os dados atualizados do estoque.</DialogDescription>
       </DialogHeader>
       <div className='grid gap-4 py-4'>
         <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className='grid grid-cols-2 gap-3'
-          >
+          <form onSubmit={form.handleSubmit(onSubmit)} className='grid grid-cols-2 gap-3'>
             <FormField
               control={form.control}
               name='nome'
@@ -583,10 +510,7 @@ export function DialogAtualizarEstoque({ estoqueId }: { estoqueId?: number }) {
                 <FormItem>
                   <FormLabel>Cor*</FormLabel>
                   <FormControl>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <SelectTrigger>
                         <SelectValue placeholder='Selecione uma Cor' />
                       </SelectTrigger>
@@ -611,10 +535,7 @@ export function DialogAtualizarEstoque({ estoqueId }: { estoqueId?: number }) {
                 <FormItem>
                   <FormLabel>Tecido*</FormLabel>
                   <FormControl>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <SelectTrigger>
                         <SelectValue placeholder='Selecione um Tecido' />
                       </SelectTrigger>
@@ -716,11 +637,7 @@ export function DialogAtualizarEstoque({ estoqueId }: { estoqueId?: number }) {
               <label>
                 <strong>Lucro Estimado</strong>
               </label>
-              <div
-                className={`${
-                  lucro >= 0 ? 'text-green-500' : 'text-red-500'
-                } font-bold mt-4`}
-              >
+              <div className={`${lucro >= 0 ? 'text-green-500' : 'text-red-500'} font-bold mt-4`}>
                 {isNaN(lucro)
                   ? 'R$ 0,00'
                   : lucro.toLocaleString('pt-BR', {
@@ -735,11 +652,7 @@ export function DialogAtualizarEstoque({ estoqueId }: { estoqueId?: number }) {
         </Form>
       </div>
       <DialogFooter>
-        <Button
-          onClick={form.handleSubmit(onSubmit)}
-          className='bg-blue-500'
-          type='submit'
-        >
+        <Button onClick={form.handleSubmit(onSubmit)} className='bg-blue-500' type='submit'>
           Atualizar Estoque
         </Button>
         <DialogClose asChild>

@@ -1,8 +1,11 @@
 import { useMutation, useQueryClient, useSuspenseQuery } from '@tanstack/react-query'
+import { createLazyFileRoute } from '@tanstack/react-router'
 import { Receipt } from 'lucide-react'
 import { useRef, useState } from 'react'
-import { buscarContas, removerContaApi } from '../../api/contasApi'
-import { cn } from '../../components/lib/utils'
+import { buscarContas, removerContaApi } from '../api/contasApi'
+import { DialogAtualizarConta, DialogCadastrarConta } from '../components/ContasDialog'
+import { pegarColunasConta } from '../components/contasColunas'
+import { cn } from '../components/lib/utils'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -12,14 +15,17 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from '../../components/ui/alert-dialog'
-import { Button, buttonVariants } from '../../components/ui/button'
-import { DataTable } from '../../components/ui/data-table'
-import { Dialog, DialogTrigger } from '../../components/ui/dialog'
-import { Input } from '../../components/ui/input'
-import { escutarCliqueTeclado } from '../../hooks/escutarCliqueTeclado'
-import { pegarColunasConta } from './contasColunas'
-import { DialogAtualizarConta, DialogCadastrarConta } from './contasDialog'
+} from '../components/ui/alert-dialog'
+import { Button, buttonVariants } from '../components/ui/button'
+import { DataTable } from '../components/ui/data-table'
+import { Dialog, DialogTrigger } from '../components/ui/dialog'
+import { Input } from '../components/ui/input'
+import { escutarCliqueTeclado } from '../hooks/escutarCliqueTeclado'
+
+export const Route = createLazyFileRoute('/_auth/contas')({
+  component: Component,
+  pendingComponent: () => <div>Loading...</div>,
+})
 
 export function Component() {
   const refBotaoCadastro = useRef<HTMLButtonElement>()

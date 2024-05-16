@@ -4,27 +4,20 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useEffect, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-import { Conta } from '../../../src-electron/models/Conta'
-import { atualizarContaApi, buscarContaPorId, cadastrarContaApi } from '../../api/contasApi'
-import { InputComMascara } from '../../components/InputComMascara'
-import { Button } from '../../components/ui/button'
-import {
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from '../../components/ui/dialog'
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../../components/ui/form'
-import { Input } from '../../components/ui/input'
-import { Switch } from '../../components/ui/switch'
+import { Conta } from '../../src-electron/models/Conta'
+import { atualizarContaApi, buscarContaPorId, cadastrarContaApi } from '../api/contasApi'
 import {
   gerarDatePorString,
   gerarDoublePorValorMonetario,
   gerarStringPorDate,
   gerarStringReal,
-} from '../../utils/conversores'
+} from '../utils/conversores'
+import { InputComMascara } from './InputComMascara'
+import { Button } from './ui/button'
+import { DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from './ui/dialog'
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from './ui/form'
+import { Input } from './ui/input'
+import { Switch } from './ui/switch'
 
 const formSchema = z.object({
   nome: z.string({ message: 'Campo Obrigatório.' }).min(3, { message: 'Nome Deve Conter Pelo Menos 3 Letras' }),
@@ -37,7 +30,7 @@ const formSchema = z.object({
   pago: z.boolean().nullable(),
 })
 
-const gerarFormVazio = () =>
+const GerarFormVazio = () =>
   useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -68,7 +61,7 @@ export function DialogCadastrarConta({ isOpen }: { isOpen: boolean }) {
     },
   })
 
-  const form = gerarFormVazio()
+  const form = GerarFormVazio()
 
   useEffect(() => {
     if (isOpen) {
@@ -229,7 +222,7 @@ export function DialogAtualizarConta({ contaId }: { contaId?: number }) {
     currency: 'BRL',
   })
 
-  const form = gerarFormVazio()
+  const form = GerarFormVazio()
 
   function onSubmit({ nome, descricao, valor, dataVencimento, dataPagamento, pago }: z.infer<typeof formSchema>) {
     const conta: Conta = {

@@ -1,8 +1,10 @@
 import { useMutation, useQueryClient, useSuspenseQuery } from '@tanstack/react-query'
+import { createLazyFileRoute } from '@tanstack/react-router'
 import { UserPlus } from 'lucide-react'
-import { useRef, useState } from 'react'
-import { buscarClientes, removerClienteApi } from '../../api/clientesApi'
-import { cn } from '../../components/lib/utils'
+import { Suspense, lazy, useRef, useState } from 'react'
+import { buscarClientes, removerClienteApi } from '../api/clientesApi'
+import { pegarColunasCliente } from '../components/clientesColunas'
+import { cn } from '../components/lib/utils'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -12,14 +14,20 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from '../../components/ui/alert-dialog'
-import { Button, buttonVariants } from '../../components/ui/button'
-import { DataTable } from '../../components/ui/data-table'
-import { Dialog, DialogTrigger } from '../../components/ui/dialog'
-import { Input } from '../../components/ui/input'
-import { escutarCliqueTeclado } from '../../hooks/escutarCliqueTeclado'
-import { DialogAtualizarCliente, DialogCadastrarCliente } from './clienteDialog'
-import { pegarColunasCliente } from './clientesColunas'
+} from '../components/ui/alert-dialog'
+import { Button, buttonVariants } from '../components/ui/button'
+import { DataTable } from '../components/ui/data-table'
+import { Dialog, DialogTrigger } from '../components/ui/dialog'
+import { Input } from '../components/ui/input'
+import { escutarCliqueTeclado } from '../hooks/escutarCliqueTeclado'
+
+export const Route = createLazyFileRoute('/_auth/clientes')({
+  component: Component,
+  pendingComponent: () => <div>Loading...</div>,
+})
+
+const DialogCadastrarCliente = lazy(() => import('../components/cliente/CadastrarDialog'))
+const DialogAtualizarCliente = lazy(() => import('../components/cliente/AtualizarDialog'))
 
 export function Component() {
   const refBotaoCadastro = useRef<HTMLButtonElement>()
@@ -73,7 +81,11 @@ export function Component() {
               Adicionar novo (F1)
             </Button>
           </DialogTrigger>
-          <DialogCadastrarCliente isOpen={dialogAberto} />
+          {dialogAberto && (
+            <Suspense>
+              <DialogCadastrarCliente />
+            </Suspense>
+          )}
         </Dialog>
       </div>
       <DataTable columns={colunasCliente} dados={clientes} colunaParaFiltrar='nome' filtro={searchValue} />
@@ -99,7 +111,11 @@ export function Component() {
       </AlertDialog>
       <Dialog>
         <DialogTrigger ref={refBotaoAtualizacao} />
-        <DialogAtualizarCliente clienteId={idParaEditar} />
+        {idParaEditar && (
+          <Suspense>
+            <DialogAtualizarCliente clienteId={idParaEditar} />
+          </Suspense>
+        )}
       </Dialog>
     </main>
   )

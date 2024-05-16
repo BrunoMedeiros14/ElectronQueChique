@@ -1,10 +1,3 @@
-import { ProcurarClienteInput } from '@/components/ProcurarClienteInput'
-import ProcurarEstoqueInput from '@/components/ProcurarEstoqueInput'
-import { Button } from '@/components/ui/button'
-import { DialogClose, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useNumberFormat } from '@react-input/number-format'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
@@ -21,6 +14,13 @@ import { buscarEstoquesNaoVendidos } from '../../api/estoquesApi'
 import { cadastrarVendaApi } from '../../api/vendasApi'
 import { FormaPagamento } from '../../enums/FormaPagamento'
 import { gerarDoublePorValorMonetario } from '../../utils/conversores'
+import { ProcurarClienteInput } from '../ProcurarClienteInput'
+import ProcurarEstoqueInput from '../ProcurarEstoqueInput'
+import { Button } from '../ui/button'
+import { DialogClose, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '../ui/dialog'
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
+import { Input } from '../ui/input'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select'
 
 const formSchemaVenda = z.object({
   formaPagamento: z.nativeEnum(FormaPagamento),
@@ -32,7 +32,7 @@ const formSchemaVenda = z.object({
   }),
 })
 
-const gerarFormVazioVenda = () =>
+const GerarFormVazioVenda = () =>
   useForm<z.infer<typeof formSchemaVenda>>({
     resolver: zodResolver(formSchemaVenda),
     defaultValues: {
@@ -51,7 +51,7 @@ export function DialogCadastrarVendaBeta({ isOpen }: { isOpen: boolean }) {
   const [estoqueSelecionado, setEstoqueSelecionado] = useState<Estoque[]>([])
   const [clienteSelecionado, setClienteSelecionado] = useState<Cliente>(null)
 
-  const form = gerarFormVazioVenda()
+  const form = GerarFormVazioVenda()
 
   const cadastrarVendaMutation = useMutation({
     mutationFn: cadastrarVendaApi,

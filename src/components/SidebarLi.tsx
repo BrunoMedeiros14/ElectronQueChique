@@ -1,23 +1,23 @@
-import { ReactNode } from 'react'
-import { NavLink } from 'react-router-dom'
+import { Link } from '@tanstack/react-router'
+import { ToSubOptionsProps } from '@tanstack/react-router/dist/esm/link'
 
-type SidebarLiProps = {
+import { ReactNode } from 'react'
+
+interface SidebarLiProps extends ToSubOptionsProps {
   texto: string
-  rota: string
   icone: ReactNode
   ativo?: boolean
 }
 
-export const SidebarLi = ({ texto, rota, icone, ativo }: SidebarLiProps) => {
+export const SidebarLi = ({ texto, to, icone, ativo }: SidebarLiProps) => {
   return (
     <li>
-      <NavLink
-        to={rota}
-        className='flex items-center p-2 text-gray-900 rounded-lg group [&.active]:bg-gray-200 [&.active]:bg-opacity-75 hover:bg-gray-200'
-      >
+      <Link
+        to={to}
+        className='flex items-center p-2 text-gray-900 rounded-lg group [&.active]:bg-gray-200 [&.active]:pointer-events-none [&.active]:bg-opacity-75 hover:bg-gray-200'>
         {icone}
         {ativo && <span className='ms-3'>{texto}</span>}
-      </NavLink>
+      </Link>
     </li>
   )
 }

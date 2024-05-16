@@ -1,23 +1,11 @@
-import { useQuery } from '@tanstack/react-query'
-import { useRef, useState } from 'react'
+import { Suspense, lazy, useRef, useState } from 'react'
 import { FaCashRegister } from 'react-icons/fa'
-import { Navigate } from 'react-router-dom'
-import { Caixa } from '../../../src-electron/models/Caixa'
-import { buscarCaixaAtivo } from '../../api/caixasApi'
-import { Button } from '../../components/ui/button'
-import { Dialog, DialogTrigger } from '../../components/ui/dialog'
-import { DialogCadastrarCaixa } from './caixasDialog'
+import { Button } from '../ui/button'
+import { Dialog, DialogTrigger } from '../ui/dialog'
 
-export function Component() {
-  const { data: caixa } = useQuery<Caixa>({
-    queryKey: ['caixas'],
-    queryFn: buscarCaixaAtivo,
-  })
+const DialogAbrirCaixa = lazy(() => import('../../components/caixas/AbrirCaixaDialog'))
 
-  return caixa !== null ? <Navigate to='painel' replace /> : <ComponenteIniciarCaixa />
-}
-
-function ComponenteIniciarCaixa() {
+export function ComponenteIniciarCaixa() {
   const refBotaoCadastro = useRef<HTMLButtonElement>()
   const [dialogAberto, setDialogAberto] = useState(false)
 
@@ -32,7 +20,11 @@ function ComponenteIniciarCaixa() {
               Abrir Caixa
             </Button>
           </DialogTrigger>
-          <DialogCadastrarCaixa isOpen={dialogAberto} />
+          {dialogAberto && (
+            <Suspense fallback={<>Carregando...</>}>
+              <DialogAbrirCaixa />
+            </Suspense>
+          )}
         </Dialog>
       </div>
     </div>

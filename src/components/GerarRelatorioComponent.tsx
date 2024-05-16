@@ -1,22 +1,27 @@
-import { Button } from '@/components/ui/button'
+import { useRef, useState } from 'react'
+import { Button } from './ui/button'
+import { DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from './ui/dialog'
+
 import { subDays } from 'date-fns'
-import { useState } from 'react'
+
 import { DateRange } from 'react-day-picker'
 import * as XLSX from 'xlsx'
-import { gerarRelatorio } from '../../api/relatorioApi'
-import { gerarStringPorDate } from '../../utils/conversores'
-import { CalendarioComponente } from './dataPicker'
+import { gerarRelatorio } from '../api/relatorioApi'
+import { CalendarioComponente } from './DataPicker'
 
-export function Component() {
+import { gerarStringPorDate } from '../utils/conversores'
+
+export default function GerarRelatorioComponent() {
   const [date, setDate] = useState<DateRange | undefined>({
     from: subDays(new Date(), 7),
     to: new Date(),
   })
+  const refBotaoFechar = useRef<HTMLButtonElement | null>()
 
   const emitirRelatorio = async () => {
     const dataInicial = gerarStringPorDate(date.from)
     const dataFinal = gerarStringPorDate(date.to)
-    console.log(dataInicial + dataFinal)
+
     const { caixasData, vendasData, estoquesData, contasData, clientesData } = await gerarRelatorio(
       dataInicial,
       dataFinal
@@ -31,7 +36,7 @@ export function Component() {
 
     const workbook = XLSX.utils.book_new()
 
-    data.forEach((item, index) => {
+    data.forEach((item) => {
       const worksheet = XLSX.utils.json_to_sheet(item.value)
       XLSX.utils.book_append_sheet(workbook, worksheet, item.key)
     })
@@ -54,27 +59,27 @@ export function Component() {
     document.body.appendChild(link)
     link.click()
     document.body.removeChild(link)
+    refBotaoFechar.current.click()
   }
 
   return (
-    <main className='flex flex-1 flex-col p-4 md:p-6 max-w-[96rem] mx-auto'>
-      <div className='flex items-center justify-center'>
-        <h1 className='font-semibold text-lg md:text-2xl h-10'>Relatórios por Data</h1>
-      </div>
-      <div className='flex flex-col items-center justify-between py-3 gap-2'>
-        <CalendarioComponente data={date} setData={setDate} />
-        {/* <div className='w-full max-w-md p-2 border-2 border-blue-500 rounded-md'>
-          <label className='text-blue-500'>Data de Início</label>
-          <input type='date' value={startDate} onChange={(e) => setStartDate(e.target.value)} className='w-full mt-1' />
-        </div>
-        <div className='w-full max-w-md p-2 border-2 border-blue-500 rounded-md mt-4'>
-          <label className='text-blue-500'>Data de Fim</label>
-          <input type='date' value={endDate} onChange={(e) => setEndDate(e.target.value)} className='w-full mt-1' />
-        </div> */}
-        <Button onClick={emitirRelatorio} className='mt-10 h-10'>
+    <DialogContent className='sm:max-w-[24rem]'>
+      <DialogHeader>
+        <DialogTitle>Gerar relatório</DialogTitle>
+        <DialogDescription>Preencha o intervalo de data do qual você deseja gerar o relatório.</DialogDescription>
+      </DialogHeader>
+      <CalendarioComponente data={date} setData={setDate} />
+      <Button className='hidden' type='submit'></Button>
+      <DialogFooter>
+        <Button onClick={emitirRelatorio} className='bg-blue-500' type='submit'>
           Emitir Relatório
         </Button>
-      </div>
-    </main>
+        <DialogClose asChild>
+          <Button ref={refBotaoFechar} type='button' variant='destructive'>
+            Cancelar
+          </Button>
+        </DialogClose>
+      </DialogFooter>
+    </DialogContent>
   )
 }

@@ -46,6 +46,17 @@ export const buscarCaixaPorId = (caixaId: number): Caixa => {
   return modelDbParaCaixa(caixaDb)
 }
 
+export const buscarCaixaAtivo = (): Caixa | null => {
+  const selectQuery = `
+    SELECT * FROM caixas WHERE data_hora_fechamento IS NULL
+  `
+
+  const stmt = db.prepare(selectQuery)
+  const caixaDb = stmt.get() as CaixaDb
+
+  return caixaDb ? modelDbParaCaixa(caixaDb) : null
+}
+
 export const buscarTodosCaixas = () => {
   const selectAllQuery = `
     SELECT * FROM caixas

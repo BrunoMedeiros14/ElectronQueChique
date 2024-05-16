@@ -1,4 +1,3 @@
-import { Button } from '@/components/ui/button'
 import { ColumnDef } from '@tanstack/react-table'
 import { Pencil, Trash2 } from 'lucide-react'
 import React from 'react'
@@ -6,6 +5,7 @@ import { Cliente } from '../../../src-electron/models/Cliente'
 import { Estoque } from '../../../src-electron/models/Estoque'
 import { Venda } from '../../../src-electron/models/Venda'
 import { gerarStringPorcentagemPorNumeroInteiro, gerarStringReal } from '../../utils/conversores'
+import { Button } from '../ui/button'
 
 type ColunasVendaProps = {
   setIdParaExcluir: React.Dispatch<React.SetStateAction<number>>

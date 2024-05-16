@@ -1,4 +1,14 @@
-import { cn } from '@/components/lib/utils'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { Receipt } from 'lucide-react'
+import { useRef, useState } from 'react'
+import { FaCashRegister, FaMoneyBillWave } from 'react-icons/fa'
+import { Caixa } from '../../../src-electron/models/Caixa'
+import { Venda } from '../../../src-electron/models/Venda'
+import { buscarVendasPorCaixaId, removerVendaApi } from '../../api/vendasApi'
+import { FormaPagamento } from '../../enums/FormaPagamento'
+import { escutarCliqueTeclado } from '../../hooks/escutarCliqueTeclado'
+import { gerarStringReal } from '../../utils/conversores'
+import { cn } from '../lib/utils'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -8,23 +18,11 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from '@/components/ui/alert-dialog'
-import { useMutation, useQuery, useQueryClient, useSuspenseQuery } from '@tanstack/react-query'
-import { Receipt } from 'lucide-react'
-import { useRef, useState } from 'react'
-import { FaCashRegister, FaMoneyBillWave } from 'react-icons/fa'
-import { Navigate } from 'react-router-dom'
-import { Caixa } from '../../../src-electron/models/Caixa'
-import { Venda } from '../../../src-electron/models/Venda'
-import { buscarCaixaAtivo } from '../../api/caixasApi'
-import { buscarVendasPorCaixaId, removerVendaApi } from '../../api/vendasApi'
-import { Button, buttonVariants } from '../../components/ui/button'
-import { DataTable } from '../../components/ui/data-table'
-import { Dialog, DialogTrigger } from '../../components/ui/dialog'
-import { FormaPagamento } from '../../enums/FormaPagamento'
-import { escutarCliqueTeclado } from '../../hooks/escutarCliqueTeclado'
-import { DialogFecharCaixa } from '../../pages/caixas/caixasDialog'
-import { gerarStringReal } from '../../utils/conversores'
+} from '../ui/alert-dialog'
+import { Button, buttonVariants } from '../ui/button'
+import { DataTable } from '../ui/data-table'
+import { Dialog, DialogTrigger } from '../ui/dialog'
+import { DialogFecharCaixa } from './FecharCaixaDialog'
 import { DialogAtualizarVenda } from './atualizarVendaDialog'
 import { DialogCadastrarVendaBeta } from './cadastrarVendaDialog'
 import { pegarColunasVenda } from './vendasColunas'
@@ -34,20 +32,14 @@ type CaixaInfoProps = {
   value: number
 }
 
-export function Component() {
-  const queryClient = useQueryClient()
-
-  const { data: caixaDoDia } = useSuspenseQuery<Caixa>({
-    queryKey: ['caixas'],
-    queryFn: buscarCaixaAtivo,
-    refetchOnWindowFocus: true,
-  })
-
+export function CaixaAberto({ caixaDoDia }: { caixaDoDia: Caixa }) {
   const [dialogAberto, setDialogAberto] = useState(false)
   const [idParaExcluir, setIdParaExcluir] = useState<number>(null)
   const [idParaEditar, setIdParaEditar] = useState<number>(null)
   const refBotaoAtualizacao = useRef<HTMLButtonElement>()
   const refBotaoCadastro = useRef<HTMLButtonElement>()
+
+  const queryClient = useQueryClient()
 
   const vendas = useQuery<Venda[]>({
     queryKey: ['vendas', caixaDoDia],
@@ -113,9 +105,7 @@ export function Component() {
     )
   }
 
-  return !caixaDoDia ? (
-    <Navigate to='/app/caixa' replace />
-  ) : (
+  return (
     <div className='overflow-y-auto'>
       <main className='flex flex-1 flex-col p-4 md:p-6 mx-auto'>
         <div>

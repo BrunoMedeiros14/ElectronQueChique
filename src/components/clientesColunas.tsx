@@ -1,8 +1,8 @@
 import { ColumnDef } from '@tanstack/react-table'
 import { Pencil, Trash2 } from 'lucide-react'
-import { Cliente } from '../../../src-electron/models/Cliente'
-import { Button } from '../../components/ui/button'
-import { gerarStringPorDate } from '../../utils/conversores'
+import { Cliente } from '../../src-electron/models/Cliente'
+import { gerarStringPorDate } from '../utils/conversores'
+import { Button } from './ui/button'
 
 type ColunasClienteProps = {
   setIdParaExcluir: React.Dispatch<React.SetStateAction<number>>
@@ -43,9 +43,7 @@ export const pegarColunasCliente = ({
     accessorKey: 'endereco',
     header: 'Endereço',
     cell: ({ row }) => {
-      return row?.getValue('endereco') === ''
-        ? 'Não cadastrado'
-        : row?.getValue('endereco')
+      return row?.getValue('endereco') === '' ? 'Não cadastrado' : row?.getValue('endereco')
     },
   },
   {
@@ -59,8 +57,7 @@ export const pegarColunasCliente = ({
             size='icon'
             variant='ghost'
             onClick={() => abrirEdicaoCliente(clienteId)}
-            className='text-orange-400 hover:text-white hover:bg-orange-400'
-          >
+            className='text-orange-400 hover:text-white hover:bg-orange-400'>
             <Pencil className='h-4 w-4' />
             <span className='sr-only'>Edit</span>
           </Button>
@@ -69,8 +66,7 @@ export const pegarColunasCliente = ({
             size='icon'
             variant='ghost'
             onClick={() => setIdParaExcluir(clienteId)}
-            className='text-red-500 hover:text-white hover:bg-red-500'
-          >
+            className='text-red-500 hover:text-white hover:bg-red-500'>
             <Trash2 className='h-4 w-4' />
             <span className='sr-only'>Delete</span>
           </Button>

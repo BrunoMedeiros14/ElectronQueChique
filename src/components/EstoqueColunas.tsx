@@ -1,8 +1,8 @@
 import { ColumnDef } from '@tanstack/react-table'
 import { Pencil, Trash2 } from 'lucide-react'
-import { Estoque } from '../../../src-electron/models/Estoque'
-import { Button } from '../../components/ui/button'
-import { gerarStringReal } from '../../utils/conversores'
+import { Estoque } from '../../src-electron/models/Estoque'
+import { gerarStringReal } from '../utils/conversores'
+import { Button } from './ui/button'
 
 type ColunasEstoqueProps = {
   setIdParaExcluir: React.Dispatch<React.SetStateAction<number>>
@@ -46,8 +46,7 @@ export const pegarColunasEstoque = ({
             vendido
               ? 'bg-green-600 text-white hover:bg-green-600/80'
               : 'bg-destructive text-destructive-foreground hover:bg-destructive/80'
-          }`}
-        >
+          }`}>
           {texto}
         </div>
       )
@@ -94,8 +93,7 @@ export const pegarColunasEstoque = ({
             size='icon'
             variant='ghost'
             onClick={() => abrirEdicaoEstoque(estoqueId)}
-            className='text-orange-400 hover:text-white hover:bg-orange-400'
-          >
+            className='text-orange-400 hover:text-white hover:bg-orange-400'>
             <Pencil className='h-4 w-4' />
             <span className='sr-only'>Edit</span>
           </Button>
@@ -104,8 +102,7 @@ export const pegarColunasEstoque = ({
             size='icon'
             variant='ghost'
             onClick={() => setIdParaExcluir(estoqueId)}
-            className='text-red-500 hover:text-white hover:bg-red-500'
-          >
+            className='text-red-500 hover:text-white hover:bg-red-500'>
             <Trash2 className='h-4 w-4' />
             <span className='sr-only'>Delete</span>
           </Button>

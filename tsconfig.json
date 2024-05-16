@@ -15,5 +15,14 @@
     "paths": {
       "@/*": ["./src/*"]
     }
-  }
+  },
+  "include": [
+    "./src/vite-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "**/**/*.ts",
+    "**/**/*.tsx",
+    "./config/vite.renderer.config.ts"
+  ],
+  "exclude": ["node_modules"]
 }

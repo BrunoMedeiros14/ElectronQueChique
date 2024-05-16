@@ -1,5 +1,6 @@
 import { contextBridge, ipcRenderer } from 'electron'
 import {
+  BuscarCaixaAtivo,
   BuscarCaixaPorId,
   BuscarClientePorId,
   BuscarContaPorId,
@@ -55,6 +56,8 @@ export const apiCaixa = {
     ipcRenderer.invoke('editarCaixa', ...args),
   buscarCaixaPorId: (...args: Parameters<BuscarCaixaPorId>): ReturnType<BuscarCaixaPorId> =>
     ipcRenderer.invoke('buscarCaixaPorId', ...args),
+  buscarCaixaAtivo: (...args: Parameters<BuscarCaixaAtivo>): ReturnType<BuscarCaixaAtivo> =>
+    ipcRenderer.invoke('buscarCaixaAtivo', ...args),
   buscarTodosCaixas: (...args: Parameters<BuscarTodosCaixas>): ReturnType<BuscarTodosCaixas> =>
     ipcRenderer.invoke('buscarTodosCaixas', ...args),
 }

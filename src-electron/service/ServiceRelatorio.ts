@@ -16,7 +16,6 @@ const gerarRelatorio = (startDate: string, endDate: string) => {
   const estoquesData = buscarTodosEstoques()
   const contasData = buscarContasPorData(converterData(startDate), converterData(endDate))
   const clientesData = buscarTodosClientes()
-  console.log(vendasData)
 
   const relatorio = {
     caixasData,

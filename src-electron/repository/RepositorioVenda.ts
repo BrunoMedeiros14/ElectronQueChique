@@ -226,21 +226,23 @@ export const buscarVendasPorData = (dataInicio: string, dataFim: string) => {
   const stmt = db.prepare(selectQuery)
   const vendasDb = stmt.all(dataInicio, dataFim) as VendaDb[]
 
-  return vendasDb
-    .map((vendaDb: VendaDb) => modelDbParaVenda(vendaDb))
-    .map(
-      (venda: Venda): VendaRelatorio => ({
-        id: venda.id,
-        dataVenda: venda.dataVenda,
-        valorTotal: venda.valorTotal,
-        estoque: venda.estoque.map((estoque: Estoque) => estoque.nome).join(', '),
-        cliente: venda.cliente.nome,
-        formaPagamento: venda.formaPagamento,
-        valorPago: venda.valorPago,
-        troco: venda.troco,
-        desconto: venda.desconto,
-      })
-    )
+  return vendasDb[0].id
+    ? vendasDb
+        .map((vendaDb: VendaDb) => modelDbParaVenda(vendaDb))
+        .map(
+          (venda: Venda): VendaRelatorio => ({
+            id: venda.id,
+            dataVenda: venda.dataVenda,
+            valorTotal: venda.valorTotal,
+            estoque: venda.estoque.map((estoque: Estoque) => estoque.nome).join(', '),
+            cliente: venda.cliente.nome,
+            formaPagamento: venda.formaPagamento,
+            valorPago: venda.valorPago,
+            troco: venda.troco,
+            desconto: venda.desconto,
+          })
+        )
+    : []
 }
 
 export const buscarVendasPorCaixaId = (caixaId: number) => {
