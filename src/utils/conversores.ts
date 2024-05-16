@@ -1,13 +1,9 @@
-const formatoData = new Intl.DateTimeFormat('pt-Br', {
-  dateStyle: 'short',
-  timeZone: 'UTC',
-})
 const formatoReal = new Intl.NumberFormat('pt-BR', {
   style: 'currency',
   currency: 'BRL',
 })
 
-const preencherZeroNumeroData = (numero: Number) => numero.toString().padStart(2, '0')
+const preencherZeroNumeroData = (numero: number) => numero.toString().padStart(2, '0')
 
 export const gerarDatePorString = (dataString: string) => {
   if (dataString) {
@@ -19,7 +15,7 @@ export const gerarDatePorString = (dataString: string) => {
 
 export const gerarStringPorDate = (data: Date) =>
   data
-    ? `${preencherZeroNumeroData(data.getDate())}/${preencherZeroNumeroData(data.getMonth())}/${data.getFullYear()}`
+    ? `${preencherZeroNumeroData(data.getDate())}/${preencherZeroNumeroData(data.getMonth() + 1)}/${data.getFullYear()}`
     : null
 
 export const gerarStringReal = (valor: number) => formatoReal.format(valor)

@@ -12,8 +12,12 @@ export const Route = createFileRoute('/login')({
       context.auth.logout()
       return
     }
+  },
+  loader: ({ context }) => {
     if (context.auth.isAuthenticated) {
-      throw redirect({ to: '/caixa' })
+      throw redirect({
+        to: '/caixa',
+      })
     }
   },
   component: LoginComponent,
@@ -38,9 +42,9 @@ function LoginComponent() {
       return
     }
 
-    // router.invalidate().finally(() => {
-    navigate({ to: '/caixa', replace: true })
-    //quechique@2024
+    router.invalidate().finally(() => {
+      navigate({ to: '/caixa', replace: true })
+    })
   }
 
   return (

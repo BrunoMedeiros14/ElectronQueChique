@@ -1,4 +1,4 @@
-import { Link, Outlet, createFileRoute } from '@tanstack/react-router'
+import { Outlet, createFileRoute, redirect, useRouter } from '@tanstack/react-router'
 
 import { LogOut, Menu, Package2, ShoppingBag, Table2Icon, Users, Wallet } from 'lucide-react'
 import { Suspense, lazy, useRef, useState } from 'react'
@@ -6,11 +6,19 @@ import { Suspense, lazy, useRef, useState } from 'react'
 import Logo from '../assets/Logo.png'
 import { SidebarLi } from '../components/SidebarLi'
 import { Dialog, DialogTrigger } from '../components/ui/dialog'
+import { useAuth } from '../hooks/useAuth'
 
 const GerarRelatorioComponent = lazy(() => import('../components/GerarRelatorioComponent'))
 // const TanStackRouterDevtools = lazy(() => import('../components/TanStackRouterDevtools'))
 
 export const Route = createFileRoute('/_auth')({
+  beforeLoad: ({ context }) => {
+    if (!context.auth.isAuthenticated) {
+      throw redirect({
+        to: '/login',
+      })
+    }
+  },
   component: AppLayout,
 })
 
@@ -18,6 +26,15 @@ function AppLayout() {
   const [menuAtivo, setMenuAtivo] = useState(true)
   const [mostrarPopupRelatorio, setMostrarPopupRelatorio] = useState(false)
   const refBotaoRelatorio = useRef<HTMLButtonElement | null>()
+  const auth = useAuth()
+  const router = useRouter()
+  const navigate = Route.useNavigate()
+  const handleLogout = () => {
+    auth.logout()
+    router.invalidate().finally(() => {
+      navigate({ to: '/login', replace: true })
+    })
+  }
 
   return (
     <>
@@ -50,13 +67,12 @@ function AppLayout() {
           </ul>
           <ul>
             <li>
-              <Link
-                to='/login'
-                search={{ logout: true }}
+              <div
+                onClick={handleLogout}
                 className='font-medium cursor-pointer flex items-center p-2 text-gray-900 rounded-lg group [&.active]:bg-gray-200 [&.active]:bg-opacity-75 hover:bg-gray-200'>
                 <LogOut />
                 {menuAtivo && <span className='ms-3'>Sair da aplicação</span>}
-              </Link>
+              </div>
             </li>
           </ul>
         </div>

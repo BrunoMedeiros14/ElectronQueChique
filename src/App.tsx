@@ -1,8 +1,12 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { RouterProvider, createRouter } from '@tanstack/react-router'
+import { RouterProvider, createMemoryHistory, createRouter } from '@tanstack/react-router'
 import { AuthProvider } from './hooks/auth'
 import { useAuth } from './hooks/useAuth'
 import { routeTree } from './routeTree.gen'
+
+const memoryHistory = createMemoryHistory({
+  initialEntries: ['/'],
+})
 
 const queryClient = new QueryClient()
 
@@ -13,6 +17,7 @@ const router = createRouter({
     auth: undefined,
     queryClient,
   },
+  history: memoryHistory,
 })
 
 declare module '@tanstack/react-router' {
