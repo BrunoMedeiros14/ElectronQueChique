@@ -26,6 +26,7 @@ import { DialogFecharCaixa } from './FecharCaixaDialog'
 import { DialogAtualizarVenda } from './atualizarVendaDialog'
 import { DialogCadastrarVendaBeta } from './cadastrarVendaDialog'
 import { pegarColunasVenda } from './vendasColunas'
+import { DialogAdicionarSaidaDeValores } from '@/components/caixas/cadastrarContaDialog'
 
 type CaixaInfoProps = {
   title: string
@@ -131,7 +132,7 @@ export function CaixaAberto({ caixaDoDia }: { caixaDoDia: Caixa }) {
                   Adicionar Saída de Valores
                 </Button>
               </DialogTrigger>
-              {/*<DialogAdicionarSaidaValores isOpen={dialogAberto} />*/}
+              <DialogAdicionarSaidaDeValores isOpen={dialogAberto} />
             </Dialog>
 
             <Dialog onOpenChange={setDialogAberto}>

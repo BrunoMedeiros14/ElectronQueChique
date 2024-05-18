@@ -1,5 +1,6 @@
 import db from '../config/bancoDeDados'
 import { Conta } from '../models/Conta'
+import { buscarTodosCaixas } from './RepositorioCaixa'
 
 type ContaDb = {
   id: number
@@ -9,9 +10,11 @@ type ContaDb = {
   data_vencimento: string
   data_pagamento: string
   pago: number
+  caixaId?: number
 }
 
-const contaParaModelDb = (conta: Conta): ContaDb => ({
+
+const contaParaModelDb = (conta: Conta, caixaId?: number): ContaDb => ({
   id: conta.id,
   nome: conta.nome,
   valor: conta.valor,
@@ -23,6 +26,7 @@ const contaParaModelDb = (conta: Conta): ContaDb => ({
     ? conta.dataVencimento.toISOString().split('T')[0]
     : null,
   pago: conta.pago ? 1 : 0,
+  caixaId: caixaId,
 })
 
 const modelDbParaConta = (contaDb: ContaDb): Conta => ({
@@ -92,10 +96,62 @@ export const removerConta = (id: number) => {
 export const buscarContasPorData = (dataInicio: string, dataFim: string) => {
   const selectQuery = `
     SELECT * FROM contas WHERE data_vencimento BETWEEN ? AND ?
-  `;
+  `
 
-  const stmt = db.prepare(selectQuery);
-  const contasDb = stmt.all(dataInicio, dataFim) as ContaDb[];
+  const stmt = db.prepare(selectQuery)
+  const contasDb = stmt.all(dataInicio, dataFim) as ContaDb[]
 
-  return contasDb.map((contaDb: ContaDb) => modelDbParaConta(contaDb));
+  return contasDb.map((contaDb: ContaDb) => modelDbParaConta(contaDb))
+}
+
+export const buscarContasNaoPagas = () => {
+  const selectAllQuery = `
+    SELECT * FROM contas c where c.pago = 0
+  `
+
+  const contasDb = db.prepare(selectAllQuery).all() as ContaDb[]
+
+  return contasDb.map((contaDb) => modelDbParaConta(contaDb))
+}
+
+export const criarContaPagaNoCaixa = (conta: Conta) => {
+  const caixaAtivo = buscarTodosCaixas().find((caixa) => caixa.ativo === true)
+
+  if (!caixaAtivo) {
+    throw new Error('Nenhum caixa ativo encontrado')
+  }
+
+  conta.dataPagamento = new Date()
+  conta.pago = true
+
+  const contaDb = contaParaModelDb(conta, caixaAtivo.id)
+
+  const insertQuery = `
+    INSERT INTO contas (nome , valor , descricao , data_vencimento , data_pagamento , pago, caixa_id)
+    VALUES (@nome , @valor , @descricao , @data_vencimento , @data_pagamento , @pago, @caixaId)
+  `
+
+  return db.prepare(insertQuery).run(contaDb)
+}
+
+export const pagarContaNoCaixa = (conta: Conta) => {
+  const caixaAtivo = buscarTodosCaixas().find((caixa) => caixa.ativo === true)
+
+  if (!caixaAtivo) {
+    throw new Error('Nenhum caixa ativo encontrado')
+  }
+
+  conta.dataPagamento = new Date()
+  conta.pago = true
+
+  const contaDb = contaParaModelDb(conta, caixaAtivo.id)
+
+  const updateQuery = `
+    UPDATE contas
+    SET nome = @nome , valor = @valor , descricao = @descricao ,
+      data_vencimento = @data_vencimento , data_pagamento = @data_pagamento , pago = @pago, caixa_id = @caixaId
+    WHERE id = @id
+  `
+
+  return db.prepare(updateQuery).run(contaDb)
 }

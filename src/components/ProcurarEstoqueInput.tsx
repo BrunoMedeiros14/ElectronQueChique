@@ -15,6 +15,7 @@ interface InputBuscaProps {
   adicionarEstoque: (estoque: Estoque) => void
 }
 
+
 export default function ProcurarEstoqueInput({
   placeholder = '',
   estoques,
