@@ -1,6 +1,5 @@
 import db from '../config/bancoDeDados'
-import { Estoque } from '../models/Estoque'
-import { Venda, VendaRelatorio } from '../models/Venda'
+import { Venda } from '../models/Venda'
 import { FormaPagamento } from '../models/enums/FormaPagamento'
 import { buscarTodosCaixas } from './RepositorioCaixa'
 import { EstoqueDb, inserirIdVenda, modelDbParaEstoque, removerIdVenda } from './RepositorioEstoque'
@@ -37,8 +36,8 @@ const modelDbParaVenda = (vendaDb: VendaDb): Venda => ({
   valorTotal: vendaDb.valor_total,
   estoque: vendaDb.estoque_json
     ? JSON.parse(vendaDb.estoque_json)
-        .filter((estoque: EstoqueDb) => estoque.id)
-        .map((estoque: EstoqueDb) => (estoque.id ? modelDbParaEstoque(estoque) : null))
+      .filter((estoque: EstoqueDb) => estoque.id)
+      .map((estoque: EstoqueDb) => (estoque.id ? modelDbParaEstoque(estoque) : null))
     : [],
   cliente: vendaDb.cliente_json
     ? JSON.parse(vendaDb.cliente_json).id
@@ -187,62 +186,13 @@ export const removerVenda = (id: number) => {
 
 export const buscarVendasPorData = (dataInicio: string, dataFim: string) => {
   const selectQuery = `
-    SELECT
-      v.id,
-      v.data_venda,
-      v.valor_total,
-      v.forma_pagamento,
-      v.valor_pago,
-      v.troco,
-      v.desconto,
-      v.cliente_id,
-    JSON_GROUP_ARRAY(json_object(
-      'id', e.id,
-      'nome', e.nome,
-      'descricao', e.descricao,
-      'cor', e.cor,
-      'tamanho', e.tamanho,
-      'tecido', e.tecido,
-      'fornecedor', e.fornecedor,
-      'quantidade', e.quantidade,
-      'valor_compra', e.valor_compra,
-      'valor_venda', e.valor_venda,
-      'venda_id', e.venda_id
-    )) as estoque_json,
-    json_object(
-      'id', c.id,
-      'nome', c.nome,
-      'data_nascimento', c.data_nascimento,
-      'endereco', c.endereco,
-      'telefone', c.telefone,
-      'email', c.email
-    ) as cliente_json
-    FROM vendas v
-    LEFT JOIN estoques e ON v.id = e.venda_id
-    LEFT JOIN clientes c ON v.cliente_id = c.id
-    WHERE v.data_venda BETWEEN ? AND ?
+    SELECT * from vendas WHERE data_venda BETWEEN ? AND ?
   `
 
   const stmt = db.prepare(selectQuery)
   const vendasDb = stmt.all(dataInicio, dataFim) as VendaDb[]
 
-  return vendasDb[0].id
-    ? vendasDb
-        .map((vendaDb: VendaDb) => modelDbParaVenda(vendaDb))
-        .map(
-          (venda: Venda): VendaRelatorio => ({
-            id: venda.id,
-            dataVenda: venda.dataVenda,
-            valorTotal: venda.valorTotal,
-            estoque: venda.estoque.map((estoque: Estoque) => estoque.nome).join(', '),
-            cliente: venda.cliente.nome,
-            formaPagamento: venda.formaPagamento,
-            valorPago: venda.valorPago,
-            troco: venda.troco,
-            desconto: venda.desconto,
-          })
-        )
-    : []
+  return vendasDb.map((vendaDb: VendaDb) => modelDbParaVenda(vendaDb))
 }
 
 export const buscarVendasPorCaixaId = (caixaId: number) => {
