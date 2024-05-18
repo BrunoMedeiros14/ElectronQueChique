@@ -3,7 +3,7 @@ import { ColumnDef } from '@tanstack/react-table'
 import { Pencil, Trash2 } from 'lucide-react'
 import React from 'react'
 import { Caixa } from '../../../src-electron/models/Caixa'
-import { gerarStringPorDate, gerarStringReal } from '../../utils/conversores'
+import { gerarStringPorDate, gerarStringReal } from '@/utils/conversores'
 
 type ColunasCaixaProps = {
   setIdParaExcluir: React.Dispatch<React.SetStateAction<number>>

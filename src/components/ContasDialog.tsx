@@ -5,13 +5,13 @@ import { useEffect, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { Conta } from '../../src-electron/models/Conta'
-import { atualizarContaApi, buscarContaPorId, cadastrarContaApi } from '../api/contasApi'
+import { atualizarContaApi, buscarContaPorId, cadastrarContaApi } from '@/api/contasApi'
 import {
   gerarDatePorString,
   gerarDoublePorValorMonetario,
   gerarStringPorDate,
   gerarStringReal,
-} from '../utils/conversores'
+} from '@/utils/conversores'
 import { InputComMascara } from './InputComMascara'
 import { Button } from './ui/button'
 import { DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from './ui/dialog'

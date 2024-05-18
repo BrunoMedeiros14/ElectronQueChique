@@ -2,10 +2,10 @@ import { useMutation, useQueryClient, useSuspenseQuery } from '@tanstack/react-q
 import { createLazyFileRoute } from '@tanstack/react-router'
 import { Shirt } from 'lucide-react'
 import { useRef, useState } from 'react'
-import { buscarEstoques, removerEstoqueApi } from '../api/estoquesApi'
-import { pegarColunasEstoque } from '../components/EstoqueColunas'
-import { DialogAtualizarEstoque, DialogCadastrarEstoque } from '../components/EstoqueDialog'
-import { cn } from '../components/lib/utils'
+import { buscarEstoques, removerEstoqueApi } from '@/api/estoquesApi'
+import { pegarColunasEstoque } from '@/components/EstoqueColunas'
+import { DialogAtualizarEstoque, DialogCadastrarEstoque } from '@/components/EstoqueDialog'
+import { cn } from '@/components/lib/utils'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -15,12 +15,12 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from '../components/ui/alert-dialog'
-import { Button, buttonVariants } from '../components/ui/button'
-import { DataTable } from '../components/ui/data-table'
-import { Dialog, DialogTrigger } from '../components/ui/dialog'
-import { Input } from '../components/ui/input'
-import { escutarCliqueTeclado } from '../hooks/escutarCliqueTeclado'
+} from '@/components/ui/alert-dialog'
+import { Button, buttonVariants } from '@/components/ui/button'
+import { DataTable } from '@/components/ui/data-table'
+import { Dialog, DialogTrigger } from '@/components/ui/dialog'
+import { Input } from '@/components/ui/input'
+import { escutarCliqueTeclado } from '@/hooks/escutarCliqueTeclado'
 
 export const Route = createLazyFileRoute('/_auth/estoque')({
   component: Component,

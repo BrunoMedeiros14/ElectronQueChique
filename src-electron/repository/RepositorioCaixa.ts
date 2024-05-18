@@ -86,6 +86,9 @@ export const removerCaixa = (id: number) => {
 }
 
 export const buscarCaixasPorData = (dataInicio: string, dataFim: string) => {
+  console.log('dataInicio', dataInicio)
+  console.log('dataFim', dataFim)
+
   const selectQuery = `
     SELECT * FROM caixas WHERE data_hora_abertura BETWEEN ? AND ?
   `

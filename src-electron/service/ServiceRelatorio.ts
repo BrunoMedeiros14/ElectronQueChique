@@ -2,19 +2,31 @@ import { ipcMain } from 'electron'
 import { RelatorioType } from '../models/relatorio'
 import { buscarCaixasPorData } from '../repository/RepositorioCaixa'
 import { buscarTodosClientes } from '../repository/RepositorioCliente'
-import { buscarContasPorData } from '../repository/RepositorioConta'
+import { buscarTodasContas } from '../repository/RepositorioConta'
 import { buscarTodosEstoques } from '../repository/RepositorioEstoque'
 import { buscarVendasPorData } from '../repository/RepositorioVenda'
 
 const gerarRelatorio = (startDate: string, endDate: string) => {
-  const converterData = (data: string) => {
+
+  const converterDataInicio = (data: string) => {
     const [dia, mes, ano] = data.split('/')
-    return `${ano}-${dia}-${mes}`
+    return `${ano}-${mes}-${mes}`
   }
-  const caixasData = buscarCaixasPorData(converterData(startDate), converterData(endDate))
-  const vendasData = buscarVendasPorData(converterData(startDate), converterData(endDate))
+
+  const converterDataFinal = (data: string) => {
+    const [dia, mes, ano] = data.split('/')
+    let dataFormatada = new Date(parseInt(ano), parseInt(mes) - 1, parseInt(dia))
+    dataFormatada.setDate(dataFormatada.getDate() + 1)
+    const diaFormatado = String(dataFormatada.getDate()).padStart(2, '0')
+    const mesFormatado = String(dataFormatada.getMonth() + 1).padStart(2, '0')
+    const anoFormatado = dataFormatada.getFullYear()
+    return `${anoFormatado}-${mesFormatado}-${diaFormatado}`
+  }
+
+  const caixasData = buscarCaixasPorData(converterDataInicio(startDate), converterDataFinal(endDate))
+  const vendasData = buscarVendasPorData(converterDataInicio(startDate), converterDataFinal(endDate))
   const estoquesData = buscarTodosEstoques()
-  const contasData = buscarContasPorData(converterData(startDate), converterData(endDate))
+  const contasData = buscarTodasContas()
   const clientesData = buscarTodosClientes()
 
   const relatorio = {
@@ -31,6 +43,6 @@ const gerarRelatorio = (startDate: string, endDate: string) => {
 export function servicoRelatorio() {
   ipcMain.handle(
     'gerarRelatorio',
-    (_, startDate: string, endDate: string): RelatorioType => gerarRelatorio(startDate, endDate)
+    (_, startDate: string, endDate: string): RelatorioType => gerarRelatorio(startDate, endDate),
   )
 }

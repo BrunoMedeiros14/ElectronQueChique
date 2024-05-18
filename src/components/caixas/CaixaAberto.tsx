@@ -4,10 +4,10 @@ import { useRef, useState } from 'react'
 import { FaCashRegister, FaMoneyBillWave } from 'react-icons/fa'
 import { Caixa } from '../../../src-electron/models/Caixa'
 import { Venda } from '../../../src-electron/models/Venda'
-import { buscarVendasPorCaixaId, removerVendaApi } from '../../api/vendasApi'
-import { FormaPagamento } from '../../enums/FormaPagamento'
-import { escutarCliqueTeclado } from '../../hooks/escutarCliqueTeclado'
-import { gerarStringReal } from '../../utils/conversores'
+import { buscarVendasPorCaixaId, removerVendaApi } from '@/api/VendasApi'
+import { FormaPagamento } from '@/enums/FormaPagamento'
+import { escutarCliqueTeclado } from '@/hooks/escutarCliqueTeclado'
+import { gerarStringReal } from '@/utils/conversores'
 import { cn } from '../lib/utils'
 import {
   AlertDialog,
@@ -75,14 +75,14 @@ export function CaixaAberto({ caixaDoDia }: { caixaDoDia: Caixa }) {
 
   const recebidoDinheiro = vendas.data
     ? vendas.data
-        .filter((v) => v.formaPagamento === FormaPagamento.Dinheiro)
-        .reduce((total, venda) => total + venda.valorTotal, 0)
+      .filter((v) => v.formaPagamento === FormaPagamento.Dinheiro)
+      .reduce((total, venda) => total + venda.valorTotal, 0)
     : 0
 
   const recebidoCartao = vendas.data
     ? vendas.data
-        .filter((v) => v.formaPagamento === FormaPagamento.Cartao)
-        .reduce((total, venda) => total + venda.valorTotal, 0)
+      .filter((v) => v.formaPagamento === FormaPagamento.Cartao)
+      .reduce((total, venda) => total + venda.valorTotal, 0)
     : 0
 
   const valorTotal = vendas.data ? vendas.data.reduce((total, venda) => total + venda.valorTotal, 0) : 0
@@ -93,11 +93,11 @@ export function CaixaAberto({ caixaDoDia }: { caixaDoDia: Caixa }) {
     const sign = isNegative ? '-' : '+'
 
     return (
-      <div className='flex flex-col p-4 m-2 rounded-45 w-full'>
-        <div className='flex justify-end bg-blue-500 p-2 border border-blue-500 rounded-t-2xl'>
-          <h2 className='text-white text-lg'>{title}</h2>
+      <div className="flex flex-col p-4 m-2 rounded-45 w-full">
+        <div className="flex justify-end bg-blue-500 p-2 border border-blue-500 rounded-t-2xl">
+          <h2 className="text-white text-lg" style={{ whiteSpace: 'nowrap' }}>{title}</h2>
         </div>
-        <div className='flex justify-between p-2 border border-blue-500 rounded-b-45'>
+        <div className="flex justify-between p-2 border border-blue-500 rounded-b-45">
           <span className={`${valueClass} text-xl font-bold`}>{sign}</span>
           <p className={`${valueClass} text-xl font-bold`}>{gerarStringReal(value)}</p>
         </div>
@@ -106,18 +106,18 @@ export function CaixaAberto({ caixaDoDia }: { caixaDoDia: Caixa }) {
   }
 
   return (
-    <div className='overflow-y-auto'>
-      <main className='flex flex-1 flex-col p-4 md:p-6 mx-auto'>
+    <div className="overflow-y-auto">
+      <main className="flex flex-1 flex-col p-4 md:p-6 mx-auto">
         <div>
-          <div className='flex items-center'>
-            <h1 className='font-semibold text-lg md:text-2xl h-10'>{`Caixa do Dia`}</h1>
+          <div className="flex items-center">
+            <h1 className="font-semibold text-lg md:text-2xl h-10">{`Caixa do Dia`}</h1>
           </div>
 
-          <div className='flex justify-end py-3 gap-4'>
+          <div className="flex justify-end py-3 gap-4">
             <Dialog onOpenChange={setDialogAberto}>
               <DialogTrigger asChild>
-                <Button ref={refBotaoCadastro} className='h-10'>
-                  <Receipt className='mr-2' />
+                <Button ref={refBotaoCadastro} className="h-10">
+                  <Receipt className="mr-2" />
                   Nova Venda (F1)
                 </Button>
               </DialogTrigger>
@@ -126,8 +126,8 @@ export function CaixaAberto({ caixaDoDia }: { caixaDoDia: Caixa }) {
 
             <Dialog onOpenChange={setDialogAberto}>
               <DialogTrigger asChild>
-                <Button className='h-10'>
-                  <FaMoneyBillWave className='mr-2' />
+                <Button className="h-10">
+                  <FaMoneyBillWave className="mr-2" />
                   Adicionar Saída de Valores
                 </Button>
               </DialogTrigger>
@@ -136,8 +136,8 @@ export function CaixaAberto({ caixaDoDia }: { caixaDoDia: Caixa }) {
 
             <Dialog onOpenChange={setDialogAberto}>
               <DialogTrigger asChild>
-                <Button className='h-10'>
-                  <FaCashRegister className='mr-2' />
+                <Button className="h-10">
+                  <FaCashRegister className="mr-2" />
                   Fechar Caixa
                 </Button>
               </DialogTrigger>
@@ -157,7 +157,7 @@ export function CaixaAberto({ caixaDoDia }: { caixaDoDia: Caixa }) {
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel onClick={() => setIdParaExcluir(null)} className='destructive'>
+              <AlertDialogCancel onClick={() => setIdParaExcluir(null)} className="destructive">
                 Cancelar
               </AlertDialogCancel>
               <AlertDialogAction
@@ -174,12 +174,12 @@ export function CaixaAberto({ caixaDoDia }: { caixaDoDia: Caixa }) {
           <DialogAtualizarVenda vendaId={idParaEditar} />
         </Dialog>
 
-        <div className='flex gap-2 fixed bottom-0'>
-          <CaixaInfo title='Saldo Inicial' value={saldoInicial} />
-          <CaixaInfo title='Saídas de Caixa' value={saidasDeCaixa} />
-          <CaixaInfo title='Recebido Cartão' value={recebidoCartao} />
-          <CaixaInfo title='Recebido Dinheiro' value={recebidoDinheiro} />
-          <CaixaInfo title='Valor Total' value={valorTotal} />
+        <div className="flex gap-2 fixed bottom-0">
+          <CaixaInfo title="Saldo Inicial" value={saldoInicial} />
+          <CaixaInfo title="Saídas de Caixa" value={saidasDeCaixa} />
+          <CaixaInfo title="Recebido Cartão" value={recebidoCartao} />
+          <CaixaInfo title="Recebido Dinheiro" value={recebidoDinheiro} />
+          <CaixaInfo title="Valor Total" value={valorTotal} />
         </div>
       </main>
     </div>

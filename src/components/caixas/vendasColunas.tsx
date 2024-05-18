@@ -4,7 +4,7 @@ import React from 'react'
 import { Cliente } from '../../../src-electron/models/Cliente'
 import { Estoque } from '../../../src-electron/models/Estoque'
 import { Venda } from '../../../src-electron/models/Venda'
-import { gerarStringPorcentagemPorNumeroInteiro, gerarStringReal } from '../../utils/conversores'
+import { gerarStringPorcentagemPorNumeroInteiro, gerarStringReal } from '@/utils/conversores'
 import { Button } from '../ui/button'
 
 type ColunasVendaProps = {

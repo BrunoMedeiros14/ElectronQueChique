@@ -16,7 +16,7 @@ function getStoredUser() {
 }
 
 function setStoredUser(user?: string, senha?: string) {
-  if (user === 'admin' && senha === 'quechique@2024') {
+  if (user === 'aa' && senha === 'aa') {
     sessionStorage.setItem(key, user)
     return true
   }

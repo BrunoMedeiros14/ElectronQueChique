@@ -1,7 +1,7 @@
 import { ColumnDef } from '@tanstack/react-table'
 import { Pencil, Trash2 } from 'lucide-react'
 import { Estoque } from '../../src-electron/models/Estoque'
-import { gerarStringReal } from '../utils/conversores'
+import { gerarStringReal } from '@/utils/conversores'
 import { Button } from './ui/button'
 
 type ColunasEstoqueProps = {
