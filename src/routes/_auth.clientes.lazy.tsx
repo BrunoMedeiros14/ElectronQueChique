@@ -2,8 +2,8 @@ import { useMutation, useQueryClient, useSuspenseQuery } from '@tanstack/react-q
 import { createLazyFileRoute } from '@tanstack/react-router'
 import { UserPlus } from 'lucide-react'
 import { Suspense, lazy, useRef, useState } from 'react'
-import { buscarClientes, removerClienteApi } from '../api/clientesApi'
-import { pegarColunasCliente } from '../components/clientesColunas'
+import { buscarClientes, removerClienteApi } from '../api/clientes-api'
+import { pegarColunasCliente } from '../components/clientes-colunas'
 import { cn } from '../components/lib/utils'
 import {
   AlertDialog,
@@ -19,15 +19,15 @@ import { Button, buttonVariants } from '../components/ui/button'
 import { DataTable } from '../components/ui/data-table'
 import { Dialog, DialogTrigger } from '../components/ui/dialog'
 import { Input } from '../components/ui/input'
-import { escutarCliqueTeclado } from '../hooks/escutarCliqueTeclado'
+import { escutarCliqueTeclado } from '../hooks/escutar-clique-teclado'
 
 export const Route = createLazyFileRoute('/_auth/clientes')({
   component: Component,
   pendingComponent: () => <div>Loading...</div>,
 })
 
-const DialogCadastrarCliente = lazy(() => import('../components/cliente/CadastrarDialog'))
-const DialogAtualizarCliente = lazy(() => import('../components/cliente/AtualizarDialog'))
+const DialogCadastrarCliente = lazy(() => import('../components/cliente/cadastrar-dialog'))
+const DialogAtualizarCliente = lazy(() => import('../components/cliente/atualizar-dialog'))
 
 export function Component() {
   const refBotaoCadastro = useRef<HTMLButtonElement>()

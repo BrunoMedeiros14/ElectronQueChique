@@ -2,9 +2,9 @@ import { useMutation, useQueryClient, useSuspenseQuery } from '@tanstack/react-q
 import { createLazyFileRoute } from '@tanstack/react-router'
 import { Receipt } from 'lucide-react'
 import { useRef, useState } from 'react'
-import { buscarContas, removerContaApi } from '../api/contasApi'
-import { DialogAtualizarConta, DialogCadastrarConta } from '../components/ContasDialog'
-import { pegarColunasConta } from '../components/contasColunas'
+import { buscarContas, removerContaApi } from '../api/contas-api'
+import { DialogAtualizarConta, DialogCadastrarConta } from '../components/contas-dialog'
+import { pegarColunasConta } from '../components/contas-colunas'
 import { cn } from '../components/lib/utils'
 import {
   AlertDialog,
@@ -20,7 +20,7 @@ import { Button, buttonVariants } from '../components/ui/button'
 import { DataTable } from '../components/ui/data-table'
 import { Dialog, DialogTrigger } from '../components/ui/dialog'
 import { Input } from '../components/ui/input'
-import { escutarCliqueTeclado } from '../hooks/escutarCliqueTeclado'
+import { escutarCliqueTeclado } from '../hooks/escutar-clique-teclado'
 
 export const Route = createLazyFileRoute('/_auth/contas')({
   component: Component,

@@ -28,8 +28,8 @@ import {
   RemoverConta,
   RemoverEstoque,
   RemoverVenda,
-} from './Api'
-import { Conta } from './models/Conta'
+} from './api'
+import { Conta } from './models/conta'
 import { RelatorioType } from './models/relatorio'
 
 if (!process.contextIsolated) {

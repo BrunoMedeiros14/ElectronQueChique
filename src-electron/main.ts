@@ -1,11 +1,11 @@
 import { app, BrowserWindow } from 'electron'
 import path from 'path'
-import { serviceCaixa } from './service/ServiceCaixa'
-import { serviceCliente } from './service/ServiceCliente'
-import { serviceConta } from './service/ServiceConta'
-import { serviceEstoque } from './service/ServiceEstoque'
-import { servicoRelatorio } from './service/ServiceRelatorio'
-import { serviceVenda } from './service/ServiceVenda'
+import { serviceCaixa } from './service/service-caixa'
+import { serviceCliente } from './service/service-cliente'
+import { serviceConta } from './service/service-conta'
+import { serviceEstoque } from './service/service-estoque'
+import { servicoRelatorio } from './service/service-relatorio'
+import { serviceVenda } from './service/service-venda'
 
 if (require('electron-squirrel-startup')) {
   app.quit()

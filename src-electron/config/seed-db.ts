@@ -1,10 +1,10 @@
-import { Cliente, Conta } from '../models/Conta'
-import { Estoque } from '../models/Estoque'
-import { Cor } from '../models/enums/Cor'
-import { Tecido } from '../models/enums/Tecido'
-import { salvarCliente } from '../repository/RepositorioCliente'
-import { criarConta } from '../repository/RepositorioConta'
-import { criarEstoque } from '../repository/RepositorioEstoque'
+import { Cliente, Conta } from '../models/conta'
+import { Estoque } from '../models/estoque'
+import { Cor } from '../models/enums/cor'
+import { Tecido } from '../models/enums/tecido'
+import { salvarCliente } from '../repository/repositorio-cliente'
+import { criarConta } from '../repository/repositorio-conta'
+import { criarEstoque } from '../repository/repositorio-estoque'
 
 const estoqueArray: Estoque[] = []
 const contaArray: Conta[] = []
