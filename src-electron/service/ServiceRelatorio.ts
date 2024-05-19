@@ -1,25 +1,20 @@
 import { ipcMain } from 'electron'
-import { buscarCaixasPorData } from '../repository/RepositorioCaixa'
+import { RelatorioType } from '../models/relatorio'
+import { buscarCaixasPorDataParaRelatorio } from '../repository/RepositorioCaixa'
 import { buscarTodosClientes } from '../repository/RepositorioCliente'
-import { buscarTodasContas } from '../repository/RepositorioConta'
-import { buscarTodosEstoques } from '../repository/RepositorioEstoque'
-import { buscarVendasPorData } from '../repository/RepositorioVenda'
-import { Cliente } from '../models/Cliente'
-import { Venda } from '../models/Venda'
-import { Estoque } from '../models/Estoque'
-import { Conta } from '../models/Conta'
-import { Caixa } from '../models/Caixa'
+import { buscarTodasContasParaRelatorio } from '../repository/RepositorioConta'
+import { buscarTodosEstoquesParaRelatorio } from '../repository/RepositorioEstoque'
+import { buscarVendasPorDataParaRelatorio } from '../repository/RepositorioVenda'
 
 const gerarRelatorio = (startDate: string, endDate: string) => {
-
   const converterDataInicio = (data: string) => {
     const [dia, mes, ano] = data.split('/')
-    return `${ano}-${mes}-${mes}`
+    return `${ano}-${mes}-${dia}`
   }
 
   const converterDataFinal = (data: string) => {
     const [dia, mes, ano] = data.split('/')
-    let dataFormatada = new Date(parseInt(ano), parseInt(mes) - 1, parseInt(dia))
+    const dataFormatada = new Date(parseInt(ano), parseInt(mes) - 1, parseInt(dia))
     dataFormatada.setDate(dataFormatada.getDate() + 1)
     const diaFormatado = String(dataFormatada.getDate()).padStart(2, '0')
     const mesFormatado = String(dataFormatada.getMonth() + 1).padStart(2, '0')
@@ -27,14 +22,11 @@ const gerarRelatorio = (startDate: string, endDate: string) => {
     return `${anoFormatado}-${mesFormatado}-${diaFormatado}`
   }
 
-  const caixasData = buscarCaixasPorData(converterDataInicio(startDate), converterDataFinal(endDate))
-    .map(({ contas, vendas, ...caixa }) => caixa)
+  const caixasData = buscarCaixasPorDataParaRelatorio(converterDataInicio(startDate), converterDataFinal(endDate))
+  const vendasData = buscarVendasPorDataParaRelatorio(converterDataInicio(startDate), converterDataFinal(endDate))
 
-  const vendasData = buscarVendasPorData(converterDataInicio(startDate), converterDataFinal(endDate))
-    .map(({ estoque, ...venda }) => venda)
-
-  const estoquesData = buscarTodosEstoques()
-  const contasData = buscarTodasContas()
+  const estoquesData = buscarTodosEstoquesParaRelatorio()
+  const contasData = buscarTodasContasParaRelatorio()
   const clientesData = buscarTodosClientes()
 
   const relatorio = {
@@ -51,12 +43,6 @@ const gerarRelatorio = (startDate: string, endDate: string) => {
 export function servicoRelatorio() {
   ipcMain.handle(
     'gerarRelatorio',
-    (_, startDate: string, endDate: string): {
-      clientesData: Cliente[];
-      vendasData: Venda[];
-      estoquesData: Estoque[];
-      contasData: Conta[];
-      caixasData: Caixa[]
-    } => gerarRelatorio(startDate, endDate),
+    (_, startDate: string, endDate: string): RelatorioType => gerarRelatorio(startDate, endDate)
   )
 }

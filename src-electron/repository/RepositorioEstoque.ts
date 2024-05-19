@@ -2,6 +2,7 @@ import db from '../config/bancoDeDados'
 import { Estoque } from '../models/Estoque'
 import { Cor } from '../models/enums/Cor'
 import { Tecido } from '../models/enums/Tecido'
+import { EstoqueParaRelarorio } from '../models/relatorio'
 
 export type EstoqueDb = {
   id: number
@@ -45,6 +46,13 @@ export const modelDbParaEstoque = (estoqueDb: EstoqueDb): Estoque => ({
   valorVenda: estoqueDb.valor_venda,
 })
 
+export const modelDbParaEstoqueParaRelatorio = (estoqueDb: EstoqueDb): EstoqueParaRelarorio => ({
+  ...modelDbParaEstoque(estoqueDb),
+  vendido: estoqueDb.venda_id !== null ? 'Sim' : 'Não',
+  valorCompra: `R$ ${estoqueDb.valor_compra.toFixed(2)}`,
+  valorVenda: `R$ ${estoqueDb.valor_venda.toFixed(2)}`,
+})
+
 export const criarEstoque = (estoque: Estoque) => {
   const estoqueDb = estoqueParaModelDb(estoque)
   const insertQuery = `
@@ -73,6 +81,15 @@ export const buscarTodosEstoques = () => {
 
   const estoquesDb = db.prepare(selectAllQuery).all() as EstoqueDb[]
   return estoquesDb.map((estoqueDb) => modelDbParaEstoque(estoqueDb))
+}
+
+export const buscarTodosEstoquesParaRelatorio = () => {
+  const selectAllQuery = `
+    SELECT * FROM estoques
+  `
+
+  const estoquesDb = db.prepare(selectAllQuery).all() as EstoqueDb[]
+  return estoquesDb.map((estoqueDb) => modelDbParaEstoqueParaRelatorio(estoqueDb))
 }
 
 export const buscarEstoquesNaoVendidos = () => {
@@ -125,15 +142,4 @@ export const removerIdVenda = (vendaId: number) => {
   `
 
   return db.prepare(updateQuery).run(vendaId)
-}
-
-export const buscarEstoquesPorData = (dataInicio: string, dataFim: string) => {
-  const selectQuery = `
-    SELECT * FROM estoques
-  `
-  // WHERE data BETWEEN ? AND ?
-  const stmt = db.prepare(selectQuery)
-  const estoquesDb = stmt.all() //(dataInicio, dataFim) as EstoqueDb[]
-
-  return estoquesDb.map((estoqueDb: EstoqueDb) => modelDbParaEstoque(estoqueDb))
 }

@@ -1,5 +1,6 @@
 import db from '../config/bancoDeDados'
 import { Conta } from '../models/Conta'
+import { ContaParaRelatorio } from '../models/relatorio'
 import { buscarTodosCaixas } from './RepositorioCaixa'
 
 type ContaDb = {
@@ -34,6 +35,16 @@ const modelDbParaConta = (contaDb: ContaDb): Conta => ({
   pago: contaDb.pago === 1,
 })
 
+const modelDbParaContaParaRelatorio = (contaDb: ContaDb): ContaParaRelatorio => ({
+  id: contaDb.id,
+  nome: contaDb.nome,
+  valor: `R$ ${contaDb.valor.toFixed(2)}`,
+  descricao: contaDb.descricao,
+  dataVencimento: contaDb.data_vencimento ? new Date(contaDb.data_vencimento) : null,
+  dataPagamento: contaDb.data_pagamento ? new Date(contaDb.data_pagamento) : null,
+  pago: contaDb.pago === 1 ? 'Sim' : 'Não',
+})
+
 export const criarConta = (conta: Conta) => {
   const contaDb = contaParaModelDb(conta)
   const insertQuery = `
@@ -62,6 +73,15 @@ export const buscarTodasContas = () => {
 
   const contasDb = db.prepare(selectAllQuery).all() as ContaDb[]
   return contasDb.map((contaDb) => modelDbParaConta(contaDb))
+}
+
+export const buscarTodasContasParaRelatorio = () => {
+  const selectAllQuery = `
+    SELECT * FROM contas
+  `
+
+  const contasDb = db.prepare(selectAllQuery).all() as ContaDb[]
+  return contasDb.map((contaDb) => modelDbParaContaParaRelatorio(contaDb))
 }
 
 export const editarConta = (conta: Conta) => {

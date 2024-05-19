@@ -1,6 +1,7 @@
 import db from '../config/bancoDeDados'
 import { Venda } from '../models/Venda'
 import { FormaPagamento } from '../models/enums/FormaPagamento'
+import { VendaParaRelatorio } from '../models/relatorio'
 import { buscarTodosCaixas } from './RepositorioCaixa'
 import { EstoqueDb, inserirIdVenda, modelDbParaEstoque, removerIdVenda } from './RepositorioEstoque'
 
@@ -36,8 +37,8 @@ const modelDbParaVenda = (vendaDb: VendaDb): Venda => ({
   valorTotal: vendaDb.valor_total,
   estoque: vendaDb.estoque_json
     ? JSON.parse(vendaDb.estoque_json)
-      .filter((estoque: EstoqueDb) => estoque.id)
-      .map((estoque: EstoqueDb) => (estoque.id ? modelDbParaEstoque(estoque) : null))
+        .filter((estoque: EstoqueDb) => estoque.id)
+        .map((estoque: EstoqueDb) => (estoque.id ? modelDbParaEstoque(estoque) : null))
     : [],
   cliente: vendaDb.cliente_json
     ? JSON.parse(vendaDb.cliente_json).id
@@ -48,6 +49,17 @@ const modelDbParaVenda = (vendaDb: VendaDb): Venda => ({
   valorPago: vendaDb.valor_pago,
   troco: vendaDb.troco,
   desconto: vendaDb.desconto,
+})
+
+const modelDbParaVendaRelatorio = (vendaDb: VendaDb): VendaParaRelatorio => ({
+  id: vendaDb.id,
+  cliente: JSON.parse(vendaDb.cliente_json)?.nome ?? 'Não cadastrado',
+  dataVenda: vendaDb.data_venda ? new Date(vendaDb.data_venda) : null,
+  formaPagamento: vendaDb.forma_pagamento.toLocaleLowerCase(),
+  valorTotal: `R$ ${vendaDb.desconto.toFixed(2)}`,
+  valorPago: `R$ ${vendaDb.valor_pago.toFixed(2)}`,
+  troco: `R$ ${vendaDb.troco.toFixed(2)}`,
+  desconto: `${vendaDb.desconto} %`,
 })
 
 export const criarVenda = (venda: Venda) => {
@@ -184,15 +196,17 @@ export const removerVenda = (id: number) => {
   return db.prepare(deleteQuery).run(id)
 }
 
-export const buscarVendasPorData = (dataInicio: string, dataFim: string) => {
+export const buscarVendasPorDataParaRelatorio = (dataInicio: string, dataFim: string): VendaParaRelatorio[] => {
   const selectQuery = `
-    SELECT * from vendas WHERE data_venda BETWEEN ? AND ?
+    SELECT v.*, json_object('nome', c.nome) as cliente_json from vendas v
+    LEFT JOIN clientes c ON v.cliente_id = c.id
+    WHERE data_venda BETWEEN ? AND ?
   `
 
   const stmt = db.prepare(selectQuery)
   const vendasDb = stmt.all(dataInicio, dataFim) as VendaDb[]
 
-  return vendasDb.map((vendaDb: VendaDb) => modelDbParaVenda(vendaDb))
+  return vendasDb.map((vendaDb: VendaDb) => modelDbParaVendaRelatorio(vendaDb))
 }
 
 export const buscarVendasPorCaixaId = (caixaId: number) => {
