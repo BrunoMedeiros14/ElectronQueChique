@@ -29,6 +29,7 @@ import {
   RemoverEstoque,
   RemoverVenda,
 } from './Api'
+import { Conta } from './models/Conta'
 import { RelatorioType } from './models/relatorio'
 
 if (!process.contextIsolated) {
@@ -72,6 +73,9 @@ export const apiConta = {
     ipcRenderer.invoke('buscarContaPorId', ...args),
   buscarTodasContas: (...args: Parameters<BuscarTodasContas>): ReturnType<BuscarTodasContas> =>
     ipcRenderer.invoke('buscarTodasContas', ...args),
+  buscarContasNaoPagas: () => ipcRenderer.invoke('buscarContasNaoPagas'),
+  criarContaPagaNoCaixa: (conta: Conta) => ipcRenderer.invoke('criarContaPagaNoCaixa', conta),
+  pagarContaNoCaixa: (conta: Conta) => ipcRenderer.invoke('pagarContaNoCaixa', conta),
 }
 
 export const apiEstoque = {

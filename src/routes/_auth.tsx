@@ -3,10 +3,10 @@ import { Outlet, createFileRoute, redirect, useRouter } from '@tanstack/react-ro
 import { LogOut, Menu, Package2, ShoppingBag, Table2Icon, Users, Wallet } from 'lucide-react'
 import { Suspense, lazy, useRef, useState } from 'react'
 
-import Logo from '../assets/Logo.png'
 import { SidebarLi } from '@/components/SidebarLi'
 import { Dialog, DialogTrigger } from '@/components/ui/dialog'
 import { useAuth } from '@/hooks/useAuth'
+import Logo from '../assets/Logo.png'
 
 const GerarRelatorioComponent = lazy(() => import('../components/GerarRelatorioComponent'))
 // const TanStackRouterDevtools = lazy(() => import('../components/TanStackRouterDevtools'))

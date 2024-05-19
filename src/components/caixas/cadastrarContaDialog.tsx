@@ -1,24 +1,19 @@
+import { InputComMascara } from '@/components/InputComMascara'
+import { Switch } from '@/components/ui/switch'
+import { gerarDatePorString, gerarDoublePorValorMonetario } from '@/utils/conversores'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useNumberFormat } from '@react-input/number-format'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { Trash2 } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { Conta } from '../../../src-electron/models/Conta'
+import { buscarContasNaoPagas, criarContaPagaNoCaixa, pagarContaNoCaixa } from '../../api/contasApi'
 import { Button } from '../ui/button'
 import { DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '../ui/dialog'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
 import { Input } from '../ui/input'
-import { gerarDatePorString, gerarDoublePorValorMonetario } from '@/utils/conversores'
-import { useNumberFormat } from '@react-input/number-format'
-import { InputComMascara } from '@/components/InputComMascara'
-import { Switch } from '@/components/ui/switch'
-import { Trash2 } from 'lucide-react'
-import ProcurarContaInput from '@/components/ProcurarContaInput'
-import {
-  buscarContasNaoPagas,
-  criarContaPagaNoCaixa,
-  pagarContaNoCaixa,
-} from '../../../src-electron/repository/RepositorioConta'
 
 const formSchemaConta = z.object({
   contaId: z.number().nullable().optional(),
@@ -97,13 +92,13 @@ export function DialogAdicionarSaidaDeValores({ isOpen }: { isOpen: boolean }) {
   })
 
   function onSubmitNew({
-                         nome,
-                         descricao,
-                         valor,
-                         dataVencimento,
-                         dataPagamento,
-                         pago,
-                       }: z.infer<typeof formSchemaConta>) {
+    nome,
+    descricao,
+    valor,
+    dataVencimento,
+    dataPagamento,
+    pago,
+  }: z.infer<typeof formSchemaConta>) {
     const conta: Conta = {
       nome,
       descricao,
@@ -117,14 +112,14 @@ export function DialogAdicionarSaidaDeValores({ isOpen }: { isOpen: boolean }) {
   }
 
   function onSubmitUpdate({
-                            contaId,
-                            nome,
-                            descricao,
-                            valor,
-                            dataVencimento,
-                            dataPagamento,
-                            pago,
-                          }: z.infer<typeof formSchemaConta>) {
+    contaId,
+    nome,
+    descricao,
+    valor,
+    dataVencimento,
+    dataPagamento,
+    pago,
+  }: z.infer<typeof formSchemaConta>) {
     const conta: Conta = {
       id: contaId,
       nome,
@@ -164,35 +159,28 @@ export function DialogAdicionarSaidaDeValores({ isOpen }: { isOpen: boolean }) {
   }
 
   return (
-    <DialogContent className="sm:max-w-[425px]">
+    <DialogContent className='sm:max-w-[425px]'>
       <DialogHeader>
         <DialogTitle>Cadastro de Conta</DialogTitle>
         <DialogDescription>Insira abaixo os dados da conta.</DialogDescription>
       </DialogHeader>
-      <div className="grid gap-4 py-4">
+      <div className='grid gap-4 py-4'>
+        {/* <ProcurarContaInput
+          adicionarConta={handleAdicionarConta}
+          placeholder='Selecione a conta'
+          contas={contas && contas.filter((conta) => !contasSelecionadas.includes(conta))}
+        /> */}
 
-        <FormItem className="mb-10">
-          <FormLabel>Contas Para Pagar*</FormLabel>
-          <FormControl>
-            <ProcurarContaInput
-              adicionarConta={handleAdicionarConta}
-              placeholder="Selecione a conta"
-              contas={contas && contas.filter((conta) => !contasSelecionadas.includes(conta))}
-            />
-          </FormControl>
-          <FormMessage />
-        </FormItem>
-
-        <div className="border rounded-lg p-2 h-80 flex flex-col flex-1">
-          <h2 className="font-semibold text-lg">Contas a Pagar</h2>
-          <div className="overflow-y-auto h-56 [&>*]:border-t">
+        <div className='border rounded-lg p-2 h-80 flex flex-col flex-1'>
+          <h2 className='font-semibold text-lg'>Contas a Pagar</h2>
+          <div className='overflow-y-auto h-56 [&>*]:border-t'>
             {contasSelecionadas.map((conta) => (
-              <div key={conta.id} className="flex justify-between p-1 gap-1 items-center first:border-t-0">
-                <div className="flex-1">
-                  <h4 className="font-normal">
+              <div key={conta.id} className='flex justify-between p-1 gap-1 items-center first:border-t-0'>
+                <div className='flex-1'>
+                  <h4 className='font-normal'>
                     {conta.nome} - {conta.valor} - {conta.dataVencimento}
                   </h4>
-                  <p className="text-sm">{conta.descricao}</p>
+                  <p className='text-sm'>{conta.descricao}</p>
                 </div>
                 <p>
                   {conta.valor.toLocaleString('pt-BR', {
@@ -200,41 +188,33 @@ export function DialogAdicionarSaidaDeValores({ isOpen }: { isOpen: boolean }) {
                     currency: 'BRL',
                   })}
                 </p>
-                <Button
-                  size="icon"
-                  variant="ghost"
-                  onClick={() => handleRemoverConta(conta)}
-                  className="text-red-500">
-                  <Trash2 className="h-4 w-4" />
-                  <span className="sr-only">Delete</span>
+                <Button size='icon' variant='ghost' onClick={() => handleRemoverConta(conta)} className='text-red-500'>
+                  <Trash2 className='h-4 w-4' />
+                  <span className='sr-only'>Delete</span>
                 </Button>
               </div>
             ))}
             {contasSelecionadas.length === 0 && (
-              <div
-                className="h-full w-full first:border-t-0 flex items-center justify-center text-lg font-normal text-gray-700">
+              <div className='h-full w-full first:border-t-0 flex items-center justify-center text-lg font-normal text-gray-700'>
                 Nenhuma Conta Selecionada
               </div>
             )}
           </div>
-          <div className="flex items-center flex-1 borde border-t p-2">
-            <div className="flex-1">
-              Total:{' '}
-              {(form.watch('valor'))}
-            </div>
+          <div className='flex items-center flex-1 borde border-t p-2'>
+            <div className='flex-1'>Total: {form.watch('valor')}</div>
           </div>
         </div>
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmitNew)} className="grid grid-cols-2 gap-3">
+          <form onSubmit={form.handleSubmit(onSubmitNew)} className='grid grid-cols-2 gap-3'>
             <FormField
               control={form.control}
-              name="nome"
+              name='nome'
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Nome*</FormLabel>
                   <FormControl>
-                    <Input placeholder="Nome da Conta" {...field} />
+                    <Input placeholder='Nome da Conta' {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -243,12 +223,12 @@ export function DialogAdicionarSaidaDeValores({ isOpen }: { isOpen: boolean }) {
 
             <FormField
               control={form.control}
-              name="descricao"
+              name='descricao'
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Descrição*</FormLabel>
                   <FormControl>
-                    <Input placeholder="Descrição da Conta" {...field} />
+                    <Input placeholder='Descrição da Conta' {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -257,13 +237,13 @@ export function DialogAdicionarSaidaDeValores({ isOpen }: { isOpen: boolean }) {
 
             <FormField
               control={form.control}
-              name="valor"
+              name='valor'
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Valor*</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Valor da Conta"
+                      placeholder='Valor da Conta'
                       ref={valorMonetario}
                       value={field.value}
                       onChange={field.onChange}
@@ -276,12 +256,12 @@ export function DialogAdicionarSaidaDeValores({ isOpen }: { isOpen: boolean }) {
 
             <FormField
               control={form.control}
-              name="dataVencimento"
+              name='dataVencimento'
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Data de Vencimento</FormLabel>
                   <FormControl>
-                    <InputComMascara radix="." mask={'00/00/0000'} unmask={true} placeholder="dd/mm/aaaa" {...field} />
+                    <InputComMascara radix='.' mask={'00/00/0000'} unmask={true} placeholder='dd/mm/aaaa' {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -290,12 +270,12 @@ export function DialogAdicionarSaidaDeValores({ isOpen }: { isOpen: boolean }) {
 
             <FormField
               control={form.control}
-              name="dataPagamento"
+              name='dataPagamento'
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Data de Pagamento</FormLabel>
                   <FormControl>
-                    <InputComMascara radix="." mask={'00/00/0000'} unmask={true} placeholder="dd/mm/aaaa" {...field} />
+                    <InputComMascara radix='.' mask={'00/00/0000'} unmask={true} placeholder='dd/mm/aaaa' {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -304,10 +284,10 @@ export function DialogAdicionarSaidaDeValores({ isOpen }: { isOpen: boolean }) {
 
             <FormField
               control={form.control}
-              name="pago"
+              name='pago'
               render={({ field }) => (
-                <FormItem className="flex gap-2 items-center justify-center">
-                  <FormLabel className="mt-2">Pago</FormLabel>
+                <FormItem className='flex gap-2 items-center justify-center'>
+                  <FormLabel className='mt-2'>Pago</FormLabel>
                   <FormControl>
                     <Switch checked={field.value} onCheckedChange={field.onChange} />
                   </FormControl>
@@ -316,16 +296,16 @@ export function DialogAdicionarSaidaDeValores({ isOpen }: { isOpen: boolean }) {
               )}
             />
 
-            <Button className="hidden" type="submit"></Button>
+            <Button className='hidden' type='submit'></Button>
           </form>
         </Form>
       </div>
       <DialogFooter>
-        <Button onClick={form.handleSubmit(onSubmitNew)} type="submit">
+        <Button onClick={form.handleSubmit(onSubmitNew)} type='submit'>
           Pagar Contas
         </Button>
         <DialogClose asChild>
-          <Button ref={refBtnClose} type="button" variant="destructive">
+          <Button ref={refBtnClose} type='button' variant='destructive'>
             Cancelar
           </Button>
         </DialogClose>

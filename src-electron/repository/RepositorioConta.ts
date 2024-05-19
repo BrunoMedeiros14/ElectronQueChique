@@ -13,18 +13,13 @@ type ContaDb = {
   caixaId?: number
 }
 
-
 const contaParaModelDb = (conta: Conta, caixaId?: number): ContaDb => ({
   id: conta.id,
   nome: conta.nome,
   valor: conta.valor,
   descricao: conta.descricao,
-  data_pagamento: conta.dataPagamento
-    ? conta.dataPagamento.toISOString().split('T')[0]
-    : null,
-  data_vencimento: conta.dataVencimento
-    ? conta.dataVencimento.toISOString().split('T')[0]
-    : null,
+  data_pagamento: conta.dataPagamento ? conta.dataPagamento.toISOString().split('T')[0] : null,
+  data_vencimento: conta.dataVencimento ? conta.dataVencimento.toISOString().split('T')[0] : null,
   pago: conta.pago ? 1 : 0,
   caixaId: caixaId,
 })
@@ -34,12 +29,8 @@ const modelDbParaConta = (contaDb: ContaDb): Conta => ({
   nome: contaDb.nome,
   valor: contaDb.valor,
   descricao: contaDb.descricao,
-  dataVencimento: contaDb.data_vencimento
-    ? new Date(contaDb.data_vencimento)
-    : null,
-  dataPagamento: contaDb.data_pagamento
-    ? new Date(contaDb.data_pagamento)
-    : null,
+  dataVencimento: contaDb.data_vencimento ? new Date(contaDb.data_vencimento) : null,
+  dataPagamento: contaDb.data_pagamento ? new Date(contaDb.data_pagamento) : null,
   pago: contaDb.pago === 1,
 })
 

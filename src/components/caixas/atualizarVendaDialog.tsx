@@ -1,6 +1,6 @@
 import { buscarTodosClientes } from '@/api/clientesApi'
 import { buscarEstoquesNaoVendidos } from '@/api/estoquesApi'
-import { atualizarVendaApi, buscarVendaPorId } from '@/api/VendasApi'
+import { atualizarVendaApi, buscarVendaPorId } from '@/api/vendasApi'
 import { ProcurarClienteInput } from '@/components/ProcurarClienteInput'
 import ProcurarEstoqueInput from '@/components/ProcurarEstoqueInput'
 import { Button } from '@/components/ui/button'
