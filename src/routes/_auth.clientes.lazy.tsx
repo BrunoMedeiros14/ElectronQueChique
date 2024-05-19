@@ -3,7 +3,7 @@ import { createLazyFileRoute } from '@tanstack/react-router'
 import { UserPlus } from 'lucide-react'
 import { Suspense, lazy, useRef, useState } from 'react'
 import { buscarClientes, removerClienteApi } from '../api/clientes-api'
-import { pegarColunasCliente } from '../components/clientes-colunas'
+import { pegarColunasCliente } from '@/components/clientes/clientes-colunas'
 import { cn } from '../components/lib/utils'
 import {
   AlertDialog,
@@ -26,8 +26,8 @@ export const Route = createLazyFileRoute('/_auth/clientes')({
   pendingComponent: () => <div>Loading...</div>,
 })
 
-const DialogCadastrarCliente = lazy(() => import('../components/cliente/cadastrar-dialog'))
-const DialogAtualizarCliente = lazy(() => import('../components/cliente/atualizar-dialog'))
+const DialogCadastrarCliente = lazy(() => import('@/components/clientes/cadastrar-dialog'))
+const DialogAtualizarCliente = lazy(() => import('@/components/clientes/atualizar-dialog'))
 
 export function Component() {
   const refBotaoCadastro = useRef<HTMLButtonElement>()

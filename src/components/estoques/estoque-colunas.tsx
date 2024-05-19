@@ -1,8 +1,8 @@
 import { ColumnDef } from '@tanstack/react-table'
 import { Pencil, Trash2 } from 'lucide-react'
-import { Estoque } from '../../src-electron/models/estoque'
-import { gerarStringReal } from '../utils/conversores'
-import { Button } from './ui/button'
+import { Estoque } from '../../../src-electron/models/estoque'
+import { gerarStringReal } from '../../utils/conversores'
+import { Button } from '../ui/button'
 
 type ColunasEstoqueProps = {
   setIdParaExcluir: React.Dispatch<React.SetStateAction<number>>

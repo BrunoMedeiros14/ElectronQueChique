@@ -3,8 +3,8 @@ import { createLazyFileRoute } from '@tanstack/react-router'
 import { Shirt } from 'lucide-react'
 import { useRef, useState } from 'react'
 import { buscarEstoques, removerEstoqueApi } from '../api/estoques-api'
-import { pegarColunasEstoque } from '../components/estoque-colunas'
-import { DialogAtualizarEstoque, DialogCadastrarEstoque } from '../components/estoque-dialog'
+import { pegarColunasEstoque } from '../components/estoques/estoque-colunas'
+import { DialogAtualizarEstoque, DialogCadastrarEstoque } from '../components/estoques/estoque-dialog'
 import { cn } from '../components/lib/utils'
 import {
   AlertDialog,

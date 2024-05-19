@@ -3,10 +3,10 @@ import { ptBR } from 'date-fns/locale'
 import { Calendar as CalendarIcon } from 'lucide-react'
 import * as React from 'react'
 import { DateRange } from 'react-day-picker'
-import { cn } from './lib/utils'
-import { Button } from './ui/button'
-import { Calendar } from './ui/calendar'
-import { Popover, PopoverContent, PopoverTrigger } from './ui/popover'
+import { cn } from './utils'
+import { Button } from '../ui/button'
+import { Calendar } from '../ui/calendar'
+import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
 
 export function CalendarioComponente({
   data,

@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react'
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from './ui/command'
-import { Conta } from '../../src-electron/models/conta'
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '../ui/command'
+import { Conta } from '../../../src-electron/models/conta'
 
 interface InputBuscaProps {
   placeholder?: string

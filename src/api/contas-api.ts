@@ -19,3 +19,5 @@ export const buscarContasNaoPagas = async () => await window.apiConta.buscarCont
 export const criarContaPagaNoCaixa = async (conta: Conta) => await window.apiConta.criarContaPagaNoCaixa(conta)
 
 export const pagarContaNoCaixa = async (conta: Conta) => await window.apiConta.pagarContaNoCaixa(conta)
+
+export const buscarTodasContas = async () => await window.apiConta.buscarTodasContas()

@@ -1,8 +1,8 @@
 import React from 'react'
-import { Cliente } from '../../src-electron/models/cliente'
-import { Button } from './ui/button'
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from './ui/command'
-import { Popover, PopoverContent, PopoverTrigger } from './ui/popover'
+import { Cliente } from '../../../src-electron/models/cliente'
+import { Button } from '../ui/button'
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '../ui/command'
+import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
 
 export function ProcurarClienteInput({
   clienteSelecionado,

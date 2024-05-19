@@ -85,7 +85,18 @@ export const buscarTodasContasParaRelatorio = () => {
 }
 
 export const editarConta = (conta: Conta) => {
-  const contaDb = contaParaModelDb(conta)
+  const contaEditada = { ...conta }
+
+  if (contaEditada.dataVencimento) {
+    contaEditada.dataVencimento.setDate(contaEditada.dataVencimento.getDate() + 1);
+  }
+
+  if (contaEditada.dataPagamento) {
+    contaEditada.dataPagamento.setDate(contaEditada.dataPagamento.getDate() + 1);
+  }
+
+  const contaDb = contaParaModelDb(contaEditada)
+
   const updateQuery = `
     UPDATE contas
     SET nome = @nome , valor = @valor , descricao = @descricao ,
@@ -132,7 +143,6 @@ export const criarContaPagaNoCaixa = (conta: Conta) => {
     throw new Error('Nenhum caixa ativo encontrado')
   }
 
-  conta.dataPagamento = new Date()
   conta.pago = true
 
   const contaDb = contaParaModelDb(conta, caixaAtivo.id)

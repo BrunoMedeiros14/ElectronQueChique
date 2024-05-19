@@ -65,16 +65,23 @@ export const apiCaixa = {
 
 export const apiConta = {
   criarConta: (...args: Parameters<CriarConta>): ReturnType<CriarConta> => ipcRenderer.invoke('criarConta', ...args),
+
   removerConta: (...args: Parameters<RemoverConta>): ReturnType<RemoverConta> =>
     ipcRenderer.invoke('removerConta', ...args),
+
   editarConta: (...args: Parameters<EditarConta>): ReturnType<EditarConta> =>
     ipcRenderer.invoke('editarConta', ...args),
+
   buscarContaPorId: (...args: Parameters<BuscarContaPorId>): ReturnType<BuscarContaPorId> =>
     ipcRenderer.invoke('buscarContaPorId', ...args),
+
   buscarTodasContas: (...args: Parameters<BuscarTodasContas>): ReturnType<BuscarTodasContas> =>
     ipcRenderer.invoke('buscarTodasContas', ...args),
+
   buscarContasNaoPagas: () => ipcRenderer.invoke('buscarContasNaoPagas'),
+
   criarContaPagaNoCaixa: (conta: Conta) => ipcRenderer.invoke('criarContaPagaNoCaixa', conta),
+
   pagarContaNoCaixa: (conta: Conta) => ipcRenderer.invoke('pagarContaNoCaixa', conta),
 }
 

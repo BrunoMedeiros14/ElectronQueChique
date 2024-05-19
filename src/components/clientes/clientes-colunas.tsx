@@ -1,8 +1,8 @@
 import { ColumnDef } from '@tanstack/react-table'
 import { Pencil, Trash2 } from 'lucide-react'
-import { Cliente } from '../../src-electron/models/cliente'
-import { gerarStringPorDate } from '../utils/conversores'
-import { Button } from './ui/button'
+import { Cliente } from '../../../src-electron/models/cliente'
+import { gerarStringPorDate } from '../../utils/conversores'
+import { Button } from '../ui/button'
 
 type ColunasClienteProps = {
   setIdParaExcluir: React.Dispatch<React.SetStateAction<number>>

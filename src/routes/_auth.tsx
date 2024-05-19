@@ -4,11 +4,11 @@ import { LogOut, Menu, Package2, ShoppingBag, Table2Icon, Users, Wallet } from '
 import { Suspense, lazy, useRef, useState } from 'react'
 
 import Logo from '../assets/Logo.png'
-import { SidebarLi } from '../components/sidebar-li'
+import { SidebarLi } from '../components/lib/sidebar-li'
 import { Dialog, DialogTrigger } from '../components/ui/dialog'
 import { useAuth } from '../hooks/use-auth'
 
-const GerarRelatorioComponent = lazy(() => import('../components/gerar-relatorio-component'))
+const GerarRelatorioComponent = lazy(() => import('../components/relatorios/gerar-relatorio-component'))
 // const TanStackRouterDevtools = lazy(() => import('../components/TanStackRouterDevtools'))
 
 export const Route = createFileRoute('/_auth')({

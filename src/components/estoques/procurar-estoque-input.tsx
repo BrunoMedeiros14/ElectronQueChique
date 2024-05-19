@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react'
-import { Estoque } from '../../src-electron/models/estoque'
+import { Estoque } from '../../../src-electron/models/estoque'
 import {
   Command,
   CommandEmpty,
@@ -7,7 +7,7 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from './ui/command'
+} from '../ui/command'
 
 interface InputBuscaProps {
   placeholder?: string

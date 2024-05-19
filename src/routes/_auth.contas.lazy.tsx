@@ -3,8 +3,8 @@ import { createLazyFileRoute } from '@tanstack/react-router'
 import { Receipt } from 'lucide-react'
 import { useRef, useState } from 'react'
 import { buscarContas, removerContaApi } from '../api/contas-api'
-import { DialogAtualizarConta, DialogCadastrarConta } from '../components/contas-dialog'
-import { pegarColunasConta } from '../components/contas-colunas'
+import { DialogAtualizarConta, DialogCadastrarConta } from '../components/contas/contas-dialog'
+import { pegarColunasConta } from '../components/contas/contas-colunas'
 import { cn } from '../components/lib/utils'
 import {
   AlertDialog,
