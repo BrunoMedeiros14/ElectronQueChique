@@ -1,12 +1,12 @@
-import { useRef, useState } from 'react'
-import { Button } from './ui/button'
-import { DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from './ui/dialog'
 import { subDays } from 'date-fns'
+import { useRef, useState } from 'react'
 import { DateRange } from 'react-day-picker'
 import * as XLSX from 'xlsx'
-import { gerarRelatorio } from '@/api/relatorioApi'
+import { gerarRelatorio } from '../api/relatorioApi'
+import { gerarStringPorDate } from '../utils/conversores'
 import { CalendarioComponente } from './DataPicker'
-import { gerarStringPorDate } from '@/utils/conversores'
+import { Button } from './ui/button'
+import { DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from './ui/dialog'
 
 export default function GerarRelatorioComponent() {
   const [date, setDate] = useState<DateRange | undefined>({

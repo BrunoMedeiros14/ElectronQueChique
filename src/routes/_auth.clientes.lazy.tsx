@@ -2,9 +2,9 @@ import { useMutation, useQueryClient, useSuspenseQuery } from '@tanstack/react-q
 import { createLazyFileRoute } from '@tanstack/react-router'
 import { UserPlus } from 'lucide-react'
 import { Suspense, lazy, useRef, useState } from 'react'
-import { buscarClientes, removerClienteApi } from '@/api/clientesApi'
-import { pegarColunasCliente } from '@/components/clientesColunas'
-import { cn } from '@/components/lib/utils'
+import { buscarClientes, removerClienteApi } from '../api/clientesApi'
+import { pegarColunasCliente } from '../components/clientesColunas'
+import { cn } from '../components/lib/utils'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -14,12 +14,12 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from '@/components/ui/alert-dialog'
-import { Button, buttonVariants } from '@/components/ui/button'
-import { DataTable } from '@/components/ui/data-table'
-import { Dialog, DialogTrigger } from '@/components/ui/dialog'
-import { Input } from '@/components/ui/input'
-import { escutarCliqueTeclado } from '@/hooks/escutarCliqueTeclado'
+} from '../components/ui/alert-dialog'
+import { Button, buttonVariants } from '../components/ui/button'
+import { DataTable } from '../components/ui/data-table'
+import { Dialog, DialogTrigger } from '../components/ui/dialog'
+import { Input } from '../components/ui/input'
+import { escutarCliqueTeclado } from '../hooks/escutarCliqueTeclado'
 
 export const Route = createLazyFileRoute('/_auth/clientes')({
   component: Component,
