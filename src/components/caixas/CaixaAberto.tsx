@@ -4,11 +4,11 @@ import { useRef, useState } from 'react'
 import { FaCashRegister, FaMoneyBillWave } from 'react-icons/fa'
 import { Caixa } from '../../../src-electron/models/Caixa'
 import { Venda } from '../../../src-electron/models/Venda'
-import { buscarVendasPorCaixaId, removerVendaApi } from '../../api/vendasApi'
-import { DialogAdicionarSaidaDeValores } from '../../components/caixas/CadastrarContaDialog'
-import { FormaPagamento } from '../../enums/FormaPagamento'
-import { escutarCliqueTeclado } from '../../hooks/escutarCliqueTeclado'
-import { gerarStringReal } from '../../utils/conversores'
+import { buscarVendasPorCaixaId, removerVendaApi } from '@/api/VendasApi'
+import { DialogAdicionarSaidaDeValores } from '@/components/caixas/cadastrarContaDialog'
+import { FormaPagamento } from '@/enums/FormaPagamento'
+import { escutarCliqueTeclado } from '@/hooks/escutarCliqueTeclado'
+import { gerarStringReal } from '@/utils/conversores'
 import { cn } from '../lib/utils'
 import {
   AlertDialog,
@@ -23,10 +23,10 @@ import {
 import { Button, buttonVariants } from '../ui/button'
 import { DataTable } from '../ui/data-table'
 import { Dialog, DialogTrigger } from '../ui/dialog'
-import { DialogAtualizarVenda } from './AtualizarVendaDialog'
-import { DialogCadastrarVendaBeta } from './CadastrarVendaDialog'
-import { DialogFecharCaixa } from './FecharCaixaDialog'
-import { pegarColunasVenda } from './vendasColunas'
+import { pegarColunasVenda } from '@/components/caixas/vendasColunas'
+import { DialogCadastrarVendaBeta } from '@/components/caixas/cadastrarVendaDialog'
+import { DialogFecharCaixa } from '@/components/caixas/FecharCaixaDialog'
+import { DialogAtualizarVenda } from '@/components/caixas/atualizarVendaDialog'
 
 type CaixaInfoProps = {
   title: string
