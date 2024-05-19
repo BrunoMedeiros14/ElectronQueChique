@@ -1,7 +1,7 @@
 import { createFileRoute, redirect, useRouter } from '@tanstack/react-router'
 import { useState } from 'react'
 import { z } from 'zod'
-import { useAuth } from '@/hooks/useAuth'
+import { useAuth } from '../hooks/useAuth'
 
 export const Route = createFileRoute('/login')({
   validateSearch: z.object({

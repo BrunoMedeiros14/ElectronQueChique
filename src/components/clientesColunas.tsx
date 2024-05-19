@@ -1,7 +1,7 @@
 import { ColumnDef } from '@tanstack/react-table'
 import { Pencil, Trash2 } from 'lucide-react'
 import { Cliente } from '../../src-electron/models/Cliente'
-import { gerarStringPorDate } from '@/utils/conversores'
+import { gerarStringPorDate } from '../utils/conversores'
 import { Button } from './ui/button'
 
 type ColunasClienteProps = {

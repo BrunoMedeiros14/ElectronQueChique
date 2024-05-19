@@ -1,6 +1,3 @@
-import { InputComMascara } from '@/components/InputComMascara'
-import { Switch } from '@/components/ui/switch'
-import { gerarDatePorString, gerarDoublePorValorMonetario } from '@/utils/conversores'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useNumberFormat } from '@react-input/number-format'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
@@ -10,6 +7,9 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { Conta } from '../../../src-electron/models/Conta'
 import { buscarContasNaoPagas, criarContaPagaNoCaixa, pagarContaNoCaixa } from '../../api/contasApi'
+import { InputComMascara } from '../../components/InputComMascara'
+import { Switch } from '../../components/ui/switch'
+import { gerarDatePorString, gerarDoublePorValorMonetario, gerarStringPorDate } from '../../utils/conversores'
 import { Button } from '../ui/button'
 import { DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '../ui/dialog'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
@@ -178,7 +178,7 @@ export function DialogAdicionarSaidaDeValores({ isOpen }: { isOpen: boolean }) {
               <div key={conta.id} className='flex justify-between p-1 gap-1 items-center first:border-t-0'>
                 <div className='flex-1'>
                   <h4 className='font-normal'>
-                    {conta.nome} - {conta.valor} - {conta.dataVencimento}
+                    {conta.nome} - {conta.valor} - {gerarStringPorDate(conta.dataVencimento)}
                   </h4>
                   <p className='text-sm'>{conta.descricao}</p>
                 </div>

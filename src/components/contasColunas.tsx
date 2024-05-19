@@ -1,7 +1,7 @@
 import { ColumnDef } from '@tanstack/react-table'
 import { Pencil, Trash2 } from 'lucide-react'
 import { Conta } from '../../src-electron/models/Conta'
-import { gerarStringPorDate, gerarStringReal } from '@/utils/conversores'
+import { gerarStringPorDate, gerarStringReal } from '../utils/conversores'
 import { Button } from './ui/button'
 
 type ColunasContaProps = {
