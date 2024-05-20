@@ -12,7 +12,6 @@ export type EstoqueDb = {
   tamanho: string
   tecido: string
   fornecedor: string
-  quantidade: number
   valor_compra: number
   valor_venda: number
   venda_id?: number
@@ -26,7 +25,6 @@ export const estoqueParaModelDb = (estoque: Estoque, vendaId: number = null): Es
   tamanho: estoque.tamanho,
   tecido: estoque.tecido,
   fornecedor: estoque.fornecedor,
-  quantidade: estoque.quantidade,
   valor_compra: estoque.valorCompra,
   valor_venda: estoque.valorVenda,
   venda_id: vendaId,
@@ -41,7 +39,6 @@ export const modelDbParaEstoque = (estoqueDb: EstoqueDb): Estoque => ({
   vendido: estoqueDb.venda_id !== null,
   tecido: estoqueDb.tecido as Tecido,
   fornecedor: estoqueDb.fornecedor,
-  quantidade: estoqueDb.quantidade,
   valorCompra: estoqueDb.valor_compra,
   valorVenda: estoqueDb.valor_venda,
 })
@@ -56,8 +53,8 @@ export const modelDbParaEstoqueParaRelatorio = (estoqueDb: EstoqueDb): EstoquePa
 export const criarEstoque = (estoque: Estoque) => {
   const estoqueDb = estoqueParaModelDb(estoque)
   const insertQuery = `
-    INSERT INTO estoques (nome, descricao, cor, tamanho, tecido, fornecedor, quantidade, valor_compra, valor_venda)
-    VALUES (@nome, @descricao, @cor, @tamanho, @tecido, @fornecedor, @quantidade, @valor_compra, @valor_venda)
+    INSERT INTO estoques (nome, descricao, cor, tamanho, tecido, fornecedor, valor_compra, valor_venda)
+    VALUES (@nome, @descricao, @cor, @tamanho, @tecido, @fornecedor, @valor_compra, @valor_venda)
   `
 
   return db.prepare(insertQuery).run(estoqueDb)
@@ -106,7 +103,7 @@ export const editarEstoque = (estoque: Estoque) => {
   const updateQuery = `
     UPDATE estoques
     SET nome = @nome, descricao = @descricao, cor = @cor, tamanho = @tamanho,
-      tecido = @tecido, fornecedor = @fornecedor, quantidade = @quantidade,
+      tecido = @tecido, fornecedor = @fornecedor,
       valor_compra = @valor_compra, valor_venda = @valor_venda
     WHERE id = @id
   `
@@ -142,4 +139,14 @@ export const removerIdVenda = (vendaId: number) => {
   `
 
   return db.prepare(updateQuery).run(vendaId)
+}
+
+export const removerIdVendaUpdate = (estoqueId: number) => {
+  const updateQuery = `
+    UPDATE estoques
+    SET venda_id = NULL
+    WHERE id = ?
+  `
+
+  return db.prepare(updateQuery).run(estoqueId)
 }

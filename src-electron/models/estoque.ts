@@ -10,7 +10,6 @@ export type Estoque = {
   vendido: boolean
   tecido: Tecido
   fornecedor: string
-  quantidade: number
   valorCompra: number
   valorVenda: number
 }

@@ -19,7 +19,7 @@ const formSchemaConta = z.object({
   descricao: z
     .string({ message: 'Campo Obrigatório.' })
     .min(3, { message: 'Descrição Deve Possuir Pelo Menos 3 Letras' }),
-  valor: z.string({ message: 'Campo Obrigatório' }),
+  valor: z.string({ message: 'Campo Obrigatório' }).min(1, { message: 'Valor Deve Ser Maior Que 0' }),
   dataVencimento: z.string().nullable(),
 })
 

@@ -29,7 +29,6 @@ const formSchema = z.object({
     message: 'Campo Obrigatório',
   }),
   fornecedor: z.string().nullable(),
-  quantidade: z.string().min(1, { message: 'Quantidade Deve Ser Declarada' }),
   valorCompra: z.string().refine((value) => value !== '', { message: 'Campo Obrigatório' }),
   valorVenda: z.string().refine((value) => value !== '', { message: 'Campo Obrigatório' }),
 })
@@ -45,7 +44,6 @@ const GerarFormVazio = () =>
       vendido: false,
       tecido: '',
       fornecedor: '',
-      quantidade: '1',
       valorCompra: '',
       valorVenda: '',
     },
@@ -87,7 +85,6 @@ export function DialogCadastrarEstoque({ isOpen }: { isOpen: boolean }) {
       form.setValue('vendido', false)
       form.setValue('tecido', '')
       form.setValue('fornecedor', '')
-      form.setValue('quantidade', '1')
       form.setValue('valorCompra', '')
       form.setValue('valorVenda', '')
     }
@@ -128,7 +125,6 @@ export function DialogCadastrarEstoque({ isOpen }: { isOpen: boolean }) {
     vendido,
     tecido,
     fornecedor,
-    quantidade,
     valorCompra,
     valorVenda,
   }: z.infer<typeof formSchema>) {
@@ -140,7 +136,6 @@ export function DialogCadastrarEstoque({ isOpen }: { isOpen: boolean }) {
       vendido,
       tecido: tecido as Tecido,
       fornecedor,
-      quantidade: Number(quantidade),
       valorCompra: gerarDoublePorValorMonetario(valorCompra) || 0,
       valorVenda: gerarDoublePorValorMonetario(valorVenda) || 0,
     }
@@ -265,20 +260,6 @@ export function DialogCadastrarEstoque({ isOpen }: { isOpen: boolean }) {
 
             <FormField
               control={form.control}
-              name='quantidade'
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Quantidade*</FormLabel>
-                  <FormControl>
-                    <Input type='number' placeholder='Quantidade' {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
               name='valorCompra'
               render={({ field }) => (
                 <FormItem>
@@ -378,7 +359,7 @@ export function DialogAtualizarEstoque({ estoqueId }: { estoqueId?: number }) {
   useEffect(() => {
     if (estoqueId) {
       buscarEstoquePorId(estoqueId).then(
-        ({ nome, descricao, cor, tamanho, vendido, tecido, fornecedor, quantidade, valorCompra, valorVenda }) => {
+        ({ nome, descricao, cor, tamanho, vendido, tecido, fornecedor, valorCompra, valorVenda }) => {
           form.setValue('nome', nome)
           form.setValue('descricao', descricao)
           form.setValue('cor', cor)
@@ -386,7 +367,6 @@ export function DialogAtualizarEstoque({ estoqueId }: { estoqueId?: number }) {
           form.setValue('vendido', vendido)
           form.setValue('tecido', tecido)
           form.setValue('fornecedor', fornecedor)
-          form.setValue('quantidade', String(quantidade))
           form.setValue(
             'valorCompra',
             valorCompra.toLocaleString('pt-BR', {
@@ -446,7 +426,6 @@ export function DialogAtualizarEstoque({ estoqueId }: { estoqueId?: number }) {
     vendido,
     tecido,
     fornecedor,
-    quantidade,
     valorCompra,
     valorVenda,
   }: z.infer<typeof formSchema>) {
@@ -459,7 +438,6 @@ export function DialogAtualizarEstoque({ estoqueId }: { estoqueId?: number }) {
       vendido,
       tecido: tecido as Tecido,
       fornecedor,
-      quantidade: Number(quantidade),
       valorCompra: gerarDoublePorValorMonetario(valorCompra) || 0,
       valorVenda: gerarDoublePorValorMonetario(valorVenda) || 0,
     }
@@ -575,20 +553,6 @@ export function DialogAtualizarEstoque({ estoqueId }: { estoqueId?: number }) {
                   <FormLabel>Marca</FormLabel>
                   <FormControl>
                     <Input placeholder='Marca do Item' {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name='quantidade'
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Quantidade*</FormLabel>
-                  <FormControl>
-                    <Input type='number' placeholder='Quantidade' {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

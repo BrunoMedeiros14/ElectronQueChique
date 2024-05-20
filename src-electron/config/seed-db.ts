@@ -1,10 +1,11 @@
-import { Cliente, Conta } from '../models/conta'
+import { Conta } from '../models/conta'
 import { Estoque } from '../models/estoque'
 import { Cor } from '../models/enums/cor'
 import { Tecido } from '../models/enums/tecido'
 import { salvarCliente } from '../repository/repositorio-cliente'
 import { criarConta } from '../repository/repositorio-conta'
 import { criarEstoque } from '../repository/repositorio-estoque'
+import { Cliente } from '../models/cliente'
 
 const estoqueArray: Estoque[] = []
 const contaArray: Conta[] = []
@@ -50,7 +51,6 @@ for (let i = 0; i < 30; i++) {
     vendido: generateRandomBoolean(),
     tecido: getRandomEnumValue(Tecido),
     fornecedor: generateRandomText(10),
-    quantidade: Math.floor(Math.random() * 100),
     valorCompra: generateRandomNumber(10, 100),
     valorVenda: generateRandomNumber(50, 200),
   }

@@ -59,7 +59,6 @@ const criarTabelaEstoque = `
     tamanho TEXT NOT NULL,
     tecido TEXT NOT NULL DEFAULT 'Outro',
     fornecedor TEXT,
-    quantidade INTEGER NOT NULL DEFAULT 1,
     valor_compra REAL NOT NULL,
     valor_venda REAL NOT NULL,
     venda_id INTEGER NULL,

@@ -1,7 +1,7 @@
 import { ColumnDef } from '@tanstack/react-table'
 import { Pencil, Trash2 } from 'lucide-react'
 import { Estoque } from '../../../src-electron/models/estoque'
-import { gerarStringReal } from '../../utils/conversores'
+import { gerarStringReal } from '@/utils/conversores'
 import { Button } from '../ui/button'
 
 type ColunasEstoqueProps = {
@@ -59,10 +59,6 @@ export const pegarColunasEstoque = ({
   {
     accessorKey: 'fornecedor',
     header: 'Marca',
-  },
-  {
-    accessorKey: 'quantidade',
-    header: 'Quantidade',
   },
   {
     accessorKey: 'valorCompra',

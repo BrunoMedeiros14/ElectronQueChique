@@ -3,7 +3,13 @@ import { Venda } from '../models/venda'
 import { FormaPagamento } from '../models/enums/forma-pagamento'
 import { VendaParaRelatorio } from '../models/relatorio'
 import { buscarTodosCaixas } from './repositorio-caixa'
-import { EstoqueDb, inserirIdVenda, modelDbParaEstoque, removerIdVenda } from './repositorio-estoque'
+import {
+  EstoqueDb,
+  inserirIdVenda,
+  modelDbParaEstoque,
+  removerIdVenda,
+  removerIdVendaUpdate,
+} from './repositorio-estoque'
 
 type VendaDb = {
   id: number
@@ -54,18 +60,14 @@ const modelDbParaVenda = (vendaDb: VendaDb): Venda => ({
 const modelDbParaVendaRelatorio = (vendaDb: VendaDb): VendaParaRelatorio => {
   let dataVenda = vendaDb.data_venda ? new Date(vendaDb.data_venda) : null
 
-  if (dataVenda) {
-    dataVenda.setDate(dataVenda.getDate() + 1)
-  }
-
   return {
     id: vendaDb.id,
     cliente: JSON.parse(vendaDb.cliente_json)?.nome ?? 'Não cadastrado',
     dataVenda: dataVenda,
     formaPagamento: vendaDb.forma_pagamento.toLocaleLowerCase(),
-    valorTotal: `R$ ${vendaDb.desconto.toFixed(2)}`,
-    valorPago: `R$ ${vendaDb.valor_pago.toFixed(2)}`,
-    troco: `R$ ${vendaDb.troco.toFixed(2)}`,
+    valorTotal: vendaDb.desconto ? `R$ ${vendaDb.desconto.toFixed(2)}` : 'R$ 0.00',
+    valorPago: vendaDb.valor_pago ? `R$ ${vendaDb.valor_pago.toFixed(2)}` : 'R$ 0.00',
+    troco: vendaDb.troco ? `R$ ${vendaDb.troco.toFixed(2)}` : 'R$ 0.00',
     desconto: `${vendaDb.desconto} %`,
   }
 }
@@ -79,6 +81,8 @@ export const criarVenda = (venda: Venda) => {
 
   const caixaId = caixaAtivo.id
 
+  venda.desconto = venda.desconto || 0
+
   const vendaDb = vendaParaModelDb(venda, caixaId)
   const insertQuery = `
     INSERT INTO vendas (data_venda, valor_total, forma_pagamento, valor_pago, troco, desconto, cliente_id, caixa_id)
@@ -90,6 +94,23 @@ export const criarVenda = (venda: Venda) => {
   venda.estoque.forEach((estoque) => {
     inserirIdVenda(estoque.id, Number(vendaId))
   })
+}
+
+export const editarVenda = (venda: Venda) => {
+
+  buscarVendaPorId(venda.id).estoque.filter(
+    (estoqueOriginal) => !new Set(venda.estoque.map((estoque) => estoque.id)).has(estoqueOriginal.id),
+  ).forEach((estoque) => {
+    removerIdVendaUpdate(estoque.id)
+  })
+
+  const updateQuery = `
+    UPDATE vendas
+    SET data_venda = @data_venda, valor_total = @valor_total, forma_pagamento = @forma_pagamento,
+      valor_pago = @valor_pago, troco = @troco, desconto = @desconto, cliente_id = @cliente_id
+    WHERE id = @id
+  `
+  db.prepare(updateQuery).run(vendaParaModelDb(venda))
 }
 
 export const buscarVendaPorId = (vendaId: number): Venda => {
@@ -111,7 +132,6 @@ export const buscarVendaPorId = (vendaId: number): Venda => {
       'tamanho', e.tamanho,
       'tecido', e.tecido,
       'fornecedor', e.fornecedor,
-      'quantidade', e.quantidade,
       'valor_compra', e.valor_compra,
       'valor_venda', e.valor_venda,
       'venda_id', e.venda_id
@@ -129,7 +149,6 @@ export const buscarVendaPorId = (vendaId: number): Venda => {
     LEFT JOIN clientes c ON v.cliente_id = c.id
     WHERE v.id = ?
     GROUP BY v.id
-
   `
 
   const stmt = db.prepare(selectQuery)
@@ -157,7 +176,6 @@ export const buscarTodasVendas = () => {
       'tamanho', e.tamanho,
       'tecido', e.tecido,
       'fornecedor', e.fornecedor,
-      'quantidade', e.quantidade,
       'valor_compra', e.valor_compra,
       'valor_venda', e.valor_venda,
       'venda_id', e.venda_id
@@ -180,18 +198,6 @@ export const buscarTodasVendas = () => {
     .prepare(selectAllQuery)
     .all()
     .map((vendaDb: VendaDb) => modelDbParaVenda(vendaDb))
-}
-
-export const editarVenda = (venda: Venda) => {
-  const vendaDb = vendaParaModelDb(venda)
-  const updateQuery = `
-    UPDATE vendas
-    SET data_venda = @data_venda, valor_total = @valor_total, forma_pagamento = @forma_pagamento,
-      valor_pago = @valor_pago, troco = @troco, desconto = @desconto, cliente_id = @cliente_id
-    WHERE id = @id
-  `
-
-  return db.prepare(updateQuery).run(vendaDb)
 }
 
 export const removerVenda = (id: number) => {
