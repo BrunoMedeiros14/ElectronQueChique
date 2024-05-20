@@ -2,10 +2,10 @@ import { ColumnDef } from '@tanstack/react-table'
 import { Pencil, Trash2 } from 'lucide-react'
 import React from 'react'
 import { Cliente } from '../../../src-electron/models/cliente'
-import { Estoque } from '../../../src-electron/models/estoque'
 import { Venda } from '../../../src-electron/models/venda'
 import { gerarStringPorcentagemPorNumeroInteiro, gerarStringReal } from '@/utils/conversores'
 import { Button } from '../ui/button'
+import { buscarVendaPorId } from '@/api/vendas-api'
 
 type ColunasVendaProps = {
   setIdParaExcluir: React.Dispatch<React.SetStateAction<number>>
@@ -21,18 +21,36 @@ export const pegarColunasVenda = ({ setIdParaExcluir, abrirEdicaoVenda }: Coluna
     accessorKey: 'estoque',
     header: 'Produtos',
     cell: ({ row }) => {
-      const estoques = row.getValue('estoque') as Estoque[]
+      const [estoques, setEstoque] = React.useState([])
 
-      return estoques.length > 0 ? estoques.map((estoque) => estoque.nome).join(', ') : 'Sem item cadastrado'
+      React.useEffect(() => {
+        const fetchEstoque = async () => {
+          const venda = await buscarVendaPorId(row.getValue('id'))
+          setEstoque(venda && venda.estoque ? venda.estoque : [])
+        }
+
+        fetchEstoque()
+      }, [row])
+
+      return estoques.length > 0 ? estoques.map((estoque: any) => estoque.nome).join(', ') : 'Sem item cadastrado'
     },
   },
   {
     accessorKey: 'cliente',
     header: 'Cliente',
     cell: ({ row }) => {
-      const cliente = row.getValue('cliente') as Cliente
+      const [cliente, setCliente] = React.useState(null)
 
-      return cliente ? cliente.nome : 'Cliente não informado'
+      React.useEffect(() => {
+        const fetchCliente = async () => {
+          const venda = await buscarVendaPorId(row.getValue('id'))
+          setCliente(venda && venda.cliente ? venda.cliente.nome : 'Cliente não informado')
+        }
+
+        fetchCliente()
+      }, [row])
+
+      return <>{cliente}</>
     },
   },
   {

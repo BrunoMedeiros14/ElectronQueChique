@@ -111,6 +111,10 @@ export const editarVenda = (venda: Venda) => {
     WHERE id = @id
   `
   db.prepare(updateQuery).run(vendaParaModelDb(venda))
+
+  venda.estoque.forEach((estoque) => {
+    inserirIdVenda(estoque.id, Number(venda.id))
+  })
 }
 
 export const buscarVendaPorId = (vendaId: number): Venda => {
