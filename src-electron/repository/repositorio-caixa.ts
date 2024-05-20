@@ -26,13 +26,24 @@ const modelDbParaCaixa = (caixaDb: CaixaDb): Caixa => ({
   contas: null,
 })
 
-const modelDbParaCaixaRelatorio = (caixaDb: CaixaDb): CaixaParaRelatorio => ({
-  id: caixaDb.id,
-  ativo: caixaDb.data_hora_fechamento ? 'Fechado' : 'Aberto',
-  dataHoraAbertura: new Date(caixaDb.data_hora_abertura),
-  dataHoraFechamento: caixaDb.data_hora_fechamento ? new Date(caixaDb.data_hora_fechamento) : null,
-  valorInicial: `R$ ${caixaDb.valor_inicial.toFixed(2)}`,
-})
+const modelDbParaCaixaRelatorio = (caixaDb: CaixaDb): CaixaParaRelatorio => {
+  let dataHoraAbertura = new Date(caixaDb.data_hora_abertura)
+  let dataHoraFechamento = caixaDb.data_hora_fechamento ? new Date(caixaDb.data_hora_fechamento) : null
+
+  dataHoraAbertura.setDate(dataHoraAbertura.getDate() + 1)
+
+  if (dataHoraFechamento) {
+    dataHoraFechamento.setDate(dataHoraFechamento.getDate() + 1)
+  }
+
+  return {
+    id: caixaDb.id,
+    ativo: caixaDb.data_hora_fechamento ? 'Fechado' : 'Aberto',
+    dataHoraAbertura: dataHoraAbertura,
+    dataHoraFechamento: dataHoraFechamento,
+    valorInicial: `R$ ${caixaDb.valor_inicial.toFixed(2)}`,
+  }
+}
 
 export const criarCaixa = (caixa: Caixa) => {
   const caixaDb = caixaParaModelDb(caixa)

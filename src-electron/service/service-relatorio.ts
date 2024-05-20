@@ -7,6 +7,7 @@ import { buscarTodosEstoquesParaRelatorio } from '../repository/repositorio-esto
 import { buscarVendasPorDataParaRelatorio } from '../repository/repositorio-venda'
 
 const gerarRelatorio = (startDate: string, endDate: string) => {
+
   const converterDataInicio = (data: string) => {
     const [dia, mes, ano] = data.split('/')
     return `${ano}-${mes}-${dia}`

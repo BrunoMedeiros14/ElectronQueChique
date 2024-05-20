@@ -37,8 +37,8 @@ const modelDbParaVenda = (vendaDb: VendaDb): Venda => ({
   valorTotal: vendaDb.valor_total,
   estoque: vendaDb.estoque_json
     ? JSON.parse(vendaDb.estoque_json)
-        .filter((estoque: EstoqueDb) => estoque.id)
-        .map((estoque: EstoqueDb) => (estoque.id ? modelDbParaEstoque(estoque) : null))
+      .filter((estoque: EstoqueDb) => estoque.id)
+      .map((estoque: EstoqueDb) => (estoque.id ? modelDbParaEstoque(estoque) : null))
     : [],
   cliente: vendaDb.cliente_json
     ? JSON.parse(vendaDb.cliente_json).id
@@ -51,16 +51,24 @@ const modelDbParaVenda = (vendaDb: VendaDb): Venda => ({
   desconto: vendaDb.desconto,
 })
 
-const modelDbParaVendaRelatorio = (vendaDb: VendaDb): VendaParaRelatorio => ({
-  id: vendaDb.id,
-  cliente: JSON.parse(vendaDb.cliente_json)?.nome ?? 'Não cadastrado',
-  dataVenda: vendaDb.data_venda ? new Date(vendaDb.data_venda) : null,
-  formaPagamento: vendaDb.forma_pagamento.toLocaleLowerCase(),
-  valorTotal: `R$ ${vendaDb.desconto.toFixed(2)}`,
-  valorPago: `R$ ${vendaDb.valor_pago.toFixed(2)}`,
-  troco: `R$ ${vendaDb.troco.toFixed(2)}`,
-  desconto: `${vendaDb.desconto} %`,
-})
+const modelDbParaVendaRelatorio = (vendaDb: VendaDb): VendaParaRelatorio => {
+  let dataVenda = vendaDb.data_venda ? new Date(vendaDb.data_venda) : null
+
+  if (dataVenda) {
+    dataVenda.setDate(dataVenda.getDate() + 1)
+  }
+
+  return {
+    id: vendaDb.id,
+    cliente: JSON.parse(vendaDb.cliente_json)?.nome ?? 'Não cadastrado',
+    dataVenda: dataVenda,
+    formaPagamento: vendaDb.forma_pagamento.toLocaleLowerCase(),
+    valorTotal: `R$ ${vendaDb.desconto.toFixed(2)}`,
+    valorPago: `R$ ${vendaDb.valor_pago.toFixed(2)}`,
+    troco: `R$ ${vendaDb.troco.toFixed(2)}`,
+    desconto: `${vendaDb.desconto} %`,
+  }
+}
 
 export const criarVenda = (venda: Venda) => {
   const caixaAtivo = buscarTodosCaixas().find((caixa) => caixa.ativo === true)

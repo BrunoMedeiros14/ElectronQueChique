@@ -35,15 +35,28 @@ const modelDbParaConta = (contaDb: ContaDb): Conta => ({
   pago: contaDb.pago === 1,
 })
 
-const modelDbParaContaParaRelatorio = (contaDb: ContaDb): ContaParaRelatorio => ({
-  id: contaDb.id,
-  nome: contaDb.nome,
-  valor: `R$ ${contaDb.valor.toFixed(2)}`,
-  descricao: contaDb.descricao,
-  dataVencimento: contaDb.data_vencimento ? new Date(contaDb.data_vencimento) : null,
-  dataPagamento: contaDb.data_pagamento ? new Date(contaDb.data_pagamento) : null,
-  pago: contaDb.pago === 1 ? 'Sim' : 'Não',
-})
+const modelDbParaContaParaRelatorio = (contaDb: ContaDb): ContaParaRelatorio => {
+  let dataVencimento = contaDb.data_vencimento ? new Date(contaDb.data_vencimento) : null
+  let dataPagamento = contaDb.data_pagamento ? new Date(contaDb.data_pagamento) : null
+
+  if (dataVencimento) {
+    dataVencimento.setDate(dataVencimento.getDate() + 1)
+  }
+
+  if (dataPagamento) {
+    dataPagamento.setDate(dataPagamento.getDate() + 1)
+  }
+
+  return {
+    id: contaDb.id,
+    nome: contaDb.nome,
+    valor: `R$ ${contaDb.valor.toFixed(2)}`,
+    descricao: contaDb.descricao,
+    dataVencimento: dataVencimento,
+    dataPagamento: dataPagamento,
+    pago: contaDb.pago === 1 ? 'Sim' : 'Não',
+  }
+}
 
 export const criarConta = (conta: Conta) => {
   const contaDb = contaParaModelDb(conta)
@@ -86,14 +99,6 @@ export const buscarTodasContasParaRelatorio = () => {
 
 export const editarConta = (conta: Conta) => {
   const contaEditada = { ...conta }
-
-  if (contaEditada.dataVencimento) {
-    contaEditada.dataVencimento.setDate(contaEditada.dataVencimento.getDate() + 1);
-  }
-
-  if (contaEditada.dataPagamento) {
-    contaEditada.dataPagamento.setDate(contaEditada.dataPagamento.getDate() + 1);
-  }
 
   const contaDb = contaParaModelDb(contaEditada)
 

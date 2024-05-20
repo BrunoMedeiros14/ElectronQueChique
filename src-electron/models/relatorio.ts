@@ -4,6 +4,7 @@ import { Conta } from './conta'
 import { Estoque } from './estoque'
 
 export type ContaParaRelatorio = Omit<Conta, 'valor' | 'pago'> & { valor: string; pago: string }
+
 export type CaixaParaRelatorio = Omit<Caixa, 'vendas' | 'contas' | 'valorInicial' | 'ativo'> & {
   valorInicial: string
   ativo: string
