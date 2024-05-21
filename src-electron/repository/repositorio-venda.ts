@@ -1,7 +1,8 @@
+import { gerarDateStringPorString } from '../../src/utils/conversores'
 import db from '../config/banco-de-dados'
-import { Venda } from '../models/venda'
 import { FormaPagamento } from '../models/enums/forma-pagamento'
 import { VendaParaRelatorio } from '../models/relatorio'
+import { Venda } from '../models/venda'
 import { buscarTodosCaixas } from './repositorio-caixa'
 import {
   EstoqueDb,
@@ -43,8 +44,8 @@ const modelDbParaVenda = (vendaDb: VendaDb): Venda => ({
   valorTotal: vendaDb.valor_total,
   estoque: vendaDb.estoque_json
     ? JSON.parse(vendaDb.estoque_json)
-      .filter((estoque: EstoqueDb) => estoque.id)
-      .map((estoque: EstoqueDb) => (estoque.id ? modelDbParaEstoque(estoque) : null))
+        .filter((estoque: EstoqueDb) => estoque.id)
+        .map((estoque: EstoqueDb) => (estoque.id ? modelDbParaEstoque(estoque) : null))
     : [],
   cliente: vendaDb.cliente_json
     ? JSON.parse(vendaDb.cliente_json).id
@@ -58,12 +59,10 @@ const modelDbParaVenda = (vendaDb: VendaDb): Venda => ({
 })
 
 const modelDbParaVendaRelatorio = (vendaDb: VendaDb): VendaParaRelatorio => {
-  let dataVenda = vendaDb.data_venda ? new Date(vendaDb.data_venda) : null
-
   return {
     id: vendaDb.id,
     cliente: JSON.parse(vendaDb.cliente_json)?.nome ?? 'Não cadastrado',
-    dataVenda: dataVenda,
+    dataVenda: gerarDateStringPorString(vendaDb.data_venda),
     formaPagamento: vendaDb.forma_pagamento.toLocaleLowerCase(),
     valorTotal: vendaDb.desconto ? `R$ ${vendaDb.desconto.toFixed(2)}` : 'R$ 0.00',
     valorPago: vendaDb.valor_pago ? `R$ ${vendaDb.valor_pago.toFixed(2)}` : 'R$ 0.00',
@@ -97,12 +96,11 @@ export const criarVenda = (venda: Venda) => {
 }
 
 export const editarVenda = (venda: Venda) => {
-
-  buscarVendaPorId(venda.id).estoque.filter(
-    (estoqueOriginal) => !new Set(venda.estoque.map((estoque) => estoque.id)).has(estoqueOriginal.id),
-  ).forEach((estoque) => {
-    removerIdVendaUpdate(estoque.id)
-  })
+  buscarVendaPorId(venda.id)
+    .estoque.filter((estoqueOriginal) => !new Set(venda.estoque.map((estoque) => estoque.id)).has(estoqueOriginal.id))
+    .forEach((estoque) => {
+      removerIdVendaUpdate(estoque.id)
+    })
 
   const updateQuery = `
     UPDATE vendas

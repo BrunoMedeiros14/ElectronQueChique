@@ -1,3 +1,4 @@
+import { gerarDateStringPorString } from '../../src/utils/conversores'
 import db from '../config/banco-de-dados'
 import { Conta } from '../models/conta'
 import { ContaParaRelatorio } from '../models/relatorio'
@@ -36,24 +37,13 @@ const modelDbParaConta = (contaDb: ContaDb): Conta => ({
 })
 
 const modelDbParaContaParaRelatorio = (contaDb: ContaDb): ContaParaRelatorio => {
-  let dataVencimento = contaDb.data_vencimento ? new Date(contaDb.data_vencimento) : null
-  let dataPagamento = contaDb.data_pagamento ? new Date(contaDb.data_pagamento) : null
-
-  if (dataVencimento) {
-    dataVencimento.setDate(dataVencimento.getDate() + 1)
-  }
-
-  if (dataPagamento) {
-    dataPagamento.setDate(dataPagamento.getDate() + 1)
-  }
-
   return {
     id: contaDb.id,
     nome: contaDb.nome,
     valor: `R$ ${contaDb.valor.toFixed(2)}`,
     descricao: contaDb.descricao,
-    dataVencimento: dataVencimento,
-    dataPagamento: dataPagamento,
+    dataVencimento: gerarDateStringPorString(contaDb.data_vencimento),
+    dataPagamento: gerarDateStringPorString(contaDb.data_pagamento),
     pago: contaDb.pago === 1 ? 'Sim' : 'Não',
   }
 }

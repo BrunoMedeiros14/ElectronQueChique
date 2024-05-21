@@ -13,9 +13,17 @@ export const gerarDatePorString = (dataString: string) => {
   return null
 }
 
+export const gerarDateStringPorString = (dataString: string) => {
+  if (dataString) {
+    const [ano, mes, dia] = dataString.split('-')
+    return `${dia}/${mes}/${ano}`
+  }
+  return null
+}
+
 export const gerarStringPorDate = (data: Date) =>
   data
-    ? `${preencherZeroNumeroData(data.getDate())}/${preencherZeroNumeroData(data.getMonth() + 1)}/${data.getFullYear()}`
+    ? `${preencherZeroNumeroData(data.getUTCDate())}/${preencherZeroNumeroData(data.getMonth() + 1)}/${data.getFullYear()}`
     : null
 
 export const gerarStringReal = (valor: number) => formatoReal.format(valor)

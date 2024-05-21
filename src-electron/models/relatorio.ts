@@ -3,7 +3,12 @@ import { Cliente } from './cliente'
 import { Conta } from './conta'
 import { Estoque } from './estoque'
 
-export type ContaParaRelatorio = Omit<Conta, 'valor' | 'pago'> & { valor: string; pago: string }
+export type ContaParaRelatorio = Omit<Conta, 'valor' | 'pago' | 'dataVencimento' | 'dataPagamento'> & {
+  valor: string
+  pago: string
+  dataVencimento: string
+  dataPagamento: string
+}
 
 export type CaixaParaRelatorio = Omit<Caixa, 'vendas' | 'contas' | 'valorInicial' | 'ativo'> & {
   valorInicial: string
@@ -19,7 +24,7 @@ export type EstoqueParaRelarorio = Omit<Estoque, 'vendido' | 'valorCompra' | 'va
 export type VendaParaRelatorio = {
   id: number
   cliente: string
-  dataVenda: Date
+  dataVenda: string
   formaPagamento: string
   valorTotal: string
   valorPago: string

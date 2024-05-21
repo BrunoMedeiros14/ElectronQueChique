@@ -1,10 +1,3 @@
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useNumberFormat } from '@react-input/number-format'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { useEffect, useRef } from 'react'
-import { useForm } from 'react-hook-form'
-import { z } from 'zod'
-import { Conta } from '../../../src-electron/models/conta'
 import { atualizarContaApi, buscarContaPorId, cadastrarContaApi } from '@/api/contas-api'
 import {
   gerarDatePorString,
@@ -12,11 +5,18 @@ import {
   gerarStringPorDate,
   gerarStringReal,
 } from '@/utils/conversores'
-import { InputComMascara } from '../ui/input-com-mascara'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useNumberFormat } from '@react-input/number-format'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useEffect, useRef } from 'react'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
+import { Conta } from '../../../src-electron/models/conta'
 import { Button } from '../ui/button'
 import { DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '../ui/dialog'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
 import { Input } from '../ui/input'
+import { InputComMascara } from '../ui/input-com-mascara'
 import { Switch } from '../ui/switch'
 
 const formSchema = z.object({
@@ -80,12 +80,10 @@ export function DialogCadastrarConta({ isOpen }: { isOpen: boolean }) {
 
     if (dataVencimento) {
       dataVencimentoDate = gerarDatePorString(dataVencimento)
-      dataVencimentoDate.setDate(dataVencimentoDate.getDate() + 1)
     }
 
     if (dataPagamento) {
       dataPagamentoDate = gerarDatePorString(dataPagamento)
-      dataPagamentoDate.setDate(dataPagamentoDate.getDate() + 1)
     }
 
     const conta: Conta = {
@@ -101,22 +99,22 @@ export function DialogCadastrarConta({ isOpen }: { isOpen: boolean }) {
   }
 
   return (
-    <DialogContent className="sm:max-w-[425px]">
+    <DialogContent className='sm:max-w-[425px]'>
       <DialogHeader>
         <DialogTitle>Cadastrar Conta</DialogTitle>
         <DialogDescription>Insira abaixo os dados da conta.</DialogDescription>
       </DialogHeader>
-      <div className="grid gap-4 py-4">
+      <div className='grid gap-4 py-4'>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-2 gap-3">
+          <form onSubmit={form.handleSubmit(onSubmit)} className='grid grid-cols-2 gap-3'>
             <FormField
               control={form.control}
-              name="nome"
+              name='nome'
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Nome*</FormLabel>
                   <FormControl>
-                    <Input placeholder="Nome da Conta" {...field} />
+                    <Input placeholder='Nome da Conta' {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -125,12 +123,12 @@ export function DialogCadastrarConta({ isOpen }: { isOpen: boolean }) {
 
             <FormField
               control={form.control}
-              name="descricao"
+              name='descricao'
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Descrição*</FormLabel>
                   <FormControl>
-                    <Input placeholder="Descrição da Conta" {...field} />
+                    <Input placeholder='Descrição da Conta' {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -139,13 +137,13 @@ export function DialogCadastrarConta({ isOpen }: { isOpen: boolean }) {
 
             <FormField
               control={form.control}
-              name="valor"
+              name='valor'
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Valor*</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Valor da Conta"
+                      placeholder='Valor da Conta'
                       ref={valorMonetario}
                       value={field.value}
                       onChange={field.onChange}
@@ -158,12 +156,12 @@ export function DialogCadastrarConta({ isOpen }: { isOpen: boolean }) {
 
             <FormField
               control={form.control}
-              name="dataVencimento"
+              name='dataVencimento'
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Data de Vencimento</FormLabel>
                   <FormControl>
-                    <InputComMascara radix="." mask={'00/00/0000'} unmask={true} placeholder="dd/mm/aaaa" {...field} />
+                    <InputComMascara radix='.' mask={'00/00/0000'} unmask={true} placeholder='dd/mm/aaaa' {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -172,12 +170,12 @@ export function DialogCadastrarConta({ isOpen }: { isOpen: boolean }) {
 
             <FormField
               control={form.control}
-              name="dataPagamento"
+              name='dataPagamento'
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Data de Pagamento</FormLabel>
                   <FormControl>
-                    <InputComMascara radix="." mask={'00/00/0000'} unmask={true} placeholder="dd/mm/aaaa" {...field} />
+                    <InputComMascara radix='.' mask={'00/00/0000'} unmask={true} placeholder='dd/mm/aaaa' {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -186,10 +184,10 @@ export function DialogCadastrarConta({ isOpen }: { isOpen: boolean }) {
 
             <FormField
               control={form.control}
-              name="pago"
+              name='pago'
               render={({ field }) => (
-                <FormItem className="flex gap-2 items-center justify-center">
-                  <FormLabel className="mt-2">Pago</FormLabel>
+                <FormItem className='flex gap-2 items-center justify-center'>
+                  <FormLabel className='mt-2'>Pago</FormLabel>
                   <FormControl>
                     <Switch checked={field.value} onCheckedChange={field.onChange} />
                   </FormControl>
@@ -198,16 +196,16 @@ export function DialogCadastrarConta({ isOpen }: { isOpen: boolean }) {
               )}
             />
 
-            <Button className="hidden" type="submit"></Button>
+            <Button className='hidden' type='submit'></Button>
           </form>
         </Form>
       </div>
       <DialogFooter>
-        <Button onClick={form.handleSubmit(onSubmit)} type="submit">
+        <Button onClick={form.handleSubmit(onSubmit)} type='submit'>
           Cadastrar Conta
         </Button>
         <DialogClose asChild>
-          <Button ref={refBtnClose} type="button" variant="destructive">
+          <Button ref={refBtnClose} type='button' variant='destructive'>
             Cancelar
           </Button>
         </DialogClose>
@@ -264,22 +262,22 @@ export function DialogAtualizarConta({ contaId }: { contaId?: number }) {
   }, [contaId])
 
   return (
-    <DialogContent className="sm:max-w-[32rem]">
+    <DialogContent className='sm:max-w-[32rem]'>
       <DialogHeader>
         <DialogTitle>Atualizar Conta {form.getValues().nome}</DialogTitle>
         <DialogDescription>Insira abaixo os dados atualizados da conta.</DialogDescription>
       </DialogHeader>
-      <div className="grid gap-4 py-4">
+      <div className='grid gap-4 py-4'>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-2 gap-3">
+          <form onSubmit={form.handleSubmit(onSubmit)} className='grid grid-cols-2 gap-3'>
             <FormField
               control={form.control}
-              name="nome"
+              name='nome'
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Nome*</FormLabel>
                   <FormControl>
-                    <Input placeholder="Nome da Conta" {...field} />
+                    <Input placeholder='Nome da Conta' {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -288,12 +286,12 @@ export function DialogAtualizarConta({ contaId }: { contaId?: number }) {
 
             <FormField
               control={form.control}
-              name="descricao"
+              name='descricao'
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Descrição*</FormLabel>
                   <FormControl>
-                    <Input placeholder="Descrição da Conta" {...field} />
+                    <Input placeholder='Descrição da Conta' {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -302,13 +300,13 @@ export function DialogAtualizarConta({ contaId }: { contaId?: number }) {
 
             <FormField
               control={form.control}
-              name="valor"
+              name='valor'
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Valor*</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Valor da Conta"
+                      placeholder='Valor da Conta'
                       ref={valorMonetario}
                       value={field.value}
                       onChange={field.onChange}
@@ -320,12 +318,12 @@ export function DialogAtualizarConta({ contaId }: { contaId?: number }) {
             />
             <FormField
               control={form.control}
-              name="dataVencimento"
+              name='dataVencimento'
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Data de Vencimento</FormLabel>
                   <FormControl>
-                    <InputComMascara radix="." mask={'00/00/0000'} unmask={true} placeholder="dd/mm/aaaa" {...field} />
+                    <InputComMascara radix='.' mask={'00/00/0000'} unmask={true} placeholder='dd/mm/aaaa' {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -333,12 +331,12 @@ export function DialogAtualizarConta({ contaId }: { contaId?: number }) {
             />
             <FormField
               control={form.control}
-              name="dataPagamento"
+              name='dataPagamento'
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Data de Pagamento</FormLabel>
                   <FormControl>
-                    <InputComMascara radix="." mask={'00/00/0000'} unmask={true} placeholder="dd/mm/aaaa" {...field} />
+                    <InputComMascara radix='.' mask={'00/00/0000'} unmask={true} placeholder='dd/mm/aaaa' {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -346,10 +344,10 @@ export function DialogAtualizarConta({ contaId }: { contaId?: number }) {
             />
             <FormField
               control={form.control}
-              name="pago"
+              name='pago'
               render={({ field }) => (
-                <FormItem className="flex gap-2 items-center justify-center">
-                  <FormLabel className="mt-2">Pago</FormLabel>
+                <FormItem className='flex gap-2 items-center justify-center'>
+                  <FormLabel className='mt-2'>Pago</FormLabel>
                   <FormControl>
                     <Switch checked={field.value} onCheckedChange={field.onChange} />
                   </FormControl>
@@ -357,16 +355,16 @@ export function DialogAtualizarConta({ contaId }: { contaId?: number }) {
                 </FormItem>
               )}
             />
-            <Button className="hidden" type="submit"></Button>
+            <Button className='hidden' type='submit'></Button>
           </form>
         </Form>
       </div>
       <DialogFooter>
-        <Button onClick={form.handleSubmit(onSubmit)} className="bg-blue-500" type="submit">
+        <Button onClick={form.handleSubmit(onSubmit)} className='bg-blue-500' type='submit'>
           Atualizar Conta
         </Button>
         <DialogClose asChild>
-          <Button ref={refBtnClose} type="button" variant="destructive">
+          <Button ref={refBtnClose} type='button' variant='destructive'>
             Cancelar
           </Button>
         </DialogClose>
