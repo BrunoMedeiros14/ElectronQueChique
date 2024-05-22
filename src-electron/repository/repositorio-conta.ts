@@ -1,4 +1,4 @@
-import { gerarDateStringPorString } from '@/utils/conversores'
+import { gerarDateStringPorString } from '../../src/utils/conversores'
 import db from '../config/banco-de-dados'
 import { Conta } from '../models/conta'
 import { ContaParaRelatorio } from '../models/relatorio'
