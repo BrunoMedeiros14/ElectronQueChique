@@ -13,7 +13,7 @@ const clienteArray: Cliente[] = []
 
 function generateRandomDate(start: Date, end: Date): Date {
   return new Date(
-    start.getTime() + Math.random() * (end.getTime() - start.getTime())
+    start.getTime() + Math.random() * (end.getTime() - start.getTime()),
   )
 }
 
@@ -64,7 +64,7 @@ for (let i = 0; i < 30; i++) {
     descricao: generateRandomText(20),
     dataVencimento: generateRandomDate(
       new Date(2020, 0, 1),
-      new Date(2025, 11, 31)
+      new Date(2025, 11, 31),
     ),
     dataPagamento: generateRandomDate(new Date(2020, 0, 1), new Date()),
     pago: generateRandomBoolean(),
@@ -77,7 +77,7 @@ for (let i = 0; i < 30; i++) {
     nome: generateRandomText(8),
     dataNascimento: generateRandomDate(
       new Date(1950, 0, 1),
-      new Date(2005, 11, 31)
+      new Date(2005, 11, 31),
     ),
     endereco: generateRandomText(20),
     telefone: generateRandomText(10),

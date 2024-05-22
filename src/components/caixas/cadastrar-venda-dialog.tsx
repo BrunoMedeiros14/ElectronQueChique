@@ -137,6 +137,7 @@ export function DialogCadastrarVendaBeta({ isOpen }: { isOpen: boolean }) {
         <DialogTitle>Cadastro de Venda</DialogTitle>
         <DialogDescription>Insira abaixo os dados da venda.</DialogDescription>
       </DialogHeader>
+
       <div className="flex gap-4 py-4">
         <div className="border rounded-lg p-2 h-80 flex flex-col flex-1">
           <h2 className="font-semibold text-lg">Resumo da venda</h2>
@@ -271,6 +272,7 @@ export function DialogCadastrarVendaBeta({ isOpen }: { isOpen: boolean }) {
                       </FormItem>
                     )}
                   />
+
                   <FormItem className="flex-1 h-full">
                     <div>
                       <FormLabel>Cliente</FormLabel>
@@ -297,6 +299,7 @@ export function DialogCadastrarVendaBeta({ isOpen }: { isOpen: boolean }) {
                   </DialogClose>
                 </div>
               </div>
+
               <Button className="hidden" type="submit"></Button>
             </form>
           </Form>

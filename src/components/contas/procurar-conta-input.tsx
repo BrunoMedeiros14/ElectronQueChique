@@ -39,6 +39,7 @@ export default function ProcurarContaInput({
           value={filtro}
           onValueChange={setFiltro}
         />
+
         <CommandList
           className={`${!isFocused && 'hidden'} max-h-48 z-10 bg-white`}
         >

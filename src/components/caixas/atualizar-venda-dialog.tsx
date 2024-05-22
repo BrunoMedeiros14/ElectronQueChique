@@ -143,6 +143,7 @@ export function DialogAtualizarVenda({ vendaId }: { vendaId?: number }) {
         <DialogDescription>Insira abaixo os dados da venda.</DialogDescription>
       </DialogHeader>
       <div className="flex gap-4 py-4">
+
         <div className="border rounded-lg p-2 h-80 flex flex-col flex-1">
           <h2 className="font-semibold text-lg">Resumo da venda</h2>
           <div className="overflow-y-auto h-56 [&>*]:border-t">
@@ -196,6 +197,7 @@ export function DialogAtualizarVenda({ vendaId }: { vendaId?: number }) {
             </div>
           </div>
         </div>
+
         <div className="w-[32rem]">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="h-full">
@@ -289,6 +291,7 @@ export function DialogAtualizarVenda({ vendaId }: { vendaId?: number }) {
                     <FormMessage />
                   </FormItem>
                 </div>
+
                 <div className="flex gap-2 justify-end flex-1 items-end">
                   <Button onClick={form.handleSubmit(onSubmit)} type="submit">
                     Atualizar Venda
@@ -300,6 +303,7 @@ export function DialogAtualizarVenda({ vendaId }: { vendaId?: number }) {
                   </DialogClose>
                 </div>
               </div>
+
               <Button className="hidden" type="submit"></Button>
             </form>
           </Form>

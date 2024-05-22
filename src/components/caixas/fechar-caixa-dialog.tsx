@@ -64,36 +64,38 @@ export function DialogFecharCaixa({ caixaId }: { caixaId?: number }) {
   }
 
   return (
-    <DialogContent className='sm:max-w-[32rem]'>
+    <DialogContent className="sm:max-w-[32rem]">
       <DialogHeader>
         <DialogTitle>Fechamento do Caixa</DialogTitle>
       </DialogHeader>
-      <div className='grid gap-4 py-4'>
+
+      <div className="grid gap-4 py-4">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className='grid grid-cols-2 gap-3'>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-2 gap-3">
             <FormField
               control={form.control}
-              name='dataHoraFechamento'
+              name="dataHoraFechamento"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Data de Fechamento*</FormLabel>
                   <FormControl>
-                    <InputComMascara radix='.' mask={'00/00/0000'} unmask={true} placeholder='dd/mm/aaaa' {...field} />
+                    <InputComMascara radix="." mask={'00/00/0000'} unmask={true} placeholder="dd/mm/aaaa" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <Button className='hidden' type='submit'></Button>
+            <Button className="hidden" type="submit"></Button>
           </form>
         </Form>
       </div>
+
       <DialogFooter>
-        <Button onClick={form.handleSubmit(onSubmit)} type='submit'>
+        <Button onClick={form.handleSubmit(onSubmit)} type="submit">
           Fechar Caixa
         </Button>
         <DialogClose asChild>
-          <Button ref={refBtnClose} type='button' variant='destructive'>
+          <Button ref={refBtnClose} type="button" variant="destructive">
             Cancelar
           </Button>
         </DialogClose>

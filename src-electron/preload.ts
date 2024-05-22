@@ -39,26 +39,35 @@ if (!process.contextIsolated) {
 export const apiCliente = {
   criarCliente: (...args: Parameters<CriarCliente>): ReturnType<CriarCliente> =>
     ipcRenderer.invoke('criarCliente', ...args),
+
   removerCliente: (...args: Parameters<RemoverCliente>): ReturnType<RemoverCliente> =>
     ipcRenderer.invoke('removerCliente', ...args),
+
   editarCliente: (...args: Parameters<EditarCliente>): ReturnType<EditarCliente> =>
     ipcRenderer.invoke('editarCliente', ...args),
+
   buscarClientePorId: (...args: Parameters<BuscarClientePorId>): ReturnType<BuscarClientePorId> =>
     ipcRenderer.invoke('buscarClientePorId', ...args),
+
   buscarTodosClientes: (...args: Parameters<BuscarTodosClientes>): ReturnType<BuscarTodosClientes> =>
     ipcRenderer.invoke('buscarTodosClientes', ...args),
 }
 
 export const apiCaixa = {
   criarCaixa: (...args: Parameters<CriarCaixa>): ReturnType<CriarCaixa> => ipcRenderer.invoke('criarCaixa', ...args),
+
   removerCaixa: (...args: Parameters<RemoverCaixa>): ReturnType<RemoverCaixa> =>
     ipcRenderer.invoke('removerCaixa', ...args),
+
   editarCaixa: (...args: Parameters<EditarCaixa>): ReturnType<EditarCaixa> =>
     ipcRenderer.invoke('editarCaixa', ...args),
+
   buscarCaixaPorId: (...args: Parameters<BuscarCaixaPorId>): ReturnType<BuscarCaixaPorId> =>
     ipcRenderer.invoke('buscarCaixaPorId', ...args),
+
   buscarCaixaAtivo: (...args: Parameters<BuscarCaixaAtivo>): ReturnType<BuscarCaixaAtivo> =>
     ipcRenderer.invoke('buscarCaixaAtivo', ...args),
+
   buscarTodosCaixas: (...args: Parameters<BuscarTodosCaixas>): ReturnType<BuscarTodosCaixas> =>
     ipcRenderer.invoke('buscarTodosCaixas', ...args),
 }
@@ -88,28 +97,38 @@ export const apiConta = {
 export const apiEstoque = {
   criarEstoque: (...args: Parameters<CriarEstoque>): ReturnType<CriarEstoque> =>
     ipcRenderer.invoke('criarEstoque', ...args),
+
   removerEstoque: (...args: Parameters<RemoverEstoque>): ReturnType<RemoverEstoque> =>
     ipcRenderer.invoke('removerEstoque', ...args),
+
   editarEstoque: (...args: Parameters<EditarEstoque>): ReturnType<EditarEstoque> =>
     ipcRenderer.invoke('editarEstoque', ...args),
+
   buscarEstoquePorId: (...args: Parameters<BuscarEstoquePorId>): ReturnType<BuscarEstoquePorId> =>
     ipcRenderer.invoke('buscarEstoquePorId', ...args),
+
   buscarTodosEstoques: (...args: Parameters<BuscarTodosEstoques>): ReturnType<BuscarTodosEstoques> =>
     ipcRenderer.invoke('buscarTodosEstoques', ...args),
+
   buscarEstoquesNaoVendidos: (...args: Parameters<BuscarEstoquesNaoVendidos>): ReturnType<BuscarEstoquesNaoVendidos> =>
     ipcRenderer.invoke('buscarEstoquesNaoVendidos', ...args),
 }
 
 export const apiVenda = {
   criarVenda: (...args: Parameters<CriarVenda>): ReturnType<CriarVenda> => ipcRenderer.invoke('criarVenda', ...args),
+
   removerVenda: (...args: Parameters<RemoverVenda>): ReturnType<RemoverVenda> =>
     ipcRenderer.invoke('removerVenda', ...args),
+
   editarVenda: (...args: Parameters<EditarVenda>): ReturnType<EditarVenda> =>
     ipcRenderer.invoke('editarVenda', ...args),
+
   buscarVendaPorId: (...args: Parameters<BuscarVendaPorId>): ReturnType<BuscarVendaPorId> =>
     ipcRenderer.invoke('buscarVendaPorId', ...args),
+
   buscarTodasVendas: (...args: Parameters<BuscarTodasVendas>): ReturnType<BuscarTodasVendas> =>
     ipcRenderer.invoke('buscarTodasVendas', ...args),
+
   buscarVendasPorCaixaId: (...args: Parameters<BuscarVendasPorCaixaId>): ReturnType<BuscarVendasPorCaixaId> =>
     ipcRenderer.invoke('buscarVendasPorCaixaId', ...args),
 }

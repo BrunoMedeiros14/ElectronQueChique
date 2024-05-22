@@ -5,10 +5,10 @@ import { useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { Estoque } from '../../../src-electron/models/estoque'
-import { atualizarEstoqueApi, buscarEstoquePorId, cadastrarEstoqueApi } from '../../api/estoques-api'
-import { Cor } from '../../enums/cor'
-import { Tecido } from '../../enums/tecido'
-import { gerarDoublePorValorMonetario } from '../../utils/conversores'
+import { atualizarEstoqueApi, buscarEstoquePorId, cadastrarEstoqueApi } from '@/api/estoques-api'
+import { Cor } from '@/enums/cor'
+import { Tecido } from '@/enums/tecido'
+import { gerarDoublePorValorMonetario } from '@/utils/conversores'
 import { Button } from '../ui/button'
 import { DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '../ui/dialog'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
@@ -118,16 +118,16 @@ export function DialogCadastrarEstoque({ isOpen }: { isOpen: boolean }) {
   }, [form.watch('valorVenda')])
 
   function onSubmit({
-    nome,
-    descricao,
-    cor,
-    tamanho,
-    vendido,
-    tecido,
-    fornecedor,
-    valorCompra,
-    valorVenda,
-  }: z.infer<typeof formSchema>) {
+                      nome,
+                      descricao,
+                      cor,
+                      tamanho,
+                      vendido,
+                      tecido,
+                      fornecedor,
+                      valorCompra,
+                      valorVenda,
+                    }: z.infer<typeof formSchema>) {
     const estoque: Estoque = {
       nome,
       descricao,
@@ -144,22 +144,23 @@ export function DialogCadastrarEstoque({ isOpen }: { isOpen: boolean }) {
   }
 
   return (
-    <DialogContent className='sm:max-w-[32rem]'>
+    <DialogContent className="sm:max-w-[32rem]">
       <DialogHeader>
         <DialogTitle>Cadastrar Estoque</DialogTitle>
         <DialogDescription>Insira abaixo os dados do estoque.</DialogDescription>
       </DialogHeader>
-      <div className='grid gap-4 py-4'>
+
+      <div className="grid gap-4 py-4">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className='grid grid-cols-2 gap-3'>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-2 gap-3">
             <FormField
               control={form.control}
-              name='nome'
+              name="nome"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Nome*</FormLabel>
                   <FormControl>
-                    <Input placeholder='Nome do produto' {...field} />
+                    <Input placeholder="Nome do produto" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -168,12 +169,12 @@ export function DialogCadastrarEstoque({ isOpen }: { isOpen: boolean }) {
 
             <FormField
               control={form.control}
-              name='descricao'
+              name="descricao"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Descricao*</FormLabel>
                   <FormControl>
-                    <Input placeholder='Descrição' {...field} />
+                    <Input placeholder="Descrição" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -182,14 +183,14 @@ export function DialogCadastrarEstoque({ isOpen }: { isOpen: boolean }) {
 
             <FormField
               control={form.control}
-              name='cor'
+              name="cor"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Cor*</FormLabel>
                   <FormControl>
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <SelectTrigger>
-                        <SelectValue placeholder='Selecione uma Cor' />
+                        <SelectValue placeholder="Selecione uma Cor" />
                       </SelectTrigger>
                       <SelectContent>
                         {Object.values(Cor).map((cor) => (
@@ -207,14 +208,14 @@ export function DialogCadastrarEstoque({ isOpen }: { isOpen: boolean }) {
 
             <FormField
               control={form.control}
-              name='tecido'
+              name="tecido"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Tecido*</FormLabel>
                   <FormControl>
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <SelectTrigger>
-                        <SelectValue placeholder='Selecione um Tecido' />
+                        <SelectValue placeholder="Selecione um Tecido" />
                       </SelectTrigger>
                       <SelectContent>
                         {Object.values(Tecido).map((tecido) => (
@@ -232,12 +233,12 @@ export function DialogCadastrarEstoque({ isOpen }: { isOpen: boolean }) {
 
             <FormField
               control={form.control}
-              name='tamanho'
+              name="tamanho"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Tamanho*</FormLabel>
                   <FormControl>
-                    <Input placeholder='Tamanho do produto' {...field} />
+                    <Input placeholder="Tamanho do produto" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -246,12 +247,12 @@ export function DialogCadastrarEstoque({ isOpen }: { isOpen: boolean }) {
 
             <FormField
               control={form.control}
-              name='fornecedor'
+              name="fornecedor"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Marca</FormLabel>
                   <FormControl>
-                    <Input placeholder='Marca do Item' {...field} />
+                    <Input placeholder="Marca do Item" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -260,13 +261,13 @@ export function DialogCadastrarEstoque({ isOpen }: { isOpen: boolean }) {
 
             <FormField
               control={form.control}
-              name='valorCompra'
+              name="valorCompra"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Valor da Compra*</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder='Valor de compra'
+                      placeholder="Valor de compra"
                       ref={valorMonetarioCompra}
                       value={field.value}
                       onChange={field.onChange}
@@ -279,13 +280,13 @@ export function DialogCadastrarEstoque({ isOpen }: { isOpen: boolean }) {
 
             <FormField
               control={form.control}
-              name='valorVenda'
+              name="valorVenda"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Valor da Venda*</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder='Valor de Venda'
+                      placeholder="Valor de Venda"
                       ref={valorMonetarioVenda}
                       value={field.value}
                       onChange={field.onChange}
@@ -304,22 +305,23 @@ export function DialogCadastrarEstoque({ isOpen }: { isOpen: boolean }) {
                 {isNaN(lucro)
                   ? 'R$ 0,00'
                   : lucro.toLocaleString('pt-BR', {
-                      style: 'currency',
-                      currency: 'BRL',
-                    })}
+                    style: 'currency',
+                    currency: 'BRL',
+                  })}
               </div>
             </div>
 
-            <Button className='hidden' type='submit'></Button>
+            <Button className="hidden" type="submit"></Button>
           </form>
         </Form>
       </div>
+
       <DialogFooter>
-        <Button onClick={form.handleSubmit(onSubmit)} type='submit'>
+        <Button onClick={form.handleSubmit(onSubmit)} type="submit">
           Cadastrar Estoque
         </Button>
         <DialogClose asChild>
-          <Button ref={refBtnClose} type='button' variant='destructive'>
+          <Button ref={refBtnClose} type="button" variant="destructive">
             Cancelar
           </Button>
         </DialogClose>
@@ -372,17 +374,17 @@ export function DialogAtualizarEstoque({ estoqueId }: { estoqueId?: number }) {
             valorCompra.toLocaleString('pt-BR', {
               style: 'currency',
               currency: 'BRL',
-            })
+            }),
           )
           form.setValue(
             'valorVenda',
             valorVenda.toLocaleString('pt-BR', {
               style: 'currency',
               currency: 'BRL',
-            })
+            }),
           )
           setPegouApi(true)
-        }
+        },
       )
     }
   }, [estoqueId])
@@ -419,16 +421,16 @@ export function DialogAtualizarEstoque({ estoqueId }: { estoqueId?: number }) {
   }, [form.watch('valorVenda')])
 
   function onSubmit({
-    nome,
-    descricao,
-    cor,
-    tamanho,
-    vendido,
-    tecido,
-    fornecedor,
-    valorCompra,
-    valorVenda,
-  }: z.infer<typeof formSchema>) {
+                      nome,
+                      descricao,
+                      cor,
+                      tamanho,
+                      vendido,
+                      tecido,
+                      fornecedor,
+                      valorCompra,
+                      valorVenda,
+                    }: z.infer<typeof formSchema>) {
     const estoque: Estoque = {
       id: estoqueId,
       nome,
@@ -445,22 +447,22 @@ export function DialogAtualizarEstoque({ estoqueId }: { estoqueId?: number }) {
   }
 
   return (
-    <DialogContent className='sm:max-w-[32rem]'>
+    <DialogContent className="sm:max-w-[32rem]">
       <DialogHeader>
         <DialogTitle>Atualizar {form.getValues().nome}</DialogTitle>
         <DialogDescription>Insira abaixo os dados atualizados do estoque.</DialogDescription>
       </DialogHeader>
-      <div className='grid gap-4 py-4'>
+      <div className="grid gap-4 py-4">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className='grid grid-cols-2 gap-3'>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-2 gap-3">
             <FormField
               control={form.control}
-              name='nome'
+              name="nome"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Nome*</FormLabel>
                   <FormControl>
-                    <Input placeholder='Nome do produto' {...field} />
+                    <Input placeholder="Nome do produto" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -469,12 +471,12 @@ export function DialogAtualizarEstoque({ estoqueId }: { estoqueId?: number }) {
 
             <FormField
               control={form.control}
-              name='descricao'
+              name="descricao"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Descricao*</FormLabel>
                   <FormControl>
-                    <Input placeholder='Descrição' {...field} />
+                    <Input placeholder="Descrição" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -483,14 +485,14 @@ export function DialogAtualizarEstoque({ estoqueId }: { estoqueId?: number }) {
 
             <FormField
               control={form.control}
-              name='cor'
+              name="cor"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Cor*</FormLabel>
                   <FormControl>
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <SelectTrigger>
-                        <SelectValue placeholder='Selecione uma Cor' />
+                        <SelectValue placeholder="Selecione uma Cor" />
                       </SelectTrigger>
                       <SelectContent>
                         {Object.values(Cor).map((cor) => (
@@ -508,14 +510,14 @@ export function DialogAtualizarEstoque({ estoqueId }: { estoqueId?: number }) {
 
             <FormField
               control={form.control}
-              name='tecido'
+              name="tecido"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Tecido*</FormLabel>
                   <FormControl>
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <SelectTrigger>
-                        <SelectValue placeholder='Selecione um Tecido' />
+                        <SelectValue placeholder="Selecione um Tecido" />
                       </SelectTrigger>
                       <SelectContent>
                         {Object.values(Tecido).map((tecido) => (
@@ -533,12 +535,12 @@ export function DialogAtualizarEstoque({ estoqueId }: { estoqueId?: number }) {
 
             <FormField
               control={form.control}
-              name='tamanho'
+              name="tamanho"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Tamanho*</FormLabel>
                   <FormControl>
-                    <Input placeholder='Tamanho do produto' {...field} />
+                    <Input placeholder="Tamanho do produto" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -547,12 +549,12 @@ export function DialogAtualizarEstoque({ estoqueId }: { estoqueId?: number }) {
 
             <FormField
               control={form.control}
-              name='fornecedor'
+              name="fornecedor"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Marca</FormLabel>
                   <FormControl>
-                    <Input placeholder='Marca do Item' {...field} />
+                    <Input placeholder="Marca do Item" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -561,13 +563,13 @@ export function DialogAtualizarEstoque({ estoqueId }: { estoqueId?: number }) {
 
             <FormField
               control={form.control}
-              name='valorCompra'
+              name="valorCompra"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Valor da Compra*</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder='Valor de compra'
+                      placeholder="Valor de compra"
                       ref={valorMonetarioCompra}
                       value={field.value}
                       onChange={field.onChange}
@@ -580,13 +582,13 @@ export function DialogAtualizarEstoque({ estoqueId }: { estoqueId?: number }) {
 
             <FormField
               control={form.control}
-              name='valorVenda'
+              name="valorVenda"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Valor da Venda*</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder='Valor de Venda'
+                      placeholder="Valor de Venda"
                       ref={valorMonetarioVenda}
                       value={field.value}
                       onChange={field.onChange}
@@ -605,22 +607,22 @@ export function DialogAtualizarEstoque({ estoqueId }: { estoqueId?: number }) {
                 {isNaN(lucro)
                   ? 'R$ 0,00'
                   : lucro.toLocaleString('pt-BR', {
-                      style: 'currency',
-                      currency: 'BRL',
-                    })}
+                    style: 'currency',
+                    currency: 'BRL',
+                  })}
               </div>
             </div>
 
-            <Button className='hidden' type='submit'></Button>
+            <Button className="hidden" type="submit"></Button>
           </form>
         </Form>
       </div>
       <DialogFooter>
-        <Button onClick={form.handleSubmit(onSubmit)} className='bg-blue-500' type='submit'>
+        <Button onClick={form.handleSubmit(onSubmit)} className="bg-blue-500" type="submit">
           Atualizar Estoque
         </Button>
         <DialogClose asChild>
-          <Button ref={refBtnClose} type='button' variant='destructive'>
+          <Button ref={refBtnClose} type="button" variant="destructive">
             Cancelar
           </Button>
         </DialogClose>

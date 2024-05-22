@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { RouterProvider, createMemoryHistory, createRouter } from '@tanstack/react-router'
+import { createMemoryHistory, createRouter, RouterProvider } from '@tanstack/react-router'
 import { AuthProvider } from './hooks/auth'
 import { useAuth } from './hooks/use-auth'
 import { routeTree } from './routeTree.gen'

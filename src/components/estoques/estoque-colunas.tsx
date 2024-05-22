@@ -10,9 +10,9 @@ type ColunasEstoqueProps = {
 }
 
 export const pegarColunasEstoque = ({
-  setIdParaExcluir,
-  abrirEdicaoEstoque,
-}: ColunasEstoqueProps): ColumnDef<Estoque>[] => [
+                                      setIdParaExcluir,
+                                      abrirEdicaoEstoque,
+                                    }: ColunasEstoqueProps): ColumnDef<Estoque>[] => [
   {
     accessorKey: 'id',
     header: 'Id',
@@ -66,7 +66,7 @@ export const pegarColunasEstoque = ({
     cell: ({ row }) => {
       const valor = parseFloat(row.getValue('valorCompra'))
       const formatted = gerarStringReal(valor)
-      return <div className='font-medium'>{formatted}</div>
+      return <div className="font-medium">{formatted}</div>
     },
   },
   {
@@ -75,7 +75,7 @@ export const pegarColunasEstoque = ({
     cell: ({ row }) => {
       const valor = parseFloat(row.getValue('valorVenda'))
       const formatted = gerarStringReal(valor)
-      return <div className='font-medium'>{formatted}</div>
+      return <div className="font-medium">{formatted}</div>
     },
   },
   {
@@ -84,23 +84,23 @@ export const pegarColunasEstoque = ({
       const estoqueId = row.original.id
 
       return (
-        <div className='flex justify-center w-full gap-1'>
+        <div className="flex justify-center w-full gap-1">
           <Button
-            size='icon'
-            variant='ghost'
+            size="icon"
+            variant="ghost"
             onClick={() => abrirEdicaoEstoque(estoqueId)}
-            className='text-orange-400 hover:text-white hover:bg-orange-400'>
-            <Pencil className='h-4 w-4' />
-            <span className='sr-only'>Edit</span>
+            className="text-orange-400 hover:text-white hover:bg-orange-400">
+            <Pencil className="h-4 w-4" />
+            <span className="sr-only">Edit</span>
           </Button>
 
           <Button
-            size='icon'
-            variant='ghost'
+            size="icon"
+            variant="ghost"
             onClick={() => setIdParaExcluir(estoqueId)}
-            className='text-red-500 hover:text-white hover:bg-red-500'>
-            <Trash2 className='h-4 w-4' />
-            <span className='sr-only'>Delete</span>
+            className="text-red-500 hover:text-white hover:bg-red-500">
+            <Trash2 className="h-4 w-4" />
+            <span className="sr-only">Delete</span>
           </Button>
         </div>
       )

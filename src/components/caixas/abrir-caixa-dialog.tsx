@@ -58,22 +58,23 @@ export default function Teste() {
   }
 
   return (
-    <DialogContent className='sm:max-w-[32rem]'>
+    <DialogContent className="sm:max-w-[32rem]">
       <DialogHeader>
         <DialogTitle>Abertura de Caixa</DialogTitle>
         <DialogDescription>Insira abaixo os dados do caixa.</DialogDescription>
       </DialogHeader>
-      <div className='grid gap-4 py-4'>
+
+      <div className="grid gap-4 py-4">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className='grid grid-cols-2 gap-3'>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-2 gap-3">
             <FormField
               control={form.control}
-              name='dataHoraAbertura'
+              name="dataHoraAbertura"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Data de Abertura*</FormLabel>
                   <FormControl>
-                    <InputComMascara radix='.' mask={'00/00/0000'} unmask={true} placeholder='dd/mm/aaaa' {...field} />
+                    <InputComMascara radix="." mask={'00/00/0000'} unmask={true} placeholder="dd/mm/aaaa" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -82,13 +83,13 @@ export default function Teste() {
 
             <FormField
               control={form.control}
-              name='valorInicial'
+              name="valorInicial"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Valor Abertura do Caixa*</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder='Valor Inicial'
+                      placeholder="Valor Inicial"
                       ref={valorMonetario}
                       value={field.value}
                       onChange={field.onChange}
@@ -99,16 +100,17 @@ export default function Teste() {
               )}
             />
 
-            <Button className='hidden' type='submit'></Button>
+            <Button className="hidden" type="submit"></Button>
           </form>
         </Form>
       </div>
+
       <DialogFooter>
-        <Button onClick={form.handleSubmit(onSubmit)} type='submit'>
+        <Button onClick={form.handleSubmit(onSubmit)} type="submit">
           Abrir Caixa
         </Button>
         <DialogClose asChild>
-          <Button ref={refBtnClose} type='button' variant='destructive'>
+          <Button ref={refBtnClose} type="button" variant="destructive">
             Cancelar
           </Button>
         </DialogClose>

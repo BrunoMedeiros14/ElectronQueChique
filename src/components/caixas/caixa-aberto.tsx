@@ -206,6 +206,7 @@ export function CaixaAberto({ caixaDoDia }: { caixaDoDia: Caixa }) {
           <CaixaInfo title="Recebido Dinheiro" value={recebidoDinheiro} />
           <CaixaInfo title="Valor Total" value={valorTotal} />
         </div>
+
       </main>
     </div>
   )

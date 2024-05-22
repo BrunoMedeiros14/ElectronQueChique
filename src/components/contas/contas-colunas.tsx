@@ -1,7 +1,7 @@
 import { ColumnDef } from '@tanstack/react-table'
 import { Pencil, Trash2 } from 'lucide-react'
 import { Conta } from '../../../src-electron/models/conta'
-import { gerarStringPorDate, gerarStringReal } from '../../utils/conversores'
+import { gerarStringPorDate, gerarStringReal } from '@/utils/conversores'
 import { Button } from '../ui/button'
 
 type ColunasContaProps = {
@@ -61,7 +61,7 @@ export const pegarColunasConta = ({ setIdParaExcluir, abrirEdicaoConta }: Coluna
     cell: ({ row }) => {
       const valor = parseFloat(row.getValue('valor'))
       const formatted = gerarStringReal(valor)
-      return <div className='font-medium'>{formatted}</div>
+      return <div className="font-medium">{formatted}</div>
     },
   },
   {
@@ -95,23 +95,23 @@ export const pegarColunasConta = ({ setIdParaExcluir, abrirEdicaoConta }: Coluna
       const contaId = row.original.id
 
       return (
-        <div className='flex justify-center w-full gap-1'>
+        <div className="flex justify-center w-full gap-1">
           <Button
-            size='icon'
-            variant='ghost'
+            size="icon"
+            variant="ghost"
             onClick={() => abrirEdicaoConta(contaId)}
-            className='text-orange-400 hover:text-white hover:bg-orange-400'>
-            <Pencil className='h-4 w-4' />
-            <span className='sr-only'>Edit</span>
+            className="text-orange-400 hover:text-white hover:bg-orange-400">
+            <Pencil className="h-4 w-4" />
+            <span className="sr-only">Edit</span>
           </Button>
 
           <Button
-            size='icon'
-            variant='ghost'
+            size="icon"
+            variant="ghost"
             onClick={() => setIdParaExcluir(contaId)}
-            className='text-red-500 hover:text-white hover:bg-red-500'>
-            <Trash2 className='h-4 w-4' />
-            <span className='sr-only'>Delete</span>
+            className="text-red-500 hover:text-white hover:bg-red-500">
+            <Trash2 className="h-4 w-4" />
+            <span className="sr-only">Delete</span>
           </Button>
         </div>
       )

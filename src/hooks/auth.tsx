@@ -26,7 +26,6 @@ function setStoredUser(user?: string, senha?: string) {
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<string | null>(getStoredUser())
-  // const isAuthenticated = !!user
   const isAuthenticated = true
 
   const logout = useCallback(() => {

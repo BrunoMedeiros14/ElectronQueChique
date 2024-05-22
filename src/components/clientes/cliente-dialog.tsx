@@ -4,8 +4,8 @@ import { useEffect, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { Cliente } from '../../../src-electron/models/cliente'
-import { atualizarClienteApi, buscarClientePorId, cadastrarClienteApi } from '../../api/clientes-api'
-import { gerarDatePorString, gerarStringPorDate } from '../../utils/conversores'
+import { atualizarClienteApi, buscarClientePorId, cadastrarClienteApi } from '@/api/clientes-api'
+import { gerarDatePorString, gerarStringPorDate } from '@/utils/conversores'
 import { InputComMascara } from '../ui/input-com-mascara'
 import { Button } from '../ui/button'
 import { DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '../ui/dialog'
@@ -69,22 +69,23 @@ export default function DialogCadastrarCliente() {
   }
 
   return (
-    <DialogContent className='sm:max-w-[32rem]'>
+    <DialogContent className="sm:max-w-[32rem]">
       <DialogHeader>
         <DialogTitle>Cadastrar cliente</DialogTitle>
         <DialogDescription>Insira abaixo os dados do cliente.</DialogDescription>
       </DialogHeader>
-      <div className='grid gap-4 py-4'>
+
+      <div className="grid gap-4 py-4">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className='grid grid-cols-2 gap-3'>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-2 gap-3">
             <FormField
               control={form.control}
-              name='nome'
+              name="nome"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Nome*</FormLabel>
                   <FormControl>
-                    <Input placeholder='Nome Sobrenome' {...field} />
+                    <Input placeholder="Nome Sobrenome" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -93,12 +94,12 @@ export default function DialogCadastrarCliente() {
 
             <FormField
               control={form.control}
-              name='celular'
+              name="celular"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Celular*</FormLabel>
                   <FormControl>
-                    <InputComMascara radix='.' mask={'(00) 0 0000-0000'} placeholder='(00) 0 0000-0000' {...field} />
+                    <InputComMascara radix="." mask={'(00) 0 0000-0000'} placeholder="(00) 0 0000-0000" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -107,53 +108,56 @@ export default function DialogCadastrarCliente() {
 
             <FormField
               control={form.control}
-              name='email'
+              name="email"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>E-mail*</FormLabel>
                   <FormControl>
-                    <Input placeholder='email@gmail.com' {...field} />
+                    <Input placeholder="email@gmail.com" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
+
             <FormField
               control={form.control}
-              name='dataNascimento'
+              name="dataNascimento"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Data de Nascimento</FormLabel>
                   <FormControl>
-                    <InputComMascara radix='.' mask={'00/00/0000'} unmask={true} placeholder='dd/mm/aaaa' {...field} />
+                    <InputComMascara radix="." mask={'00/00/0000'} unmask={true} placeholder="dd/mm/aaaa" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
+
             <FormField
               control={form.control}
-              name='endereco'
+              name="endereco"
               render={({ field }) => (
-                <FormItem className='col-span-2'>
+                <FormItem className="col-span-2">
                   <FormLabel>Endereço</FormLabel>
                   <FormControl>
-                    <Input placeholder='Rua, número, bairro' {...field} />
+                    <Input placeholder="Rua, número, bairro" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <Button className='hidden' type='submit'></Button>
+            <Button className="hidden" type="submit"></Button>
           </form>
         </Form>
       </div>
+
       <DialogFooter>
-        <Button onClick={form.handleSubmit(onSubmit)} type='submit'>
+        <Button onClick={form.handleSubmit(onSubmit)} type="submit">
           Cadastrar Cliente
         </Button>
         <DialogClose asChild>
-          <Button ref={refBtnClose} type='button' variant='destructive'>
+          <Button ref={refBtnClose} type="button" variant="destructive">
             Cancelar
           </Button>
         </DialogClose>
@@ -204,22 +208,22 @@ export function DialogAtualizarCliente({ clienteId }: { clienteId?: number }) {
   }, [clienteId])
 
   return (
-    <DialogContent className='sm:max-w-[32rem]'>
+    <DialogContent className="sm:max-w-[32rem]">
       <DialogHeader>
         <DialogTitle>Atualizar Cliente {form.getValues().nome}</DialogTitle>
         <DialogDescription>Insira abaixo os dados atualizados do cliente.</DialogDescription>
       </DialogHeader>
-      <div className='grid gap-4 py-4'>
+      <div className="grid gap-4 py-4">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className='grid grid-cols-2 gap-3'>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-2 gap-3">
             <FormField
               control={form.control}
-              name='nome'
+              name="nome"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Nome*</FormLabel>
                   <FormControl>
-                    <Input placeholder='Nome Sobrenome' {...field} />
+                    <Input placeholder="Nome Sobrenome" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -228,12 +232,12 @@ export function DialogAtualizarCliente({ clienteId }: { clienteId?: number }) {
 
             <FormField
               control={form.control}
-              name='celular'
+              name="celular"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Celular*</FormLabel>
                   <FormControl>
-                    <InputComMascara radix='.' mask={'(00) 0 0000-0000'} placeholder='(00) 0 0000-0000' {...field} />
+                    <InputComMascara radix="." mask={'(00) 0 0000-0000'} placeholder="(00) 0 0000-0000" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -242,12 +246,12 @@ export function DialogAtualizarCliente({ clienteId }: { clienteId?: number }) {
 
             <FormField
               control={form.control}
-              name='email'
+              name="email"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>E-mail*</FormLabel>
                   <FormControl>
-                    <Input placeholder='email@gmail.com' {...field} />
+                    <Input placeholder="email@gmail.com" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -255,12 +259,12 @@ export function DialogAtualizarCliente({ clienteId }: { clienteId?: number }) {
             />
             <FormField
               control={form.control}
-              name='dataNascimento'
+              name="dataNascimento"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Data de Nascimento</FormLabel>
                   <FormControl>
-                    <InputComMascara radix='.' mask={'00/00/0000'} unmask={true} placeholder='dd/mm/aaaa' {...field} />
+                    <InputComMascara radix="." mask={'00/00/0000'} unmask={true} placeholder="dd/mm/aaaa" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -268,27 +272,27 @@ export function DialogAtualizarCliente({ clienteId }: { clienteId?: number }) {
             />
             <FormField
               control={form.control}
-              name='endereco'
+              name="endereco"
               render={({ field }) => (
-                <FormItem className='col-span-2'>
+                <FormItem className="col-span-2">
                   <FormLabel>Endereço</FormLabel>
                   <FormControl>
-                    <Input placeholder='Rua, número, bairro' {...field} />
+                    <Input placeholder="Rua, número, bairro" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <Button className='hidden' type='submit'></Button>
+            <Button className="hidden" type="submit"></Button>
           </form>
         </Form>
       </div>
       <DialogFooter>
-        <Button onClick={form.handleSubmit(onSubmit)} className='bg-blue-500' type='submit'>
+        <Button onClick={form.handleSubmit(onSubmit)} className="bg-blue-500" type="submit">
           Atualizar Cliente
         </Button>
         <DialogClose asChild>
-          <Button ref={refBtnClose} type='button' variant='destructive'>
+          <Button ref={refBtnClose} type="button" variant="destructive">
             Cancelar
           </Button>
         </DialogClose>

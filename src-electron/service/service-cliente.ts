@@ -1,11 +1,5 @@
 import { ipcMain } from 'electron'
-import {
-  BuscarClientePorId,
-  BuscarTodosClientes,
-  CriarCliente,
-  EditarCliente,
-  RemoverCliente,
-} from '../api'
+import { BuscarClientePorId, BuscarTodosClientes, CriarCliente, EditarCliente, RemoverCliente } from '../api'
 import {
   buscarClientePorId,
   buscarTodosClientes,
@@ -16,21 +10,25 @@ import {
 
 export function serviceCliente() {
   ipcMain.handle('criarCliente', (_, ...args: Parameters<CriarCliente>) =>
-    salvarCliente(...args)
+    salvarCliente(...args),
   )
+
   ipcMain.handle('removerCliente', (_, ...args: Parameters<RemoverCliente>) =>
-    removerCliente(...args)
+    removerCliente(...args),
   )
+
   ipcMain.handle('editarCliente', (_, ...args: Parameters<EditarCliente>) =>
-    editarCliente(...args)
+    editarCliente(...args),
   )
+
   ipcMain.handle(
     'buscarClientePorId',
-    (_, ...args: Parameters<BuscarClientePorId>) => buscarClientePorId(...args)
+    (_, ...args: Parameters<BuscarClientePorId>) => buscarClientePorId(...args),
   )
+
   ipcMain.handle(
     'buscarTodosClientes',
     (_, ...args: Parameters<BuscarTodosClientes>) =>
-      buscarTodosClientes(...args)
+      buscarTodosClientes(...args),
   )
 }

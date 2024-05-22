@@ -1,4 +1,4 @@
-import { gerarDateStringPorString } from '../../src/utils/conversores'
+import { gerarDateStringPorString } from '@/utils/conversores'
 import db from '../config/banco-de-dados'
 import { FormaPagamento } from '../models/enums/forma-pagamento'
 import { VendaParaRelatorio } from '../models/relatorio'
@@ -44,8 +44,8 @@ const modelDbParaVenda = (vendaDb: VendaDb): Venda => ({
   valorTotal: vendaDb.valor_total,
   estoque: vendaDb.estoque_json
     ? JSON.parse(vendaDb.estoque_json)
-        .filter((estoque: EstoqueDb) => estoque.id)
-        .map((estoque: EstoqueDb) => (estoque.id ? modelDbParaEstoque(estoque) : null))
+      .filter((estoque: EstoqueDb) => estoque.id)
+      .map((estoque: EstoqueDb) => (estoque.id ? modelDbParaEstoque(estoque) : null))
     : [],
   cliente: vendaDb.cliente_json
     ? JSON.parse(vendaDb.cliente_json).id

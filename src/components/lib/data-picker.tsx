@@ -9,9 +9,9 @@ import { Calendar } from '../ui/calendar'
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
 
 export function CalendarioComponente({
-  data,
-  setData,
-}: {
+                                       data,
+                                       setData,
+                                     }: {
   data: DateRange
   setData: React.Dispatch<React.SetStateAction<DateRange>>
 }) {
@@ -19,10 +19,10 @@ export function CalendarioComponente({
     <Popover>
       <PopoverTrigger asChild>
         <Button
-          id='date'
+          id="date"
           variant={'outline'}
           className={cn('w-full justify-start text-left font-normal', !data && 'text-muted-foreground')}>
-          <CalendarIcon className='mr-2 h-4 w-4' />
+          <CalendarIcon className="mr-2 h-4 w-4" />
           {data?.from ? (
             data.to ? (
               <>
@@ -36,11 +36,12 @@ export function CalendarioComponente({
           )}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className='w-auto p-0' align='start'>
+
+      <PopoverContent className="w-auto p-0" align="start">
         <Calendar
           locale={ptBR}
           initialFocus
-          mode='range'
+          mode="range"
           defaultMonth={data?.from}
           selected={data}
           onSelect={setData}

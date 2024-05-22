@@ -30,20 +30,18 @@ const gerarRelatorio = (startDate: string, endDate: string) => {
   const contasData = buscarTodasContasParaRelatorio()
   const clientesData = buscarTodosClientes()
 
-  const relatorio = {
+  return {
     caixasData,
     vendasData,
     estoquesData,
     contasData,
     clientesData,
   }
-
-  return relatorio
 }
 
 export function servicoRelatorio() {
   ipcMain.handle(
     'gerarRelatorio',
-    (_, startDate: string, endDate: string): RelatorioType => gerarRelatorio(startDate, endDate)
+    (_, startDate: string, endDate: string): RelatorioType => gerarRelatorio(startDate, endDate),
   )
 }

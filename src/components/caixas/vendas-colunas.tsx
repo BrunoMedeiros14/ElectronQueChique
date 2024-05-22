@@ -1,7 +1,6 @@
 import { ColumnDef } from '@tanstack/react-table'
 import { Pencil, Trash2 } from 'lucide-react'
 import React from 'react'
-import { Cliente } from '../../../src-electron/models/cliente'
 import { Venda } from '../../../src-electron/models/venda'
 import { gerarStringPorcentagemPorNumeroInteiro, gerarStringReal } from '@/utils/conversores'
 import { Button } from '../ui/button'

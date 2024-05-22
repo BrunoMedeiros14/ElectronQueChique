@@ -39,6 +39,5 @@ export const gerarDoublePorValorMonetario = (valor: string): number =>
 export const gerarStringPorcentagemPorNumeroInteiro = (valor: number): string => (valor ? `${valor}%` : '0%')
 
 export const gerarDoublePorValorPorcentagem = (valor: string): number => {
-  const valorSemPorcentagem = valor.replace('%', '')
-  return parseFloat(valorSemPorcentagem)
+  return parseFloat(valor.replace('%', ''))
 }

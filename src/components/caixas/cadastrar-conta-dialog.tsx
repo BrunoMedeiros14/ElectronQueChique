@@ -97,22 +97,23 @@ export function DialogAdicionarSaidaDeValores({ isOpen }: { isOpen: boolean }) {
   }, [isOpen])
 
   return (
-    <DialogContent className='sm:max-w-[425px]'>
+    <DialogContent className="sm:max-w-[425px]">
       <DialogHeader>
         <DialogTitle>Cadastro de Conta</DialogTitle>
         <DialogDescription>Insira abaixo os dados da conta.</DialogDescription>
       </DialogHeader>
-      <div className='grid gap-4 py-4'>
+
+      <div className="grid gap-4 py-4">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmitNew)} className='grid grid-cols-2 gap-3'>
+          <form onSubmit={form.handleSubmit(onSubmitNew)} className="grid grid-cols-2 gap-3">
             <FormField
               control={form.control}
-              name='nome'
+              name="nome"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Nome*</FormLabel>
                   <FormControl>
-                    <Input placeholder='Nome da Conta' {...field} />
+                    <Input placeholder="Nome da Conta" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -121,12 +122,12 @@ export function DialogAdicionarSaidaDeValores({ isOpen }: { isOpen: boolean }) {
 
             <FormField
               control={form.control}
-              name='descricao'
+              name="descricao"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Descrição*</FormLabel>
                   <FormControl>
-                    <Input placeholder='Descrição da Conta' {...field} />
+                    <Input placeholder="Descrição da Conta" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -135,13 +136,13 @@ export function DialogAdicionarSaidaDeValores({ isOpen }: { isOpen: boolean }) {
 
             <FormField
               control={form.control}
-              name='valor'
+              name="valor"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Valor*</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder='Valor da Conta'
+                      placeholder="Valor da Conta"
                       ref={valorMonetario}
                       value={field.value}
                       onChange={field.onChange}
@@ -154,28 +155,29 @@ export function DialogAdicionarSaidaDeValores({ isOpen }: { isOpen: boolean }) {
 
             <FormField
               control={form.control}
-              name='dataVencimento'
+              name="dataVencimento"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Data de Vencimento</FormLabel>
                   <FormControl>
-                    <InputComMascara radix='.' mask={'00/00/0000'} unmask={true} placeholder='dd/mm/aaaa' {...field} />
+                    <InputComMascara radix="." mask={'00/00/0000'} unmask={true} placeholder="dd/mm/aaaa" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
 
-            <Button className='hidden' type='submit'></Button>
+            <Button className="hidden" type="submit"></Button>
           </form>
         </Form>
       </div>
+
       <DialogFooter>
-        <Button onClick={form.handleSubmit(onSubmitNew)} type='submit'>
+        <Button onClick={form.handleSubmit(onSubmitNew)} type="submit">
           Pagar Contas
         </Button>
         <DialogClose asChild>
-          <Button ref={refBtnClose} type='button' variant='destructive'>
+          <Button ref={refBtnClose} type="button" variant="destructive">
             Cancelar
           </Button>
         </DialogClose>

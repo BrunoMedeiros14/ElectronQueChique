@@ -9,10 +9,12 @@ import { Button } from '../ui/button'
 import { DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '../ui/dialog'
 
 export default function GerarRelatorioComponent() {
+
   const [date, setDate] = useState<DateRange | undefined>({
     from: subDays(new Date(), 7),
     to: new Date(),
   })
+
   const refBotaoFechar = useRef<HTMLButtonElement | null>()
 
   const emitirRelatorio = async () => {
@@ -21,7 +23,7 @@ export default function GerarRelatorioComponent() {
 
     const { caixasData, vendasData, estoquesData, contasData, clientesData } = await gerarRelatorio(
       dataInicial,
-      dataFinal
+      dataFinal,
     )
 
     const data = [
@@ -61,19 +63,21 @@ export default function GerarRelatorioComponent() {
   }
 
   return (
-    <DialogContent className='sm:max-w-[24rem]'>
+    <DialogContent className="sm:max-w-[24rem]">
       <DialogHeader>
         <DialogTitle>Gerar relatório</DialogTitle>
         <DialogDescription>Preencha o intervalo de data do qual você deseja gerar o relatório.</DialogDescription>
       </DialogHeader>
+
       <CalendarioComponente data={date} setData={setDate} />
-      <Button className='hidden' type='submit'></Button>
+      <Button className="hidden" type="submit"></Button>
+
       <DialogFooter>
-        <Button onClick={emitirRelatorio} className='bg-blue-500' type='submit'>
+        <Button onClick={emitirRelatorio} className="bg-blue-500" type="submit">
           Emitir Relatório
         </Button>
         <DialogClose asChild>
-          <Button ref={refBotaoFechar} type='button' variant='destructive'>
+          <Button ref={refBotaoFechar} type="button" variant="destructive">
             Cancelar
           </Button>
         </DialogClose>

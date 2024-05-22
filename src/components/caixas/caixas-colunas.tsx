@@ -57,23 +57,23 @@ export const pegarColunasCaixa = ({ setIdParaExcluir, abrirEdicaoCaixa }: Coluna
       const caixaId = row.original.id
 
       return (
-        <div className='flex justify-center w-full gap-1'>
+        <div className="flex justify-center w-full gap-1">
           <Button
-            size='icon'
-            variant='ghost'
+            size="icon"
+            variant="ghost"
             onClick={() => abrirEdicaoCaixa(caixaId)}
-            className='text-orange-400 hover:text-white hover:bg-orange-400'>
-            <Pencil className='h-4 w-4' />
-            <span className='sr-only'>Edit</span>
+            className="text-orange-400 hover:text-white hover:bg-orange-400">
+            <Pencil className="h-4 w-4" />
+            <span className="sr-only">Edit</span>
           </Button>
 
           <Button
-            size='icon'
-            variant='ghost'
+            size="icon"
+            variant="ghost"
             onClick={() => setIdParaExcluir(caixaId)}
-            className='text-red-500 hover:text-white hover:bg-red-500'>
-            <Trash2 className='h-4 w-4' />
-            <span className='sr-only'>Delete</span>
+            className="text-red-500 hover:text-white hover:bg-red-500">
+            <Trash2 className="h-4 w-4" />
+            <span className="sr-only">Delete</span>
           </Button>
         </div>
       )

@@ -11,7 +11,7 @@ export const builtins = [
 export const external = [
   ...builtins,
   ...Object.keys(
-    'dependencies' in pkg ? (pkg.dependencies as Record<string, unknown>) : {}
+    'dependencies' in pkg ? (pkg.dependencies as Record<string, unknown>) : {},
   ),
 ]
 
@@ -22,9 +22,7 @@ export function getBuildConfig(env: ConfigEnv<'build'>): UserConfig {
     root,
     mode,
     build: {
-      // Prevent multiple builds from interfering with each other.
       emptyOutDir: false,
-      // 🚧 Multiple builds may conflict.
       outDir: '.vite/build',
       watch: command === 'serve' ? {} : null,
       minify: command === 'build',
@@ -53,7 +51,7 @@ export function getBuildDefine(env: ConfigEnv<'build'>) {
     .filter(({ name }) => name != null)
     .map(({ name }) => name!)
   const defineKeys = getDefineKeys(names)
-  const define = Object.entries(defineKeys).reduce(
+  return Object.entries(defineKeys).reduce(
     (acc, [name, keys]) => {
       const { VITE_DEV_SERVER_URL, VITE_NAME } = keys
       const def = {
@@ -65,10 +63,8 @@ export function getBuildDefine(env: ConfigEnv<'build'>) {
       }
       return { ...acc, ...def }
     },
-    {} as Record<string, any>
+    {} as Record<string, any>,
   )
-
-  return define
 }
 
 export function pluginExposeRenderer(name: string): Plugin {
@@ -78,12 +74,10 @@ export function pluginExposeRenderer(name: string): Plugin {
     name: '@electron-forge/plugin-vite:expose-renderer',
     configureServer(server) {
       process.viteDevServers ??= {}
-      // Expose server for preload scripts hot reload.
       process.viteDevServers[name] = server
 
       server.httpServer?.once('listening', () => {
         const addressInfo = server.httpServer!.address() as AddressInfo
-        // Expose env constant for main process use.
         process.env[VITE_DEV_SERVER_URL] =
           `http://localhost:${addressInfo?.port}`
       })
@@ -97,12 +91,9 @@ export function pluginHotRestart(command: 'reload' | 'restart'): Plugin {
     closeBundle() {
       if (command === 'reload') {
         for (const server of Object.values(process.viteDevServers)) {
-          // Preload scripts hot reload.
           server.ws.send({ type: 'full-reload' })
         }
       } else {
-        // Main process hot restart.
-        // https://github.com/electron/forge/blob/v7.2.0/packages/api/core/src/api/start.ts#L216-L223
         process.stdin.emit('data', 'rs')
       }
     },

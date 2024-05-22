@@ -13,8 +13,12 @@ ipcMain.handle('criarVenda', (_, ...args: Parameters<CriarVenda>) => criarVenda(
 
 export function serviceVenda() {
   ipcMain.handle('removerVenda', (_, ...args: Parameters<RemoverVenda>) => removerVenda(...args))
+
   ipcMain.handle('editarVenda', (_, ...args: Parameters<EditarVenda>) => editarVenda(...args))
+
   ipcMain.handle('buscarVendaPorId', (_, ...args: Parameters<BuscarVendaPorId>) => buscarVendaPorId(...args))
+
   ipcMain.handle('buscarTodasVendas', (_, ...args: Parameters<BuscarTodasVendas>) => buscarTodasVendas(...args))
+
   ipcMain.handle('buscarVendasPorCaixaId', (_, caixaId) => buscarVendasPorCaixaId(caixaId))
 }

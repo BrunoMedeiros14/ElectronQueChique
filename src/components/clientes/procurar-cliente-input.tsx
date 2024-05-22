@@ -5,10 +5,10 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, Command
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
 
 export function ProcurarClienteInput({
-  clienteSelecionado,
-  selecionarCliente,
-  listaCliente,
-}: {
+                                       clienteSelecionado,
+                                       selecionarCliente,
+                                       listaCliente,
+                                     }: {
   clienteSelecionado: Cliente | null
   selecionarCliente: (cliente: Cliente | null) => void
   listaCliente: Cliente[]
@@ -18,13 +18,13 @@ export function ProcurarClienteInput({
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button variant='outline' className='w-full'>
+        <Button variant="outline" className="w-full">
           {clienteSelecionado ? <>{clienteSelecionado.nome}</> : <>Selecione o cliente</>}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className=' p-0' align='start'>
+      <PopoverContent className=" p-0" align="start">
         <Command>
-          <CommandInput placeholder='Filtre por nome...' />
+          <CommandInput placeholder="Filtre por nome..." />
           <CommandList>
             <CommandEmpty>Nenhum cliente encontrado.</CommandEmpty>
             <CommandGroup>

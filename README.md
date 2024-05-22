@@ -1,6 +1,7 @@
 # Sistema de Cadastro de Contas
 
-Este é um sistema de cadastro de contas desenvolvido para facilitar o gerenciamento de contas de usuários. Ele permite que os usuários criem, atualizem e excluam contas, clientes, estoques, caixa de forma eficiente e segura.
+Este é um sistema de cadastro de contas desenvolvido para facilitar o gerenciamento de contas de usuários. Ele permite
+que os usuários criem, atualizem e excluam contas, clientes, estoques, caixa de forma eficiente e segura.
 
 ## Instalação
 
