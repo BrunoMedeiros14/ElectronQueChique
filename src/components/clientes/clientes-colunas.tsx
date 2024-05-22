@@ -34,6 +34,7 @@ export const pegarColunasCliente = ({
     accessorKey: 'dataNascimento',
     header: 'Data de Nascimento',
     cell: ({ row }) => {
+      console.log(row.getValue('dataNascimento'))
       return row.getValue('dataNascimento') === null
         ? 'Não cadastrado'
         : gerarStringPorDate(row.getValue('dataNascimento'))

@@ -1,14 +1,14 @@
+import { atualizarCaixaApi, buscarCaixaPorId } from '@/api/caixas-api'
+import { gerarDatePorString, gerarStringPorDate, gerarStringPorDateNaoUTC, gerarStringReal } from '@/utils/conversores'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useEffect, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-import { atualizarCaixaApi, buscarCaixaPorId } from '@/api/caixas-api'
-import { gerarDatePorString, gerarStringPorDate, gerarStringReal } from '@/utils/conversores'
-import { InputComMascara } from '../ui/input-com-mascara'
 import { Button } from '../ui/button'
 import { DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '../ui/dialog'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
+import { InputComMascara } from '../ui/input-com-mascara'
 
 const formSchemaCaixa = z.object({
   ativo: z.boolean(),
@@ -22,7 +22,7 @@ const GerarFormVazioCaixa = () =>
     resolver: zodResolver(formSchemaCaixa),
     defaultValues: {
       ativo: true,
-      dataHoraAbertura: gerarStringPorDate(new Date()),
+      dataHoraAbertura: gerarStringPorDateNaoUTC(new Date()),
       dataHoraFechamento: '',
       valorInicial: '',
     },
@@ -48,7 +48,7 @@ export function DialogFecharCaixa({ caixaId }: { caixaId?: number }) {
       buscarCaixaPorId(caixaId).then(({ ativo, dataHoraAbertura, valorInicial }) => {
         form.setValue('ativo', ativo)
         form.setValue('dataHoraAbertura', gerarStringPorDate(dataHoraAbertura))
-        form.setValue('dataHoraFechamento', gerarStringPorDate(new Date()))
+        form.setValue('dataHoraFechamento', gerarStringPorDateNaoUTC(new Date()))
         form.setValue('valorInicial', gerarStringReal(valorInicial))
       })
     }

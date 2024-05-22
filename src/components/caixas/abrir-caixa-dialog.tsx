@@ -1,3 +1,5 @@
+import { cadastrarCaixaApi } from '@/api/caixas-api'
+import { gerarDatePorString, gerarDoublePorValorMonetario, gerarStringPorDateNaoUTC } from '@/utils/conversores'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useNumberFormat } from '@react-input/number-format'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
@@ -5,13 +7,11 @@ import { useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { Caixa } from '../../../src-electron/models/caixa'
-import { cadastrarCaixaApi } from '@/api/caixas-api'
-import { gerarDatePorString, gerarDoublePorValorMonetario, gerarStringPorDate } from '@/utils/conversores'
-import { InputComMascara } from '../ui/input-com-mascara'
 import { Button } from '../ui/button'
 import { DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '../ui/dialog'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
 import { Input } from '../ui/input'
+import { InputComMascara } from '../ui/input-com-mascara'
 
 const formSchemaCaixa = z.object({
   dataHoraAbertura: z.string(),
@@ -39,7 +39,7 @@ export default function Teste() {
   const form = useForm<z.infer<typeof formSchemaCaixa>>({
     resolver: zodResolver(formSchemaCaixa),
     defaultValues: {
-      dataHoraAbertura: gerarStringPorDate(new Date()),
+      dataHoraAbertura: gerarStringPorDateNaoUTC(new Date()),
       valorInicial: '',
     },
   })

@@ -23,7 +23,12 @@ export const gerarDateStringPorString = (dataString: string) => {
 
 export const gerarStringPorDate = (data: Date) =>
   data
-    ? `${preencherZeroNumeroData(data.getUTCDate())}/${preencherZeroNumeroData(data.getMonth() + 1)}/${data.getFullYear()}`
+    ? `${preencherZeroNumeroData(data.getUTCDate())}/${preencherZeroNumeroData(data.getUTCMonth() + 1)}/${data.getUTCFullYear()}`
+    : null
+
+export const gerarStringPorDateNaoUTC = (data: Date) =>
+  data
+    ? `${preencherZeroNumeroData(data.getDate())}/${preencherZeroNumeroData(data.getMonth() + 1)}/${data.getFullYear()}`
     : null
 
 export const gerarStringReal = (valor: number) => formatoReal.format(valor)
