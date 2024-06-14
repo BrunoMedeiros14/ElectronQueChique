@@ -113,7 +113,6 @@ export function CaixaAberto({ caixaDoDia }: { caixaDoDia: Caixa }) {
   function CaixaInfo({ title, value }: CaixaInfoProps) {
     const isNegative = value < 0
     const valueClass = isNegative ? 'text-red-500' : 'text-green-500'
-    const sign = isNegative ? '-' : '+'
 
     return (
       <div className="flex flex-col p-4 m-2 rounded-45 w-full">
@@ -123,8 +122,23 @@ export function CaixaAberto({ caixaDoDia }: { caixaDoDia: Caixa }) {
           </h2>
         </div>
         <div className="flex justify-between p-2 border border-blue-500 rounded-b-45">
-          <span className={`${valueClass} text-xl font-bold`}>{sign}</span>
-          <p className={`${valueClass} text-xl font-bold`}>{gerarStringReal(value)}</p>
+          <p className={`${valueClass} text-lg font-bold`}>{gerarStringReal(value)}</p>
+        </div>
+      </div>
+    )
+  }
+
+  function CaixaInfoSaida({ title, value }: CaixaInfoProps) {
+    return (
+      <div className="flex flex-col p-4 m-2 rounded-45 w-full">
+        <div className="flex justify-end bg-blue-500 p-2 border border-blue-500 rounded-t-2xl">
+          <h2 className="text-white text-lg" style={{ whiteSpace: 'nowrap' }}>
+            {title}
+          </h2>
+        </div>
+        <div className="flex justify-between p-2 border border-blue-500 rounded-b-45">
+          <span className={`${'text-red-500'} text-xl font-bold`}>{'-'}</span>
+          <p className={`${'text-red-500'} text-lg font-bold`}>{gerarStringReal(value)}</p>
         </div>
       </div>
     )
@@ -201,10 +215,10 @@ export function CaixaAberto({ caixaDoDia }: { caixaDoDia: Caixa }) {
 
         <div className="flex gap-2 fixed bottom-0">
           <CaixaInfo title="Saldo Inicial" value={saldoInicial} />
-          <CaixaInfo title="Saídas de Caixa" value={saidasDeCaixa} />
+          <CaixaInfoSaida title="Saídas de Caixa" value={saidasDeCaixa} />
           <CaixaInfo title="Recebido Cartão" value={recebidoCartao} />
           <CaixaInfo title="Recebido Dinheiro" value={recebidoDinheiro} />
-          <CaixaInfo title="Valor Total" value={valorTotal} />
+          <CaixaInfo title="Valor Total" value={valorTotal - saidasDeCaixa} />
         </div>
 
       </main>
