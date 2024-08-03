@@ -1,15 +1,20 @@
 {
   "name": "que-chique",
   "productName": "que-chique",
-  "version": "0.0.1",
-  "description": "My Electron application description",
+  "version": "1.0.0",
+  "description": "Aplicativo que chique desenvolvido em Electron e React para gerenciamento de estoques.",
   "main": ".vite/build/main.js",
-  "keywords": [],
+  "keywords": ["electron", "vite", "typescript", "react", "sqlite3"],
   "author": {
     "name": "Bruno Medeiros",
-    "email": "brunodemedeiros14@gmail.com"
+    "url": "https://github.com/BrunoMedeiros14"
   },
-  "contributors": [],
+  "contributors": [
+    {
+      "name": "Leo Guedex",
+      "url": "https://github.com/LeoGuedex"
+    }
+  ],
   "license": "MIT",
   "scripts": {
     "start": "electron-forge start",
