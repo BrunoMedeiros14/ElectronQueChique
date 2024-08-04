@@ -1,5 +1,5 @@
 <h1 align="center">
-  Inventory Management - Que Chique
+  Gerenciamento de Estoque - Que Chique
 </h1>
 
 <p align="center">
@@ -12,11 +12,9 @@
   <img src="https://img.shields.io/static/v1?label=Que%20Chique&message=v1.0.0&color=blue" alt="Juju Market" />
 </p>
 
-This is an inventory management and account registration system designed to facilitate the management of a business, with this prototype tailored for a bazaar. It allows users to efficiently and securely create, update, and delete accounts, customers, inventory, and cash management
+Este é um sistema de gerenciamente de estoque e cadastro de contas desenvolvido para facilitar o gerenciamento de um comércio, sendo este protótipo voltado para um bazar. Ele permite que os usuários criem, atualizem e excluam contas, clientes, estoques, caixa de forma eficiente e segura.
 
-[click here](./README.pt-br.md) to see the documentation in Portuguese :brazil:
-
-## Tecnologies
+## Tecnologias
 
 - [TypeScript](https://www.typescriptlang.org/)
 - [Vite](https://vitejs.dev/)
@@ -32,13 +30,13 @@ This is an inventory management and account registration system designed to faci
 - [Better SQLite3](https://github.com/JoshuaWise/better-sqlite3)
 - [Zod](https://zod.dev/)
 
-## Application Proposal
+## Proposta de aplicativo
 
-Create a desktop application for managing accounts payable, clients, and inventory. It should include a tab for daily cash management, allowing users to record sales of inventory items, either linking or not linking the sale to the client who purchased the item. The application should display a daily cash statement and have the capability to generate an Excel report detailing the sales made, along with information on the products and registered clients.
+Criar um aplicativo desktop para o cadastro de contas a pagar, clientes e de estoque, incluíndo a aba para o gerenciamento do caixa diário que é possível cadastrar a venda de um estoque vinculando ou não o cliente que comprou este item, mostrando o extrato do caixa diário e tendo a possibilidade de gerar um extrato em excel para retornar as vendas realizadas, junto aos produtos e clientes cadastrados.
 
-For data persistence, SQLite3 was used with the Better SQLite3 library, and migrations included in the code are executed each time the application is opened.
+Para a persistência dos dados foi utilizado o sqlite3 com a biblioteca Better Sqlite 3 e utilizando migrations incluídas no próprio código que é executada sempre ao abrir o aplicativo.
 
-The class diagram for the completed project looks like this:
+O diagrama de classes para o projeto finalizado ficou assim:
 
 ```mermaid
 classDiagram
@@ -100,32 +98,32 @@ classDiagram
     VENDAS "1" -- "0..*" ESTOQUES : ""
 ```
 
-Since the aim of the project was not an in-depth study of authentication, a simple method was used, storing data directly in the auth.tsx file with the username admin and password admin. The tanstack react router functions and session storage were used for login validation.
+Como intuito do projeto não era um estudo aprofundado de autenticação, foi utilizado um método simples, persistindo os dados em código no arquivo `auth.tsx` com sendo o usuário `admin` e senha `admin`, utilizando as funções fornecidas pelo `tanstack react router` e o `session storage` para realizar a validação de login.
 
-## How to Run
+## Como Executar
 
-To install and run this project locally, simply clone the Git repository:
+Para instalar e executar este projeto localmente, basta clonar o repositório git:
 
 ```bash
 git clone https://github.com/BrunoMedeiros14/ElectronQueChique.git
 cd ElectronQueChique
 ```
 
-- With the **node** in version `20.x.x` and **npm** instaled in machine, install the global `yarn` with the command `npm i -g yarn` and install the dependencies with `yarn install` and then will be possible to execute all of the commands listed bellow:
+- Com o **node** na versão `20.x.x` e **npm** instalado na máquina, instale o yarn globalmente com o comando `npm i -g yarn` e instale as dependências com `yarn install` e será possível executar os comandos abaixo como desejado:
 
-- To execute the code in dev mode:
+- Para executar o código:
 
   ```bash
   yarn start
   ```
 
-- To package the project:
+- Para empacotar o projeto:
 
   ```bash
   yarn package
   ```
 
-- To generate the application installer:
+- Para gerar o instalador do aplicativo:
 
   ```bash
   yarn make
