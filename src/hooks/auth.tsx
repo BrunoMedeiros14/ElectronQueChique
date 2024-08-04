@@ -1,4 +1,4 @@
-import { createContext, useCallback, useState } from 'react'
+import { createContext, useCallback, useMemo, useState } from 'react'
 
 export interface AuthContext {
   isAuthenticated: boolean
@@ -16,7 +16,7 @@ function getStoredUser() {
 }
 
 function setStoredUser(user?: string, senha?: string) {
-  if (user === 'aa' && senha === 'aa') {
+  if (user === 'admin' && senha === 'admin') {
     sessionStorage.setItem(key, user)
     return true
   }
@@ -24,9 +24,9 @@ function setStoredUser(user?: string, senha?: string) {
   return false
 }
 
-export function AuthProvider({ children }: { children: React.ReactNode }) {
+export function AuthProvider({ children }: { readonly children: React.ReactNode }) {
   const [user, setUser] = useState<string | null>(getStoredUser())
-  const isAuthenticated = true
+  const isAuthenticated = !!user
 
   const logout = useCallback(() => {
     setStoredUser()
@@ -41,5 +41,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return false
   }, [])
 
-  return <AuthContext.Provider value={{ isAuthenticated, user, login, logout }}>{children}</AuthContext.Provider>
+  return (
+    <AuthContext.Provider
+      value={useMemo(() => ({ isAuthenticated, user, login, logout }), [isAuthenticated, user, login, logout])}>
+      {children}
+    </AuthContext.Provider>
+  )
 }
