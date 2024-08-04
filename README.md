@@ -16,6 +16,10 @@ This is an inventory management and account registration system designed to faci
 
 [click here](./README.pt-br.md) to see the documentation in Portuguese :brazil:
 
+## Demonstration
+
+![Project video](assets/videos/demo.gif)
+
 ## Tecnologies
 
 - [TypeScript](https://www.typescriptlang.org/)

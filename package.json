@@ -21,6 +21,7 @@
       "url": "https://github.com/LeoGuedex"
     }
   ],
+  "publisher": "",
   "license": "MIT",
   "scripts": {
     "start": "electron-forge start",

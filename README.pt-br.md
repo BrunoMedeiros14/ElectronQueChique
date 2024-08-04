@@ -14,6 +14,10 @@
 
 Este é um sistema de gerenciamente de estoque e cadastro de contas desenvolvido para facilitar o gerenciamento de um comércio, sendo este protótipo voltado para um bazar. Ele permite que os usuários criem, atualizem e excluam contas, clientes, estoques, caixa de forma eficiente e segura.
 
+## Demonstração
+
+![Vídeo do projeto funcionando](assets/videos/demo.gif)
+
 ## Tecnologias
 
 - [TypeScript](https://www.typescriptlang.org/)
