@@ -1,20 +1,18 @@
+import { Cliente } from '../models/cliente'
 import { Conta } from '../models/conta'
-import { Estoque } from '../models/estoque'
 import { Cor } from '../models/enums/cor'
 import { Tecido } from '../models/enums/tecido'
+import { Estoque } from '../models/estoque'
 import { salvarCliente } from '../repository/repositorio-cliente'
 import { criarConta } from '../repository/repositorio-conta'
 import { criarEstoque } from '../repository/repositorio-estoque'
-import { Cliente } from '../models/cliente'
 
 const estoqueArray: Estoque[] = []
 const contaArray: Conta[] = []
 const clienteArray: Cliente[] = []
 
 function generateRandomDate(start: Date, end: Date): Date {
-  return new Date(
-    start.getTime() + Math.random() * (end.getTime() - start.getTime()),
-  )
+  return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()))
 }
 
 function generateRandomNumber(min: number, max: number): number {
@@ -26,8 +24,7 @@ function generateRandomBoolean(): boolean {
 }
 
 function generateRandomText(length: number): string {
-  const characters =
-    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
   let result = ''
   const charactersLength = characters.length
   for (let i = 0; i < length; i++) {
@@ -62,10 +59,7 @@ for (let i = 0; i < 30; i++) {
     nome: generateRandomText(8),
     valor: generateRandomNumber(50, 500),
     descricao: generateRandomText(20),
-    dataVencimento: generateRandomDate(
-      new Date(2020, 0, 1),
-      new Date(2025, 11, 31),
-    ),
+    dataVencimento: generateRandomDate(new Date(2020, 0, 1), new Date(2025, 11, 31)),
     dataPagamento: generateRandomDate(new Date(2020, 0, 1), new Date()),
     pago: generateRandomBoolean(),
   }
@@ -75,10 +69,7 @@ for (let i = 0; i < 30; i++) {
 for (let i = 0; i < 30; i++) {
   const cliente: Cliente = {
     nome: generateRandomText(8),
-    dataNascimento: generateRandomDate(
-      new Date(1950, 0, 1),
-      new Date(2005, 11, 31),
-    ),
+    dataNascimento: generateRandomDate(new Date(1950, 0, 1), new Date(2005, 11, 31)),
     endereco: generateRandomText(20),
     telefone: generateRandomText(10),
     email: generateRandomText(8) + '@example.com',

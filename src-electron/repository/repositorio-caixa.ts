@@ -27,8 +27,8 @@ const modelDbParaCaixa = (caixaDb: CaixaDb): Caixa => ({
 })
 
 const modelDbParaCaixaRelatorio = (caixaDb: CaixaDb): CaixaParaRelatorio => {
-  let dataHoraAbertura = new Date(caixaDb.data_hora_abertura)
-  let dataHoraFechamento = caixaDb.data_hora_fechamento ? new Date(caixaDb.data_hora_fechamento) : null
+  const dataHoraAbertura = new Date(caixaDb.data_hora_abertura)
+  const dataHoraFechamento = caixaDb.data_hora_fechamento ? new Date(caixaDb.data_hora_fechamento) : null
 
   dataHoraAbertura.setDate(dataHoraAbertura.getDate() + 1)
 

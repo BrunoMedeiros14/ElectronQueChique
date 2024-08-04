@@ -7,7 +7,6 @@ import { buscarTodosEstoquesParaRelatorio } from '../repository/repositorio-esto
 import { buscarVendasPorDataParaRelatorio } from '../repository/repositorio-venda'
 
 const gerarRelatorio = (startDate: string, endDate: string) => {
-
   const converterDataInicio = (data: string) => {
     const [dia, mes, ano] = data.split('/')
     return `${ano}-${mes}-${dia}`
@@ -42,6 +41,6 @@ const gerarRelatorio = (startDate: string, endDate: string) => {
 export function servicoRelatorio() {
   ipcMain.handle(
     'gerarRelatorio',
-    (_, startDate: string, endDate: string): RelatorioType => gerarRelatorio(startDate, endDate),
+    (_, startDate: string, endDate: string): RelatorioType => gerarRelatorio(startDate, endDate)
   )
 }

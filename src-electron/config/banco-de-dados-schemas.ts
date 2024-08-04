@@ -67,13 +67,7 @@ const criarTabelaEstoque = `
 `
 
 export const sicronizarBanco = (conn: Database): void => {
-  const tabelas = [
-    criarTabelaClientes,
-    criarTabelaCaixa,
-    criarTabelaContas,
-    criarTabelaVenda,
-    criarTabelaEstoque,
-  ]
+  const tabelas = [criarTabelaClientes, criarTabelaCaixa, criarTabelaContas, criarTabelaVenda, criarTabelaEstoque]
 
   tabelas.forEach((query) => conn.exec(query))
 }

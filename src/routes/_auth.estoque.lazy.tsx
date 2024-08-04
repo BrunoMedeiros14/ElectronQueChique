@@ -2,10 +2,10 @@ import { useMutation, useQueryClient, useSuspenseQuery } from '@tanstack/react-q
 import { createLazyFileRoute } from '@tanstack/react-router'
 import { Shirt } from 'lucide-react'
 import { useRef, useState } from 'react'
-import { buscarEstoques, removerEstoqueApi } from '@/api/estoques-api'
-import { pegarColunasEstoque } from '@/components/estoques/estoque-colunas'
-import { DialogAtualizarEstoque, DialogCadastrarEstoque } from '@/components/estoques/estoque-dialog'
-import { cn } from '@/components/lib/utils'
+import { buscarEstoques, removerEstoqueApi } from '../api/estoques-api'
+import { pegarColunasEstoque } from '../components/estoques/estoque-colunas'
+import { DialogAtualizarEstoque, DialogCadastrarEstoque } from '../components/estoques/estoque-dialog'
+import { cn } from '../components/lib/utils'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -15,12 +15,12 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from '@/components/ui/alert-dialog'
-import { Button, buttonVariants } from '@/components/ui/button'
-import { DataTable } from '@/components/ui/data-table'
-import { Dialog, DialogTrigger } from '@/components/ui/dialog'
-import { Input } from '@/components/ui/input'
-import { escutarCliqueTeclado } from '@/hooks/escutar-clique-teclado'
+} from '../components/ui/alert-dialog'
+import { Button, buttonVariants } from '../components/ui/button'
+import { DataTable } from '../components/ui/data-table'
+import { Dialog, DialogTrigger } from '../components/ui/dialog'
+import { Input } from '../components/ui/input'
+import { useEscutarCliqueTeclado } from '../hooks/escutar-clique-teclado'
 
 export const Route = createLazyFileRoute('/_auth/estoque')({
   component: Component,
@@ -56,27 +56,27 @@ export function Component() {
     abrirEdicaoEstoque,
   })
 
-  escutarCliqueTeclado(() => {
+  useEscutarCliqueTeclado(() => {
     refBotaoCadastro.current.click()
   }, ['F1'])
 
   return (
-    <main className="flex flex-1 flex-col p-4 md:p-6 max-w-[96rem] mx-auto">
-      <div className="flex items-center">
-        <h1 className="font-semibold text-lg md:text-2xl h-10">Estoque</h1>
+    <main className='mx-auto flex max-w-[96rem] flex-1 flex-col p-4 md:p-6'>
+      <div className='flex items-center'>
+        <h1 className='h-10 text-lg font-semibold md:text-2xl'>Estoque</h1>
       </div>
 
-      <div className="flex items-center justify-between py-3 gap-2">
+      <div className='flex items-center justify-between gap-2 py-3'>
         <Input
-          placeholder="Pesquisar itens..."
+          placeholder='Pesquisar itens...'
           value={searchValue}
           onChange={(e) => setSearchValue(e.target.value)}
-          className="max-w-lg"
+          className='max-w-lg'
         />
         <Dialog onOpenChange={setDialogAberto}>
           <DialogTrigger asChild>
-            <Button ref={refBotaoCadastro} className="ml-auto h-10">
-              <Shirt className="mr-2" />
+            <Button ref={refBotaoCadastro} className='ml-auto h-10'>
+              <Shirt className='mr-2' />
               Adicionar novo (F1)
             </Button>
           </DialogTrigger>
@@ -84,7 +84,7 @@ export function Component() {
         </Dialog>
       </div>
 
-      <DataTable columns={colunasEstoque} dados={estoques} colunaParaFiltrar="nome" filtro={searchValue} />
+      <DataTable columns={colunasEstoque} dados={estoques} colunaParaFiltrar='nome' filtro={searchValue} />
 
       <AlertDialog open={idParaExcluir !== null}>
         <AlertDialogContent>
@@ -96,7 +96,7 @@ export function Component() {
           </AlertDialogHeader>
 
           <AlertDialogFooter>
-            <AlertDialogCancel onClick={() => setIdParaExcluir(null)} className="destructive">
+            <AlertDialogCancel onClick={() => setIdParaExcluir(null)} className='destructive'>
               Cancelar
             </AlertDialogCancel>
             <AlertDialogAction

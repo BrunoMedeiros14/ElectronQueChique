@@ -9,7 +9,7 @@ export default defineConfig((env) => {
     build: {
       rollupOptions: {
         external,
-        input: forgeConfigSelf.entry!,
+        input: forgeConfigSelf.entry,
         output: {
           format: 'cjs',
           inlineDynamicImports: true,

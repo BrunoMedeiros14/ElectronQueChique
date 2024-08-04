@@ -13,9 +13,7 @@ export type ClienteDb = {
 const clienteParaModelDb = (cliente: Cliente): ClienteDb => ({
   id: cliente.id,
   nome: cliente.nome,
-  data_nascimento: cliente.dataNascimento
-    ? cliente.dataNascimento.toISOString().split('T')[0]
-    : null,
+  data_nascimento: cliente.dataNascimento ? cliente.dataNascimento.toISOString().split('T')[0] : null,
   endereco: cliente.endereco,
   telefone: cliente.telefone,
   email: cliente.email,
@@ -24,9 +22,7 @@ const clienteParaModelDb = (cliente: Cliente): ClienteDb => ({
 export const modelDbParaCliente = (clienteDb: ClienteDb): Cliente => ({
   id: clienteDb.id,
   nome: clienteDb.nome,
-  dataNascimento: clienteDb.data_nascimento
-    ? new Date(clienteDb.data_nascimento)
-    : null,
+  dataNascimento: clienteDb.data_nascimento ? new Date(clienteDb.data_nascimento) : null,
   endereco: clienteDb.endereco,
   telefone: clienteDb.telefone,
   email: clienteDb.email,

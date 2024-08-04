@@ -1,14 +1,20 @@
+import { buscarTodasContas } from '@/api/contas-api'
+import { buscarVendasPorCaixaId, removerVendaApi } from '@/api/vendas-api'
+import { DialogAtualizarVenda } from '@/components/caixas/atualizar-venda-dialog'
+import { DialogAdicionarSaidaDeValores } from '@/components/caixas/cadastrar-conta-dialog'
+import { DialogCadastrarVendaBeta } from '@/components/caixas/cadastrar-venda-dialog'
+import { DialogFecharCaixa } from '@/components/caixas/fechar-caixa-dialog'
+import { pegarColunasVenda } from '@/components/caixas/vendas-colunas'
+import { FormaPagamento } from '@/enums/forma-pagamento'
+import { useEscutarCliqueTeclado } from '@/hooks/escutar-clique-teclado'
+import { gerarStringReal } from '@/utils/conversores'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Receipt } from 'lucide-react'
 import { useRef, useState } from 'react'
 import { FaCashRegister, FaMoneyBillWave } from 'react-icons/fa'
 import { Caixa } from '../../../src-electron/models/caixa'
+import { Conta } from '../../../src-electron/models/conta'
 import { Venda } from '../../../src-electron/models/venda'
-import { buscarVendasPorCaixaId, removerVendaApi } from '@/api/vendas-api'
-import { DialogAdicionarSaidaDeValores } from '@/components/caixas/cadastrar-conta-dialog'
-import { FormaPagamento } from '@/enums/forma-pagamento'
-import { escutarCliqueTeclado } from '@/hooks/escutar-clique-teclado'
-import { gerarStringReal } from '@/utils/conversores'
 import { cn } from '../lib/utils'
 import {
   AlertDialog,
@@ -23,12 +29,6 @@ import {
 import { Button, buttonVariants } from '../ui/button'
 import { DataTable } from '../ui/data-table'
 import { Dialog, DialogTrigger } from '../ui/dialog'
-import { pegarColunasVenda } from '@/components/caixas/vendas-colunas'
-import { DialogCadastrarVendaBeta } from '@/components/caixas/cadastrar-venda-dialog'
-import { DialogFecharCaixa } from '@/components/caixas/fechar-caixa-dialog'
-import { DialogAtualizarVenda } from '@/components/caixas/atualizar-venda-dialog'
-import { Conta } from '../../../src-electron/models/conta'
-import { buscarTodasContas } from '@/api/contas-api'
 
 type CaixaInfoProps = {
   title: string
@@ -74,7 +74,7 @@ export function CaixaAberto({ caixaDoDia }: { caixaDoDia: Caixa }) {
     abrirEdicaoVenda,
   })
 
-  escutarCliqueTeclado(() => {
+  useEscutarCliqueTeclado(() => {
     refBotaoCadastro.current.click()
   }, ['F1'])
 
@@ -86,7 +86,7 @@ export function CaixaAberto({ caixaDoDia }: { caixaDoDia: Caixa }) {
   let contasComDataPagamentoHoje: Conta[] = []
 
   if (contas.data) {
-    contasComDataPagamentoHoje = contas.data.filter(conta => {
+    contasComDataPagamentoHoje = contas.data.filter((conta) => {
       const dataPagamento = new Date(conta.dataPagamento)
       dataPagamento.setHours(0, 0, 0, 0)
 
@@ -98,14 +98,14 @@ export function CaixaAberto({ caixaDoDia }: { caixaDoDia: Caixa }) {
 
   const recebidoDinheiro = vendas.data
     ? vendas.data
-      .filter((v) => v.formaPagamento === FormaPagamento.Dinheiro)
-      .reduce((total, venda) => total + venda.valorTotal, 0)
+        .filter((v) => v.formaPagamento === FormaPagamento.Dinheiro)
+        .reduce((total, venda) => total + venda.valorTotal, 0)
     : 0
 
   const recebidoCartao = vendas.data
     ? vendas.data
-      .filter((v) => v.formaPagamento === FormaPagamento.Cartao)
-      .reduce((total, venda) => total + venda.valorTotal, 0)
+        .filter((v) => v.formaPagamento === FormaPagamento.Cartao)
+        .reduce((total, venda) => total + venda.valorTotal, 0)
     : 0
 
   const valorTotal = vendas.data ? vendas.data.reduce((total, venda) => total + venda.valorTotal, 0) : 0
@@ -115,13 +115,13 @@ export function CaixaAberto({ caixaDoDia }: { caixaDoDia: Caixa }) {
     const valueClass = isNegative ? 'text-red-500' : 'text-green-500'
 
     return (
-      <div className="flex flex-col p-4 m-2 rounded-45 w-full">
-        <div className="flex justify-end bg-blue-500 p-2 border border-blue-500 rounded-t-2xl">
-          <h2 className="text-white text-lg" style={{ whiteSpace: 'nowrap' }}>
+      <div className='rounded-45 m-2 flex w-full flex-col p-4'>
+        <div className='flex justify-end rounded-t-2xl border border-blue-500 bg-blue-500 p-2'>
+          <h2 className='text-lg text-white' style={{ whiteSpace: 'nowrap' }}>
             {title}
           </h2>
         </div>
-        <div className="flex justify-between p-2 border border-blue-500 rounded-b-45">
+        <div className='rounded-b-45 flex justify-between border border-blue-500 p-2'>
           <p className={`${valueClass} text-lg font-bold`}>{gerarStringReal(value)}</p>
         </div>
       </div>
@@ -130,13 +130,13 @@ export function CaixaAberto({ caixaDoDia }: { caixaDoDia: Caixa }) {
 
   function CaixaInfoSaida({ title, value }: CaixaInfoProps) {
     return (
-      <div className="flex flex-col p-4 m-2 rounded-45 w-full">
-        <div className="flex justify-end bg-blue-500 p-2 border border-blue-500 rounded-t-2xl">
-          <h2 className="text-white text-lg" style={{ whiteSpace: 'nowrap' }}>
+      <div className='rounded-45 m-2 flex w-full flex-col p-4'>
+        <div className='flex justify-end rounded-t-2xl border border-blue-500 bg-blue-500 p-2'>
+          <h2 className='text-lg text-white' style={{ whiteSpace: 'nowrap' }}>
             {title}
           </h2>
         </div>
-        <div className="flex justify-between p-2 border border-blue-500 rounded-b-45">
+        <div className='rounded-b-45 flex justify-between border border-blue-500 p-2'>
           <span className={`${'text-red-500'} text-xl font-bold`}>{'-'}</span>
           <p className={`${'text-red-500'} text-lg font-bold`}>{gerarStringReal(value)}</p>
         </div>
@@ -145,18 +145,18 @@ export function CaixaAberto({ caixaDoDia }: { caixaDoDia: Caixa }) {
   }
 
   return (
-    <div className="overflow-y-auto">
-      <main className="flex flex-1 flex-col p-4 md:p-6 mx-auto">
+    <div className='overflow-y-auto'>
+      <main className='mx-auto flex flex-1 flex-col p-4 md:p-6'>
         <div>
-          <div className="flex items-center">
-            <h1 className="font-semibold text-lg md:text-2xl h-10">{`Caixa do Dia`}</h1>
+          <div className='flex items-center'>
+            <h1 className='h-10 text-lg font-semibold md:text-2xl'>{`Caixa do Dia`}</h1>
           </div>
 
-          <div className="flex justify-end py-3 gap-4">
+          <div className='flex justify-end gap-4 py-3'>
             <Dialog onOpenChange={setDialogAberto}>
               <DialogTrigger asChild>
-                <Button ref={refBotaoCadastro} className="h-10">
-                  <Receipt className="mr-2" />
+                <Button ref={refBotaoCadastro} className='h-10'>
+                  <Receipt className='mr-2' />
                   Nova Venda (F1)
                 </Button>
               </DialogTrigger>
@@ -165,8 +165,8 @@ export function CaixaAberto({ caixaDoDia }: { caixaDoDia: Caixa }) {
 
             <Dialog onOpenChange={setDialogAberto}>
               <DialogTrigger asChild>
-                <Button className="h-10">
-                  <FaMoneyBillWave className="mr-2" />
+                <Button className='h-10'>
+                  <FaMoneyBillWave className='mr-2' />
                   Adicionar Saída de Valores
                 </Button>
               </DialogTrigger>
@@ -175,8 +175,8 @@ export function CaixaAberto({ caixaDoDia }: { caixaDoDia: Caixa }) {
 
             <Dialog onOpenChange={setDialogAberto}>
               <DialogTrigger asChild>
-                <Button className="h-10">
-                  <FaCashRegister className="mr-2" />
+                <Button className='h-10'>
+                  <FaCashRegister className='mr-2' />
                   Fechar Caixa
                 </Button>
               </DialogTrigger>
@@ -196,7 +196,7 @@ export function CaixaAberto({ caixaDoDia }: { caixaDoDia: Caixa }) {
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel onClick={() => setIdParaExcluir(null)} className="destructive">
+              <AlertDialogCancel onClick={() => setIdParaExcluir(null)} className='destructive'>
                 Cancelar
               </AlertDialogCancel>
               <AlertDialogAction
@@ -213,14 +213,13 @@ export function CaixaAberto({ caixaDoDia }: { caixaDoDia: Caixa }) {
           <DialogAtualizarVenda vendaId={idParaEditar} />
         </Dialog>
 
-        <div className="flex gap-2 fixed bottom-0">
-          <CaixaInfo title="Saldo Inicial" value={saldoInicial} />
-          <CaixaInfoSaida title="Saídas de Caixa" value={saidasDeCaixa} />
-          <CaixaInfo title="Recebido Cartão" value={recebidoCartao} />
-          <CaixaInfo title="Recebido Dinheiro" value={recebidoDinheiro} />
-          <CaixaInfo title="Valor Total" value={valorTotal - saidasDeCaixa} />
+        <div className='fixed bottom-0 flex gap-2'>
+          <CaixaInfo title='Saldo Inicial' value={saldoInicial} />
+          <CaixaInfoSaida title='Saídas de Caixa' value={saidasDeCaixa} />
+          <CaixaInfo title='Recebido Cartão' value={recebidoCartao} />
+          <CaixaInfo title='Recebido Dinheiro' value={recebidoDinheiro} />
+          <CaixaInfo title='Valor Total' value={valorTotal - saidasDeCaixa} />
         </div>
-
       </main>
     </div>
   )

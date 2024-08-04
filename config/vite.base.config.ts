@@ -3,16 +3,11 @@ import type { AddressInfo } from 'node:net'
 import type { ConfigEnv, Plugin, UserConfig } from 'vite'
 import pkg from '../package.json'
 
-export const builtins = [
-  'electron',
-  ...builtinModules.map((m) => [m, `node:${m}`]).flat(),
-]
+export const builtins = ['electron', ...builtinModules.map((m) => [m, `node:${m}`]).flat()]
 
 export const external = [
   ...builtins,
-  ...Object.keys(
-    'dependencies' in pkg ? (pkg.dependencies as Record<string, unknown>) : {},
-  ),
+  ...Object.keys('dependencies' in pkg ? (pkg.dependencies as Record<string, unknown>) : {}),
 ]
 
 export function getBuildConfig(env: ConfigEnv<'build'>): UserConfig {
@@ -47,23 +42,18 @@ export function getDefineKeys(names: string[]) {
 
 export function getBuildDefine(env: ConfigEnv<'build'>) {
   const { command, forgeConfig } = env
-  const names = forgeConfig.renderer
-    .filter(({ name }) => name != null)
-    .map(({ name }) => name!)
+  const names = forgeConfig.renderer.filter(({ name }) => name != null).map(({ name }) => name)
   const defineKeys = getDefineKeys(names)
   return Object.entries(defineKeys).reduce(
     (acc, [name, keys]) => {
       const { VITE_DEV_SERVER_URL, VITE_NAME } = keys
       const def = {
-        [VITE_DEV_SERVER_URL]:
-          command === 'serve'
-            ? JSON.stringify(process.env[VITE_DEV_SERVER_URL])
-            : undefined,
+        [VITE_DEV_SERVER_URL]: command === 'serve' ? JSON.stringify(process.env[VITE_DEV_SERVER_URL]) : undefined,
         [VITE_NAME]: JSON.stringify(name),
       }
       return { ...acc, ...def }
     },
-    {} as Record<string, any>,
+    {} as Record<string, string | undefined>
   )
 }
 
@@ -77,9 +67,8 @@ export function pluginExposeRenderer(name: string): Plugin {
       process.viteDevServers[name] = server
 
       server.httpServer?.once('listening', () => {
-        const addressInfo = server.httpServer!.address() as AddressInfo
-        process.env[VITE_DEV_SERVER_URL] =
-          `http://localhost:${addressInfo?.port}`
+        const addressInfo = server.httpServer?.address() as AddressInfo
+        process.env[VITE_DEV_SERVER_URL] = `http://localhost:${addressInfo?.port}`
       })
     },
   }
@@ -91,7 +80,7 @@ export function pluginHotRestart(command: 'reload' | 'restart'): Plugin {
     closeBundle() {
       if (command === 'reload') {
         for (const server of Object.values(process.viteDevServers)) {
-          server.ws.send({ type: 'full-reload' })
+          server.hot.send({ type: 'full-reload' })
         }
       } else {
         process.stdin.emit('data', 'rs')

@@ -9,26 +9,13 @@ import {
 } from '../repository/repositorio-cliente'
 
 export function serviceCliente() {
-  ipcMain.handle('criarCliente', (_, ...args: Parameters<CriarCliente>) =>
-    salvarCliente(...args),
-  )
+  ipcMain.handle('criarCliente', (_, ...args: Parameters<CriarCliente>) => salvarCliente(...args))
 
-  ipcMain.handle('removerCliente', (_, ...args: Parameters<RemoverCliente>) =>
-    removerCliente(...args),
-  )
+  ipcMain.handle('removerCliente', (_, ...args: Parameters<RemoverCliente>) => removerCliente(...args))
 
-  ipcMain.handle('editarCliente', (_, ...args: Parameters<EditarCliente>) =>
-    editarCliente(...args),
-  )
+  ipcMain.handle('editarCliente', (_, ...args: Parameters<EditarCliente>) => editarCliente(...args))
 
-  ipcMain.handle(
-    'buscarClientePorId',
-    (_, ...args: Parameters<BuscarClientePorId>) => buscarClientePorId(...args),
-  )
+  ipcMain.handle('buscarClientePorId', (_, ...args: Parameters<BuscarClientePorId>) => buscarClientePorId(...args))
 
-  ipcMain.handle(
-    'buscarTodosClientes',
-    (_, ...args: Parameters<BuscarTodosClientes>) =>
-      buscarTodosClientes(...args),
-  )
+  ipcMain.handle('buscarTodosClientes', (_, ...args: Parameters<BuscarTodosClientes>) => buscarTodosClientes(...args))
 }
